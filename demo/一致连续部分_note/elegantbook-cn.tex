@@ -1,0 +1,180 @@
+\documentclass[lang=cn,newtx,10pt,scheme=chinese]{elegantbook}
+
+\title{数学分析学习笔记}
+\subtitle{复习整理笔记}
+
+\author{阮炜挺}
+\institute{宁波大学数学与统计学院}
+\date{}
+
+\extrainfo{Given yourself an epsilon of room!}
+
+\setcounter{tocdepth}{3}
+
+\cover{cover.jpg}
+
+% 本文档命令
+\usepackage{array}
+\newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
+
+% 修改标题页的橙色带
+\definecolor{customcolor}{RGB}{32,178,170}
+\colorlet{coverlinecolor}{customcolor}
+\usepackage{cprotect}
+
+\addbibresource[location=local]{reference.bib} % 参考文献，不要删除
+
+\begin{document}
+
+\maketitle
+\frontmatter
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{一致连续习题}
+\begin{example}
+    设 $f(x)=\frac{x+2}{x+1}\sin\frac1x,a>0$ 为任一正常数，试证：$f(x)$在$(0,a)$内非一致连续，在$[a,+\infty)$上一致连续.
+\end{example}
+
+\begin{example}
+    $\text{证明}:f(x)=\frac{1}{x}\text{在}(0,1),g(x)=x^2\text{在}(1,+\infty)\text{内非一致连续}.$
+\end{example}
+
+\begin{example}
+    证明：$f(x)$在区间$I$上一致连续的充要条件是：对$I$ 上任意两数列
+$\left\{x_n\right\},\left\{x_n^{\prime}\right\}$,只要$x_n-x_n^{\prime}\to0$,就有$$f(x_n)-f(x_n^{\prime})\to0(n\to\infty).$$
+\end{example}
+
+\begin{example}
+    设 $I$ 为有限区间，$f(x)$ 在 $I$ 上有定义，试证：$f(x)$ 在 $I$ 上一致连续的充要条件是 $f$ 把 Cauchy 序列映射为 Cauchy 序列（即当 $\{x_n\}$ 为 Cauchy 序列时，$\{f(x_n)\}$ 亦为 Cauchy 序列）
+\end{example}
+
+\begin{example}
+    设 $z = g(y)$ 于 $J$, $y = f(x)$ 于 $I$ 都是一致连续的，且 $f(I) \subset J$。试证 $z = g(f(x))$ 在 $I$ 上一致连续。
+\end{example}
+
+\begin{example}
+    设 $f(x)$ 在有限开区间 $(a, b)$ 内连续，试证 $f(x)$ 在 $(a, b)$ 内一致连续的充要条件是极限 $\lim\limits_{x \to a^+} f(x)$ 及 $\lim\limits_{x \to b^-} f(x)$ 存在（有限）。
+\end{example}
+
+\begin{example}
+    证明：若 $f(x)$ 在 $[a, +\infty)$ 上连续，$\lim\limits_{x \to +\infty} f(x) = A$（有限），则 $f(x)$ 在 $[a, +\infty)$ 上一致连续。
+\end{example}
+
+\begin{example}
+    设 $f(x)$ 在 $[a, +\infty)$ 上一致连续，$\varphi(x)$ 在 $[a, +\infty)$ 上连续，
+\[
+\lim_{x \to +\infty} [f(x) - \varphi(x)] = 0.
+\]
+证明：$\varphi(x)$ 在 $[a, +\infty)$ 上一致连续。
+\end{example}
+
+\begin{example}
+设 $f(x)$ 在 $(-\infty, +\infty)$ 上一致连续，则存在非负实数 $a$ 与 $b$，使对一切 $x \in (-\infty, +\infty)$，都有
+\[
+|f(x)| \leq a |x| + b.
+\]
+试证明之。
+\end{example}
+
+\begin{example}
+    设函数 $f(x)$ 在 $[0, +\infty)$ 上一致连续，且 $\forall x > 0$ 有 $\lim\limits_{n \to \infty} f(x+n)=0$ ($n$ 为正整数)。试证 $\lim\limits_{x \to +\infty} f(x)=0$。
+\end{example}
+
+
+\begin{example}
+    若 $f(x)$ 在区间 $I$ 上有定义，则 $f(x)$ 在 $I$ 上一致连续的充要条件是
+\[
+\lim_{\delta \to 0^+} \omega_f(\delta) = 0.
+\]
+\end{example}
+
+\begin{example}
+    设 $E$ 为实轴 $\mathbb{R}$ 上的一个集合，$E_1 \subset E$ 为 $E$ 的稠密子集（即 $\forall x \in E, \exists x_n \in E_1 (n=1,2,\cdots)$，使得 $x_n \to x$（当 $n \to \infty$ 时））。若 $f_1(x)$ 是 $E_1$ 上的一致连续函数（即：$\forall \varepsilon >0, \exists \delta >0$，当 $x',x'' \in E_1, |x'-x''| < \delta$ 时，有 $|f_1(x') - f_1(x'')| < \varepsilon$），则在 $E$ 上有唯一函数 $f(x)$ 使得
+    \begin{enumerate}
+        \item $f(x) = f_1(x)$（当 $x \in E_1$ 时）；
+        \item $f(x)$ 在 $E$ 上连续。特别当 $E$ 为有界集合时，$f(x)$ 在 $E$ 上一致连续。
+    \end{enumerate}
+\end{example}
+
+\section*{习题}
+\begin{problem}
+    设 \( f \) 是区间 \( I \) 上的实函数，试证如下三条件有逻辑关系：1) $\Rightarrow$ 2) $\Rightarrow$ 3)。
+    \begin{enumerate}[label=\arabic*), leftmargin=*, nosep]
+        \item \( f \) 在 \( I \) 上可导且导函数有界，即：\(\exists M > 0\) 使得 \( |f'(x)| \leq M \) (\(\forall x \in I\))；
+        
+        \item \( f \) 在 \( I \) 上满足 Lipschitz 条件，即：\(\exists L > 0\) 使得 \( |f(x') - f(x'')| \leq L |x' - x''| \) (\(\forall x', x'' \in I\))；
+        
+        \item \( f \) 在 \( I \) 上一致连续。
+    \end{enumerate}
+\end{problem}
+
+\begin{problem}
+    设 $f( x) $在 区 间 $I$ 上有定义.为了检验$f$在$I$ 上是否一致连续，今设计如下的实验：取一根内空直径为$\varepsilon$的圆形直管( $\varepsilon>0)$,截取长度为$\delta$的一段( $\delta>0)$,将直管中轴与$x$轴平行放好， 然后让$y=f(x)$的曲线平移从管内穿过. 若不论$\varepsilon>0$多么小，只要事先将直管长度$\delta>0$取定足够短，曲线就能平移穿过此管，整个穿越过程 $\delta$ 无须改变，那么$f$就在 $I$ 上一致连续；否则就是非一致连续，问这种理解正确吗？(注 一致性主要体现在“整个穿越过程δ无须改变”上！)
+\end{problem}
+
+
+\begin{problem}
+    函数$f(x)$在$[a,b]$上一致连续，又在$[b,c]$上一致连续$,a<b<c.$ 用定义证明$:f(x)$
+在$[a,c]$上一致连续
+\end{problem}
+
+\begin{problem}
+    设$f(x)$在$[0,+\infty)$上满足 Lipschitz 条件，证明$f(x^\alpha)(0<\alpha<1$ 为常数)在$[0,+\infty)$上一致连续。
+\end{problem}
+
+\begin{problem}
+    证明:$y=\sin\sqrt{x}$在$(0,+\infty)$上一致连续.
+\end{problem}
+
+\begin{problem}
+    请回答:函数 $f(x)=\sin x^2$在$(-\infty,+\infty)$上是否一致连续?说明理由
+\end{problem}
+
+\begin{problem}
+    用不等式叙述$f(x)$在$(a,b)$内不一致连续
+\end{problem}
+
+\begin{problem}
+    证明:$g(x)=\sin\frac{1}{x}$在$(0,1)$内不一致连续.
+\end{problem}
+
+\begin{problem}
+    证明：函数$f(x)=\frac{|\sin x|}{x}$在每个区间$J_1=\{x|-1<x<0\},J_2=\{x|0<x<1\}$内一致连续，但在$J_1\cup J_2=\{x\mid0<\mid x\mid<1\}$内非一致连续.
+\end{problem}
+
+\begin{problem}
+    证明:周期函数只要连续必定一致连续
+\end{problem}
+
+\begin{problem}
+    \begin{enumerate}
+        \item 证明：在区间$I$上一致连续的两函数的和与差仍在$I$上一致连续；
+        \item 设$f(x),g(x)$是区间$I$上有界且一致连续的函数，求证：$f(x)g(x)$在$I$上一致连续.
+    \end{enumerate}
+\end{problem}
+
+\begin{problem}
+证明：若$(-\infty,+\infty)$上的连续函数 $y=f(x)$有极限
+$$\lim_{x\to+\infty}f(\:x\:)\:=A\:,\:\lim_{x\to-\infty}f(\:x\:)\:=B\:,$$
+则 $y=f(x)$在$(-\infty,+\infty)$上一致连续.
+\end{problem}
+
+\begin{problem}
+    设单调有界函数$f$在区间$I(I=(a,b)$或$I=[a,+\infty))$上连续，求证$f$在$l$上一致连续.
+\end{problem}
+
+\begin{problem}
+    证明：在有限开区间上一致连续的两函数之积仍一致连续.问商的情况怎样？无穷区间上关于积的结论是否还成立？证明之.
+\end{problem}
+
+\begin{problem}
+    求证:$f(x)=\frac{x^{314}}{\mathrm{e}^x}$在$[0,+\infty)$上一致连续.
+\end{problem}
+
+\begin{problem}
+    设实函数$f(x)$在$[0,+\infty)$上连续，在$(0,+\infty)$内处处可导，且$\lim \limits_{x\to +\infty} |f^{\prime}(x)|=A($有限或$+\infty$).证明：当且仅当$A$有限时，$f$在$[0,+\infty)$上一致连续.
+\end{problem}
+\end{document}

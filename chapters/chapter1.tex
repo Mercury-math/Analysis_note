@@ -1,0 +1,234 @@
+\chapter{公式大全}
+\section{常见函数的泰勒展开式}		
+
+\subsection*{几何级数}
+\begin{align*}
+    \displaystyle \frac{1}{1 - x} &= 1 + x + x^2 + x^3 + \cdots + x^n + o(x^n) \\
+    \displaystyle \frac{1}{1 + x} &= 1 - x + x^2 - x^3 + \cdots + (-1)^n x^n + o(x^n)
+\end{align*}
+
+\subsection*{指数和对数函数}
+\begin{align*}
+    \displaystyle & e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots + \frac{x^n}{n!} + o(x^n) \\
+    \displaystyle & \ln(1 + x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots + (-1)^{n+1} \frac{x^n}{n} + o(x^n)
+\end{align*}
+
+\subsection*{幂函数}
+\begin{align*}
+    \displaystyle (1 + x)^a &= 1 + a x + \frac{a(a-1)}{2!} x^2 + \cdots + \binom{a}{n} x^n + o(x^n) \\
+    \displaystyle \sqrt{1 + x} &= \boxed{1 + \frac{1}{2}x - \frac{1}{8}x^2} + \frac{1}{16}x^3 + \cdots + \frac{(-1)^{n+1} (2n-3)!!}{2^n n!} x^n + o(x^n)
+\end{align*}
+
+\subsection*{三角函数}
+\begin{align*}
+    \displaystyle \sin x &= x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots + (-1)^n \frac{x^{2n+1}}{(2n+1)!} + o(x^{2n+2}) \\
+    \displaystyle \cos x &= 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \cdots + (-1)^n \frac{x^{2n}}{(2n)!} + o(x^{2n+1}) \\
+    \displaystyle \tan x &= \boxed{x + \frac{x^3}{3} + \frac{2}{15}x^5} + \cdots + \frac{B_{2n} (-4)^n (1 - 4^n)}{(2n)!} x^{2n - 1} + o(x^{2n})
+\end{align*}
+
+\subsection*{反三角函数}
+\begin{align*}
+    \displaystyle \arcsin x &= \boxed{x + \frac{x^3}{6}} + \frac{3}{40}x^5 + \cdots + \frac{(2n)!}{4^n (n!)^2 (2n + 1)} x^{2n+1} + o(x^{2n+2}) \\
+    \displaystyle \arctan x &= x - \frac{x^3}{3} + \frac{x^5}{5} - \cdots + (-1)^n \frac{x^{2n+1}}{2n+1} + o(x^{2n+2})
+\end{align*}
+
+\newpage
+\section{常见三角恒等式}
+
+\subsection*{积化和差公式}
+\begin{align*}
+    \sin A \sin B &= \frac{1}{2}[\cos(A - B) - \cos(A + B)] \\
+    \cos A \cos B &= \frac{1}{2}[\cos(A - B) + \cos(A + B)] \\
+    \sin A \cos B &= \frac{1}{2}[\sin(A + B) + \sin(A - B)] \\
+    \cos A \sin B &= \frac{1}{2}[\sin(A + B) - \sin(A - B)]
+\end{align*}
+
+\subsection*{和差化积公式}
+\begin{align*}
+    \sin A + \sin B &= 2 \sin\left( \frac{A + B}{2} \right) \cos\left( \frac{A - B}{2} \right) \\
+    \sin A - \sin B &= 2 \cos\left( \frac{A + B}{2} \right) \sin\left( \frac{A - B}{2} \right) \\
+    \cos A + \cos B &= 2 \cos\left( \frac{A + B}{2} \right) \cos\left( \frac{A - B}{2} \right) \\
+    \cos A - \cos B &= -2 \sin\left( \frac{A + B}{2} \right) \sin\left( \frac{A - B}{2} \right)
+\end{align*}
+
+\subsection*{基本恒等式}
+\[
+\sin^2 x + \cos^2 x = 1
+\]
+\[
+1 + \tan^2 x = \sec^2 x
+\]
+\[
+1 + \cot^2 x = \csc^2 x
+\]
+
+\subsection*{倒数关系}
+\[
+\sec x = \frac{1}{\cos x} \quad \csc x = \frac{1}{\sin x} \quad \cot x = \frac{1}{\tan x}
+\]
+
+\subsection*{倍角公式}
+\[
+\sin 2x = 2 \sin x \cos x
+\]
+\[
+\cos 2x = \cos^2 x - \sin^2 x = 2\cos^2 x - 1 = 1 - 2\sin^2 x
+\]
+\[
+\tan 2x = \frac{2\tan x}{1 - \tan^2 x}
+\]
+
+\subsection*{半角公式}
+\[
+\sin^2 \frac{x}{2} = \frac{1 - \cos x}{2}
+\]
+\[
+\cos^2 \frac{x}{2} = \frac{1 + \cos x}{2}
+\]
+\[
+\tan \frac{x}{2} = \frac{\sin x}{1 + \cos x} = \frac{1 - \cos x}{\sin x}
+\]
+
+\subsection*{三角函数万能代换}
+
+令 $t = \tan \frac{x}{2}$。
+
+则
+$$ \tan x = \frac{2 \tan \frac{x}{2}}{1 - \tan^2 \frac{x}{2}} = \frac{2t}{1 - t^2} $$
+
+根据勾股定理，我们有 $(2t)^2 + (1 - t^2)^2 = 4t^2 + 1 - 2t^2 + t^4 = t^4 + 2t^2 + 1 = (1 + t^2)^2$。
+
+根据三角函数的几何意义，绘出三边关系图：
+
+\begin{center}
+\begin{tikzpicture}
+    % 定义坐标点
+    \coordinate (A) at (0,0);
+    \coordinate (B) at (3,0);      % 直角顶点
+    \coordinate (C) at (3,2.5);
+
+    % 绘制三角形
+    \draw (A) -- (B) -- (C) -- cycle;
+
+    % 标记直角 (在点 B 处)
+    \def\rightanglesize{0.25cm} % 定义直角标记的大小 (添加了单位cm)
+    % 计算直角标记的三个点:
+    % B_h: 从B点沿水平向左移动 \rightanglesize
+    % B_v: 从B点沿垂直向上移动 \rightanglesize
+    % B_c: 直角标记的实际角点
+    \coordinate (B_h) at ($(B)+(-\rightanglesize,0)$);
+    \coordinate (B_v) at ($(B)+(0,\rightanglesize)$);
+    \coordinate (B_c) at ($(B)+(-\rightanglesize,\rightanglesize)$);
+    % 绘制直角标记符
+    \draw (B_h) -- (B_c) -- (B_v);
+
+    % 标记边长
+    \node[below] at ($(A)!0.5!(B)$) {$1 - t^2$};
+    \node[right] at ($(B)!0.5!(C)$) {$2t$};
+    \node[above left, midway, sloped] at ($(A)!0.5!(C)$) {$1 + t^2$};
+
+    % 标记角度x (在点 A 处)
+    \pgfmathsetmacro{\oppositeSide}{(2.5)} % 对边长度 (y_C - y_A)
+    \pgfmathsetmacro{\adjacentSide}{(3)}   % 邻边长度 (x_B - x_A)
+    \pgfmathsetmacro{\angleValue}{atan(\oppositeSide/\adjacentSide)} % 计算角度 (单位: 度)
+    \def\arcradius{0.5cm} % 定义圆弧半径
+    % 绘制角度弧线
+    \draw ($(A)+(\arcradius,0)$) arc (0:\angleValue:\arcradius);
+    % 标记角度x的标签，位置在角平分线上，距离A点 \arcradius + 0.2cm
+    \node at ($(A)+(\angleValue/2:\arcradius+0.2cm)$) {$x$};
+
+\end{tikzpicture}
+\end{center}
+
+因此，
+$$ \sin x = \frac{2t}{1 + t^2} $$
+$$ \cos x = \frac{1 - t^2}{1 + t^2} $$
+
+而 $t = \tan \frac{x}{2}$，所以 $x = 2 \arctan t$。
+
+则
+$$ dx = \frac{2}{1 + t^2} dt $$
+
+最终结果：
+\begin{align*}
+&\sin x = \frac{2t}{1 + t^2} \\
+&\cos x = \frac{1 - t^2}{1 + t^2} \\
+&\tan x = \frac{2t}{1 - t^2} \\
+&x = 2 \arctan t \\
+&dx = \frac{2}{1 + t^2} dt
+\end{align*}
+
+
+\section{常见积分公式}
+
+\subsection*{重要积分公式}
+\[
+\int \ln x \, dx = x \ln x - x + C
+\]
+
+\begin{equation*}
+    \boxed{
+    \int \frac{1}{\sqrt{x^2 + 1}} \, dx = \ln|x + \sqrt{x^2 + 1}| + C
+    }
+\end{equation*}
+
+\begin{equation*}
+    \boxed{
+    \int \frac{1}{\sqrt{x^2 - 1}} \, dx = \ln|x + \sqrt{x^2 - 1}| + C
+    }
+\end{equation*}
+
+\subsection*{三角函数积分}
+\[
+\int \sec^2 x \, dx = \tan x + C
+\]
+\[
+\int \csc^2 x \, dx = -\cot x + C
+\]
+\[
+\int \sec x \tan x \, dx = \sec x + C
+\]
+\[
+\int \csc x \cot x \, dx = -\csc x + C
+\]
+
+\subsection*{反三角函数积分}
+\[
+\int \frac{1}{\sqrt{1 - x^2}} \, dx = \arcsin x + C
+\]
+
+\[
+\int \frac{-1}{\sqrt{1 - x^2}} \, dx = \arccos x + C
+\]
+
+\[
+\int \frac{1}{1 + x^2} \, dx = \arctan x + C
+\]
+
+\[
+\int \frac{1}{x \sqrt{x^2 - 1}} \, dx = \mathrm{arcsec} x + C \quad (|x| > 1)
+\]
+
+\vspace{3mm}
+\begin{remark}
+    由于$\arcsin x + \arccos x =\frac{\pi}{2}$,那么第二个式子其实也可以写成$\int \frac{-1}{\sqrt{1 - x^2}} \, dx =  - \arcsin x + C$
+\end{remark}
+\vspace{5mm}
+\begin{note}
+    利用以上结果，我们还可以进行特殊代换，得到一些常用的积分公式：
+    \[
+    \int \frac{1}{a^2 + x^2} \, dx = \frac{1}{a} \arctan\frac{x}{a} + C
+    \]
+    \[
+    \int \frac{1}{\sqrt{a^2 - x^2}} \, dx = \arcsin\frac{x}{a} + C
+    \]
+    \[
+    \int \frac{1}{x^2 - a^2} \, dx = \frac{1}{2a} \ln\left|\frac{x - a}{x + a}\right| + C
+    \]
+\end{note}
+
+
+
+
+
+

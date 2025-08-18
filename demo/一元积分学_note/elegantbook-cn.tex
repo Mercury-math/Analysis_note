@@ -1,0 +1,969 @@
+\documentclass[lang=cn,newtx,10pt,scheme=chinese]{elegantbook}
+
+\title{数学分析学习笔记}
+\subtitle{复习整理笔记}
+
+\author{阮炜挺}
+\institute{宁波大学数学与统计学院}
+\date{}
+
+\extrainfo{Given yourself an epsilon of room!}
+
+\setcounter{tocdepth}{3}
+
+\cover{cover.jpg}
+
+% 本文档命令
+\usepackage{array}
+\newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
+
+% 修改标题页的橙色带
+\definecolor{customcolor}{RGB}{32,178,170}
+\colorlet{coverlinecolor}{customcolor}
+\usepackage{cprotect}
+\addbibresource[location=local]{reference.bib} % 参考文献，不要删除
+\usepackage{annotate-equations}
+
+\begin{document}
+
+\maketitle
+\frontmatter
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{一元函数积分学}
+\section{积分与极限}
+\begin{introduction}
+\item 黎曼积分定义求极限(定义\ref{def:riemann integral definition solve limit problem})
+\item 一个重要的含参变量积分 (命题\ref{Important Integrals Involving Parameters_1})
+\item 区间划分处理积分中的特殊点处极限 (例\ref{eg4.1.4})
+\item 分割积分区间方法
+\item 黎曼引理 \ref{lem:riemann}
+\item 拟合法的应用 (练习\ref{eg:4.1.5};\ref{eg:4.1.5_2})
+\item L'Hospital法则的应用 (例\ref{eg:4.1.12})
+\item 可积条件转化为达布和条件(例\ref{eg:4.1.8})
+\end{introduction}
+\subsection{利用积分求极限}
+\begin{definition}[基本原理]\label{def:riemann integral definition solve limit  problem}
+    
+    $f(x) \in \mathbb R [a,b]$，平均划分每个区间有$\Delta_i = [a+\frac{i-1}{n}(b-a),a+\frac{i}{n}(b-a)]$，那么有
+    $$
+    \lim_{n \to \infty} \sum_{i=1}^{n} f(\xi_i)\Delta x_i = \int_a^b f(x)dx
+    $$
+    关于$\xi$的选取：
+    \begin{itemize}
+        \item 选右端点： $\xi_i = a + \frac{i}{n}(b-a)$
+        \item 选左端点： $\xi_i = a + \frac{i-1}{n}(b-a)$   
+        \item 选中点： $\xi_i = a + \frac{2i-1}{2n}(b-a)$
+        \item 选任意点： $\xi_i \in [a+\frac{i-1}{n}(b-a),a+\frac{i}{n}(b-a)]$
+    \end{itemize}
+\end{definition}
+\begin{example}
+求 $\lim\limits_{n \to \infty} \frac{[1^\alpha + 3^\alpha + \dots + (2n+1)^\alpha]^{\beta+1}}{[2^\beta + 4^\beta + \dots + (2n)^\beta]^{\alpha+1}}$ ($\alpha, \beta \neq -1$).
+\end{example}
+
+\begin{solution}
+
+$$ \frac{[1^\alpha + 3^\alpha + \dots + (2n+1)^\alpha]^{\beta+1}}{[2^\beta + 4^\beta + \dots + (2n)^\beta]^{\alpha+1}} = 2^{\alpha-\beta} \frac{\left\{ \frac{1}{n} \left[ \left(\frac{1}{n}\right)^\alpha + \left(\frac{3}{n}\right)^\alpha + \dots + \left(\frac{2n+1}{n}\right)^\alpha \right] \right\}^{\beta+1}}{\left\{ \frac{1}{n} \left[ \left(\frac{2}{n}\right)^\beta + \left(\frac{4}{n}\right)^\beta + \dots + \left(\frac{2n}{n}\right)^\beta \right] \right\}^{\alpha+1}} $$
+$$ = 2^{\alpha-\beta} \frac{\left[ \sum\limits_{i=1}^{n} \left(\frac{2i-1}{n}\right)^\alpha \frac{2}{n} + \left(\frac{2n+1}{n}\right)^\alpha \frac{2}{n} \right]^{\beta+1}}{\left[ \sum\limits_{i=1}^{n} \left(\frac{2i}{n}\right)^\beta \frac{2}{n} \right]^{\alpha+1}} \longrightarrow 2^{\alpha-\beta} \frac{\left( \int_0^2 t^\alpha dt \right)^{\beta+1}}{\left( \int_0^2 t^\beta dt \right)^{\alpha+1}} = 2^{\alpha-\beta} \frac{(\beta+1)^{\alpha+1}}{(\alpha+1)^{\beta+1}} \quad (n \to \infty). \hfill \blacksquare$$ 
+\begin{remark}
+这里把 $\sum\limits_{i=1}^{n} \left(\frac{2i-1}{n}\right)^\alpha \frac{2}{n}$ 与 $\sum\limits_{i=1}^{n} \left(\frac{2i}{n}\right)^\beta \frac{2}{n}$ 分别看成 $f(t) = t^\alpha$ 与 $g(t) = t^\beta$ 在 $[0,2]$ 上的积分和，其划分是将 $[0,2]$ $n$ 等分，每个小区间为$\Delta_i = [\frac{2(i-1)}{n},\frac{2i}{n}]$，$\xi_i$ 分别取小区间的中点$(\frac{2(i-1)}{n} + \frac{2i}{n})/2 = \frac{2i-1}{n}$与右端点$\frac{2i}{n}$。 
+\end{remark}
+\end{solution}
+
+\begin{exercise}
+设 $f(x)$ 在 $[0,1]$ 上连续，求证：
+$$ \lim_{n \to \infty} \frac{1}{n} \sum_{k=1}^{n-1} (-1)^{k+1} f\left(\frac{k}{n}\right) = 0.  $$
+\end{exercise}
+
+\begin{proof}[证 I ]
+记 $a_n = \frac{1}{n} \sum\limits_{k=1}^{n} (-1)^{k+1} f\left(\frac{k}{n}\right) \quad$
+
+此式比 原式 多一项：$\frac{1}{n} f\left(\frac{n}{n}\right)$, 但 $\lim\limits_{n \to \infty} \frac{1}{n} f\left(\frac{n}{n}\right) = 0$, 故 “原问题” 等价于证明：
+$ \lim\limits_{n \to \infty} a_n = 0. $
+
+$$\boxed{a_n = \begin{cases} \frac{1}{n} \sum\limits_{k=1}^{n} f\left(\frac{k}{n}\right) - \frac{2}{n} \sum\limits_{k=1}^{m} f\left(\frac{2k}{n}\right), & \text{当 } n=2m \text{ 时,} \\ \frac{1}{n} \sum\limits_{k=1}^{n} f\left(\frac{k}{n}\right) - \frac{2}{n} \sum\limits_{k=1}^{m} f\left(\frac{2k}{n}\right), & \text{当 } n=2m+1 \text{ 时.} \end{cases}}$$
+
+\begin{remark}
+意思为
+
+$n=2m : \quad b_1 - b_2 + b_3 - b_4 = (b_1+b_2+b_3+b_4) - 2(b_2+b_4)$
+
+$n=2m+1 : \quad b_1 - b_2 + b_3 - b_4 + b_5 = (b_1+b_2+b_3+b_4+b_5) - 2(b_2+b_4)$. 
+\end{remark}
+注意到
+$$ \frac{1}{n} \sum_{k=1}^{n} f\left(\frac{k}{n}\right) \to \int_0^1 f(x) dx = I \quad (\text{当 } n \to \infty \text{ 时}). $$
+$\frac{2}{n} \sum\limits_{k=1}^{m} f\left(\frac{2k}{n}\right)$ 是先将 $[0,1]$ 进行 $2m=n$ 等分，然后从左至右，每两个小区间合并成为一个新的小区间（特别注意与[0,2]上的积分的区别，[0,2]上积分所对应的和应为$\frac{2}{n} \sum\limits_{k=1}^{n} f\left(\frac{2k}{n}\right)$的形式 ），于是新的小区间组成了 $[0,1]$ 的一个新的分划，新小区间长度为 $\frac{1}{m} = \frac{2}{n}$, $\xi_k$ 取 (第 $k$ 个新小区间的) 右端点 $\frac{2k}{n}$, 则 $\frac{2}{n} \sum\limits_{k=1}^{m} f\left(\frac{2k}{n}\right)$ 是 $\int_0^1 f(x) dx$ 的一个积分和，故 $\frac{2}{n} \sum\limits_{k=1}^{m} f\left(\frac{2k}{n}\right) \to \int_0^1 f(x) dx = I \quad (n \to \infty)$. 至此有 $\lim\limits_{n \to \infty} a_n = I - I = 0$. $\hfill \blacksquare$
+\end{proof}
+
+\begin{proof}[证 II]
+在 $[0,1]$ 上，$f(x)$ 连续, 可积. 根据可积的充要条件：有 \boxed{$$\lim\limits_{n \to \infty} \sum\limits_{i=1}^{n} \omega_i \Delta x_i = 0$$} (其中 $\omega_i$ 是 $f$ 在第 $i$ 个小区间上的振幅).
+
+在式中将 $a_n$ 相邻正、负两项合并，则
+$$ \left| \frac{1}{n} f\left(\frac{k}{n}\right) - \frac{1}{n} f\left(\frac{k+1}{n}\right) \right| \le \omega_k \cdot \frac{1}{n}. $$
+所以
+$$ \lim_{m \to \infty} a_{2m} \le \lim_{m \to \infty} \sum_{k=1}^{m} \left| \frac{1}{n} f\left(\frac{k}{n}\right) - \frac{1}{n} f\left(\frac{k+1}{n}\right) \right| \le \lim_{m \to \infty} \frac{1}{2} \sum_{k=1}^{m} \frac{\omega_k}{m} = 0, $$
+$$ \lim_{m \to \infty} a_{2m+1} \le \lim_{m \to \infty} \sum_{k=1}^{m} \left| \frac{1}{n} f\left(\frac{k}{n}\right) - \frac{1}{n} f\left(\frac{k+1}{n}\right) \right| + \left| \frac{1}{n} f\left(\frac{n}{n}\right) \right| $$
+$$ \le \lim_{m \to \infty} \sum_{k=1}^{m} \frac{\omega_k}{2m+1} + \frac{1}{n} |f(1)| = 0. $$
+奇数项偶数项分别收敛到0，于是$\lim\limits_{n \to \infty} a_n = 0$. $\hfill \blacksquare$
+\end{proof}
+
+\begin{remark}
+不一定要将区间$n$等分，只要\textbf{最长的小区间长度趋于0即可},见如下例题：
+\end{remark}
+
+\begin{example}[（非n等分定积分定义求极限）]
+    求极限 $\lim\limits_{n \to \infty} (b^{\frac{1}{n}} - 1) \sum\limits_{i=0}^{n-1} b^{\frac{i}{n}} \sin b^{\frac{2i+1}{2n}}$ ($b>1$).
+\end{example}
+
+\begin{solution}
+原式 = $\lim\limits_{n \to \infty} \sum\limits_{i=0}^{n-1} (\sin b^{\frac{2i+1}{2n}}) (b^{\frac{i+1}{n}} - b^{\frac{i}{n}})$.
+
+考虑在$[1,b]$上的划分$\Delta_i = [b^{\frac{i}{n}},b^{\frac{i+1}{n}}]$,注意此划分不等分区间，取$\xi_i=b^{\frac{2i+1}{2n}}\in[b^{\frac{i}{n}},b^{\frac{i+1}{n}}]$为标志点（由$b^x$递增易得在区间内），其最大区间长度$ 0\le\max {\Delta x_i} = b^{\frac{n-1}{n}}(b^{\frac{1}{n}}-1)\le b(b^{\frac{1}{n}}-1)\rightarrow 0,n\rightarrow\infty$
+
+那么
+$$
+\sum\limits_{i=0}^{n-1} (\sin b^{\frac{2i+1}{2n}}) (b^{\frac{i+1}{n}} - b^{\frac{i}{n}}) = \sum\limits_{i=0}^{n-1} \sin \xi_i \Delta x_i =\sum\limits_{i=0}^{n-1} f(\xi)_i \Delta x_i \rightarrow \int_1^b \sin x dx = \cos 1 - \cos b  \quad \hfill \blacksquare 
+$$
+\end{solution}
+
+\begin{example}
+证明：$\lim\limits_{n \to \infty} \left[ \prod\limits_{i=0}^{n-1} \left(2 + \cos i \frac{\pi}{n}\right) \right]^{\frac{\pi}{n}} = \left(\frac{\sqrt{3}+2}{2}\right)^\pi$.
+\end{example}
+
+\begin{proof}[证法1]
+    取对数可得
+    $$
+    \frac{\pi}{n} \sum\limits_{i=0}^{n-1} \ln\left(2 + \cos i \frac{\pi}{n}\right) 
+    $$
+
+    考虑在$[0,\pi]$上的划分$\Delta_i = [\frac{i \pi}{n},\frac{i+1}{n}\pi],i=0,1,\cdots,n-1$,取左端点作为标志点，即$\xi_i = \frac{i \pi}{n}$,那么即有 
+    $$
+    \frac{\pi}{n} \sum\limits_{i=0}^{n-1} \ln\left(2 + \cos i \frac{\pi}{n}\right) = \sum\limits_{i=0}^{n-1} \ln\left(2 + \cos \xi_i\right) \Delta x_i \rightarrow \int_0^\pi \ln\left(2 + \cos x\right) dx ,n \to \infty.
+    $$
+    下计算此积分：
+    $$
+    \int_0^\pi \ln\left(2 + \cos x\right) dx 
+    $$
+
+    先计算含参变量积分$$I(\alpha) = \int _0^{\pi} \ln(\alpha +\cos x)dx,\alpha > 1$$
+    易知$I(\alpha,x)$可导，且
+    $$ I'(\alpha) = \int_{0}^{\pi} \frac{1}{\alpha + \cos x} dx \stackrel{t=\tan\frac{x}{2}}{=} \int_{0}^{+\infty} \frac{1}{\alpha + \frac{1-t^2}{1+t^2}} \cdot \frac{2 dt}{1+t^2}  = 2 \int_{0}^{+\infty} \frac{dt}{\alpha(1+t^2) + 1-t^2} = 2 \int_{0}^{+\infty} \frac{dt}{\alpha+1 + (\alpha-1)t^2} $$
+    $$ = \frac{2}{\sqrt{\alpha^2-1}} \int_{0}^{+\infty} \frac{1}{1 + \left(\sqrt{\frac{\alpha-1}{\alpha+1}}t\right)^2} d\left(\sqrt{\frac{\alpha-1}{\alpha+1}}t\right)  = \frac{2}{\sqrt{\alpha^2-1}} \left( \arctan \sqrt{\frac{\alpha-1}{\alpha+1}}t \right) \Bigg|_{0}^{+\infty} = \frac{2}{\sqrt{\alpha^2-1}} \cdot \frac{\pi}{2} = \frac{\pi}{\sqrt{\alpha^2-1}} $$
+    那么$I(\alpha) = \pi ln(\alpha +\sqrt{\alpha^2 -1})+C$，且$I(1)=\pi ln(1+0)+C=C$.
+
+    又由于
+    \begin{align*}
+                    I(1) = \int_{0}^{\pi} \ln(1+\cos x) dx = \int_{0}^{\pi} \ln\left(2\cos^2\frac{x}{2}\right) dx 
+            = \int_{0}^{\pi} \ln 2 dx + \int_{0}^{\pi} \ln \cos^2\frac{x}{2} dx \\
+            = \int_{0}^{\pi} \ln 2 dx + 2\int_{0}^{\pi} \ln \cos\frac{x}{2} dx 
+            = \pi \ln 2 + 4 \int_{0}^{\frac{\pi}{2}} \ln \cos t dt
+    \end{align*}
+
+    考虑 $$I = \int_0^{\frac{\pi}{2}} \ln \cos t \, dt$$
+    令 $u = \frac{\pi}{2} - t$, 则 $$I = \int_0^{\frac{\pi}{2}} \ln \sin u \, du$$
+    将上面两式子相加有：
+    $$2I = \int_0^{\frac{\pi}{2}} (\ln \cos t + \ln \sin t) \, dt = \int_0^{\frac{\pi}{2}} \ln (\frac{1}{2} \sin 2t) \, dt = -\frac{\pi}{2}\ln 2 + \int_0^{\frac{\pi}{2}} \ln (\sin 2t) \, dt$$
+    令 $u = 2t$, 则积分变为 $$\int_0^{\frac{\pi}{2}} \ln (\sin 2t) \, dt = \frac{1}{2} \int_0^\pi \ln (\sin u) \, du = \frac{1}{2} 2I = I$$
+    那么 $2I = -\frac{\pi}{2}\ln 2 + I \Rightarrow I = -\frac{\pi}{2}\ln 2$
+    故 $I(1) = -\pi\ln 2$.那么$C = I(1) = -\pi \ln 2$，则
+    $$I(\alpha) = \pi ln(\alpha +\sqrt{\alpha^2 -1})+C= \pi ln(\alpha +\sqrt{\alpha^2 -1})-\pi \ln 2=\pi \ln \frac{\alpha+\sqrt{\alpha^2 -1}}{2}$$
+    那么令$\alpha =2$有
+    $$
+    \int_0^{\pi} \ln(2+\cos x)dx = \pi \ln \frac{\sqrt{3}+2}{2}
+    $$
+
+    故原极限值为$\left(\frac{\sqrt{3}+2}{2}\right)^\pi$ $\hfill \blacksquare$
+\end{proof}
+\begin{proof}
+    考虑积分 $$I(a) = \int_{0}^{\pi} \ln(1-2a\cos x + a^2)dx$$则有：
+    $$ I(a) = 0, (a^2 \le 1) $$
+    $$ I(a) = \pi \ln a^2, a^2 > 1 $$
+
+    \begin{proof}
+    当 $a^2 < 1$ 时,注意到$I(a)=I(-a)$,则有：
+    \begin{align*} 2I(a) &= \int_{0}^{\pi} \ln(1-2a\cos x + a^2)dx + \int_{0}^{\pi} \ln(1+2a\cos x + a^2)dx \\ &= \int_{0}^{\pi} \ln(1-2a^2\cos 2x + a^4)dx \\ &= \frac{1}{2} \int_{0}^{2\pi} \ln(1-2a^2\cos x + a^4)dx \\ &= \int_{0}^{\pi} \ln(1-2a^2\cos x + a^4)dx \\ &= I(a^2)\end{align*}
+    从而：
+    $$ I(a) = \lim\limits_{n \to \infty} \frac{I(a^{2^n})}{2^n} $$
+    考虑极限
+    $$ \lim\limits_{n \to \infty} I(a^{2^n}) = \lim\limits_{n \to \infty} \int_{0}^{\pi} \ln(1-2a^{2^n}\cos x + a^{2n+1})dx = \int_{0}^{\pi} \ln 1 dx = 0 $$
+    因此 $I(a)=0$。
+
+    当 $a^2=1$ 时可以直接计算出积分为0.
+    当 $a^2 > 1$ 时：
+    $$ I(a) = \int_{0}^{\pi} \ln a^2 dx + \int_{0}^{\pi} \ln(1-2\frac{1}{a}\cos x + \frac{1}{a^2})dx = \pi \ln a^2 $$
+    对于本题：
+    \begin{align*} \int_{0}^{\pi} \ln(2+\cos x)dx &= \int_{0}^{\pi} \ln \frac{1}{2(2+\sqrt{3})} dx + \int_{0}^{\pi} \ln(1+2(2+\sqrt{3})\cos x + (2+\sqrt{3})^2)dx \\ &= \pi \ln(1+\frac{\sqrt{3}}{2}) \end{align*}
+    $\hfill \blacksquare$
+    \end{proof}
+\end{proof}
+
+\begin{note}
+    证明过程中用了如下命题：
+    \begin{proposition}\label{Important Integrals Involving Parameters_1}
+           考虑积分 $$I(a) = \int_{0}^{\pi} \ln(1-2a\cos x + a^2)dx$$则有：
+            $$ I(a) = 0, (a^2 \le 1) $$
+            $$ I(a) = \pi \ln a^2, a^2 > 1 $$
+    \end{proposition}
+
+    证明过程中得到以下积分公式：
+    \begin{equation*}
+        \boxed{\int_{0}^{\pi} \ln(\alpha + \cos x) dx = \pi \ln \frac{\alpha + \sqrt{\alpha^2 - 1}}{2},|\alpha|>1}
+    \end{equation*}
+\end{note}
+
+\subsection{积分的极限}
+
+\begin{example}[$\bigstar$]\label{eg4.1.4}
+求极限：
+1) $\lim\limits_{n \to \infty} \int_{0}^{\frac{\pi}{2}} \sin^{n} x dx$;  \qquad 2) $\lim\limits_{n \to \infty} \int_{0}^{1} \frac{x^{n}}{1 + \sqrt{x}} dx$.
+\end{example}
+\begin{solution}
+    1) $\forall \varepsilon > 0$ (不妨设 $0 < \varepsilon < \frac{\pi}{2}$),
+    $$0 \leqslant \int_{0}^{\frac{\pi}{2}} \sin^{n} x dx = \int_{0}^{\frac{\pi}{2} - \frac{\varepsilon}{2}} \sin^{n} x dx + \int_{\frac{\pi}{2} - \frac{\varepsilon}{2}}^{\frac{\pi}{2}} \sin^{n} x dx \leqslant \int_{0}^{\frac{\pi}{2} - \frac{\varepsilon}{2}} \sin^{n} \left(\frac{\pi}{2} - \frac{\varepsilon}{2}\right) dx + \int_{\frac{\pi}{2} - \frac{\varepsilon}{2}}^{\frac{\pi}{2}} 1 dx \leqslant \left(\frac{\pi}{2} - \frac{\varepsilon}{2}\right) \sin^{n} \left(\frac{\pi}{2} - \frac{\varepsilon}{2}\right) + \frac{\varepsilon}{2}.$$
+    因 $0 < \sin\left(\frac{\pi}{2} - \frac{\varepsilon}{2}\right) < 1$, 所以 $\left(\frac{\pi}{2} - \frac{\varepsilon}{2}\right) \sin^{n} \left(\frac{\pi}{2} - \frac{\varepsilon}{2}\right) \to 0 (n \to \infty)$. 故 $\exists N > 0$, 当 $n > N$ 时, $\left(\frac{\pi}{2} - \frac{\varepsilon}{2}\right) \sin^{n} \left(\frac{\pi}{2} - \frac{\varepsilon}{2}\right) < \frac{\varepsilon}{2}$. 从而
+    上式 $< \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon$.
+    原极限为0. $\hfill \blacksquare$
+
+\begin{remark}
+        函数 $\sin^n x$ 在区间 $[0, \frac{\pi}{2}]$ 上的收敛特性是导致我们需要采用区间分割来求解极限 $\lim\limits_{n \to \infty} \int_{0}^{\frac{\pi}{2}} \sin^{n} x dx$ 的根本原因。具体特性如下：
+
+    \begin{enumerate}
+        \item 当 $x \in [0, \frac{\pi}{2})$ 时，我们有 $0 \le \sin x < 1$。
+        因此，随着 $n \to \infty$，$\sin^n x \to 0$。
+        这意味着在除去点 $x=\frac{\pi}{2}$ 的区间部分，被积函数会逐渐消失。
+
+        \item 当 $x = \frac{\pi}{2}$ 时，$\sin x = 1$。
+        因此，对于所有的 $n$，都有 $\sin^n \left(\frac{\pi}{2}\right) = 1^n = 1$。
+        这意味着在点 $x=\frac{\pi}{2}$ 处，被积函数的值恒为1，并不会随着 $n$ 的增大而趋向于0。
+    \end{enumerate}
+
+    这种收敛行为可以被称为逐点收敛，但它不是一致收敛的。具体来说，函数序列 $f_n(x) = \sin^n x$ 在区间 $[0, \frac{\pi}{2}]$ 上逐点收敛于一个不连续函数 $f(x)$：
+    $$ f(x) = \begin{cases} 0, & \text{若 } x \in [0, \frac{\pi}{2}) \\ 1, & \text{若 } x = \frac{\pi}{2} \end{cases} $$
+    由于极限函数 $f(x)$ 不连续（在 $x=\frac{\pi}{2}$ 处有跳跃），并且收敛不是一致的，我们通常不能直接将极限运算与积分运算交换顺序，即一般情况下：
+    $$ \lim\limits_{n \to \infty} \int_{0}^{\frac{\pi}{2}} \sin^{n} x dx \neq \int_{0}^{\frac{\pi}{2}} \left(\lim\limits_{n \to \infty} \sin^{n} x\right) dx $$
+    （尽管在这个特定例子中，右侧积分 $\int_{0}^{\frac{\pi}{2}} f(x) dx = \int_{0}^{\frac{\pi}{2}} 0 \, dx = 0$ 恰好是正确答案，但这需要更严格的论证，例如利用有界收敛定理或控制收敛定理，或者如此处采用的 $\varepsilon$-N 方法）。
+
+    正是因为在点 $x=\frac{\pi}{2}$ 附近，$\sin^n x$ 的值持续接近1，而远离该点时函数值迅速衰减至0，所以才需要将积分区间分割。分割的策略是：
+    \begin{itemize}
+        \item 将点 $x=\frac{\pi}{2}$ ``隔离'' 在一个任意小的邻域（例如 $[\frac{\pi}{2}-\frac{\varepsilon}{2}, \frac{\pi}{2}]$）中。在这个小区间上，虽然 $\sin^n x$ 可能接近1，但由于区间的长度可以任意小 (长度为 $\frac{\varepsilon}{2}$)，其对总积分的贡献可以被控制得任意小。
+        \item 在区间的其余部分（例如 $[0, \frac{\pi}{2}-\frac{\varepsilon}{2}]$），$\sin x$ 严格小于1 (具体来说，$\sin x \le \sin(\frac{\pi}{2}-\frac{\varepsilon}{2}) < 1$)。因此，$\sin^n x$ 会随着 $n$ 的增大而迅速且一致地趋向0，使得这部分的积分也趋向0。
+    \end{itemize}
+\end{remark}
+
+2)因 $0 \leqslant \int_{0}^{1} \frac{x^{n}}{1 + \sqrt{x}} dx \leqslant \int_{0}^{1} x^{n} dx = \frac{1}{n+1} \to 0 (n \to \infty)$. 所以
+$$\lim\limits_{n \to \infty} \int_{0}^{1} \frac{x^{n}}{1 + \sqrt{x}} dx = 0.$$ $\hfill \blacksquare$
+
+\end{solution}
+
+\begin{exercise}
+求证：
+\begin{enumerate}
+    \item[1)] $\lim\limits_{n \to \infty} \int_{a}^{\frac{\pi}{2}} (1-\sin x)^n dx = 0$, 其中 $a \in (0,1)$;
+    \item[2)] $\lim\limits_{n \to \infty} \int_{0}^{\frac{\pi}{2}} (1-\sin x)^n dx = 0$; 
+    \item[3)] $\lim\limits_{n \to \infty} \int_{0}^{1} e^{x^n} dx = 1$. 
+\end{enumerate}
+\end{exercise}
+\begin{proof}
+    1) $\int_{a}^{\frac{\pi}{2}} (1-\sin x)^n dx \le (\frac{\pi}{2}-a)(1-\sin a)^n \to 0, n \to \infty$.
+故原极限成立 $\hfill \blacksquare$
+
+    2) 由 $\sin 0 = 0$. 此时 $1 - \sin 0=1$. 故 $(1-\sin x)^n$ 在 $x=0$ 处时. 当 $n \to \infty$, $(1-\sin x)^n = 1 \neq 0$.
+
+    那么需划分区间. 不妨划分为 $[0, \frac{\varepsilon}{2}]$, $[\frac{\varepsilon}{2}, \frac{\pi}{2}]$. $\forall \frac{\varepsilon}{2} \in (0, \frac{\pi}{2})$
+
+    故 
+    $$
+    \int_{0}^{\frac{\pi}{2}} (1-\sin x)^n dx = \int_{0}^{\frac{\varepsilon}{2}} (1-\sin x)^n dx + \int_{\frac{\varepsilon}{2}}^{\frac{\pi}{2}} (1-\sin x)^n dx\le \int_{0}^{\frac{\varepsilon}{2}} 1 dx + \int_{\frac{\varepsilon}{2}}^{\frac{\pi}{2}} (1-\sin \frac{\varepsilon}{2})^n dx\le \frac{\varepsilon}{2} + (\frac{\pi}{2} - \frac{\varepsilon}{2}) (1-\sin \frac{\varepsilon}{2})^n
+    $$
+    由于 $\varepsilon \in (0, \pi)$, 故 $(1-\sin \frac{\varepsilon}{2}) < 1$. 则 $(1-\sin \frac{\varepsilon}{2})^n \to 0$.
+
+    那么 $\exists N > 0$, s.t. 当 $n > N$ 时, 有 
+    $$
+    (\frac{\pi}{2} - \frac{\varepsilon}{2}) (1-\sin \frac{\varepsilon}{2})^n < \frac{\varepsilon}{2}
+    $$
+
+
+    综上
+    $$
+    0 \le \int_{0}^{\frac{\pi}{2}} (1-\sin x)^n dx \le \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon
+    $$
+    
+
+    由 $\varepsilon$ 的任意性知$\lim\limits_{n \to \infty} \int_{0}^{\frac{\pi}{2}} (1-\sin x)^n dx = 0$.  $\hfill \blacksquare$
+
+    3)
+    即证 $\lim\limits_{n \to \infty} \int_{0}^{1} (e^{x^n}-1) dx = 0$
+
+    $\forall \varepsilon > 0$, 考虑 $$\int_{0}^{1} (e^{x^n}-1) dx = \int_{0}^{1-\varepsilon} (e^{x^n}-1) dx + \int_{1-\varepsilon}^{1} (e^{x^n}-1) dx$$
+    $$\le \int_{0}^{1-\varepsilon} (e^{(1-\varepsilon)^n}-1) dx + \int_{1-\varepsilon}^{1} (e-1) dx \le (1-\varepsilon)(e^{(1-\varepsilon)^n}-1) + \varepsilon(e-1)$$
+
+    而 $(1-\varepsilon)<1$, 则 $(1-\varepsilon)^n \to 0, n \to \infty$.
+    此时 $e^{(1-\varepsilon)^n}-1 \to 0$
+
+    故 $$0 \le \int_{0}^{1} (e^{x^n}-1) dx \le \varepsilon(e-1) \to 0$$
+    故原式得证  $\hfill \blacksquare$
+\end{proof}
+
+\begin{example}\label{eg:4.1.5}
+设 $f(x)$ 在 $[0,1]$ 上连续, 试证:
+$$\lim_{h \to 0^+} \int_{0}^{1} \frac{h}{h^2 + x^2} f(x) dx = \frac{\pi}{2} f(0).$$
+\end{example}
+
+\begin{proof}[证 I]
+$$\int_{0}^{1} \frac{h}{h^2+x^2}f(x)dx = \int_{0}^{h^{\frac{1}{4}}} \frac{hf(x)}{h^2+x^2}dx + \int_{h^{\frac{1}{4}}}^{1} \frac{hf(x)}{h^2+x^2}dx = I_1 + I_2,$$
+其中
+$$I_1 = \int_{0}^{h^{\frac{1}{4}}} \frac{hf(x)}{h^2+x^2}dx = f(\xi) \int_{0}^{h^{\frac{1}{4}}} \frac{h}{h^2+x^2}dx \quad (0 \le \xi \le h^{\frac{1}{4}})$$
+$$= f(\xi) \arctan \frac{x}{h} \Big|_{0}^{h^{\frac{1}{4}}} = f(\xi) \arctan \frac{1}{h^{\frac{3}{4}}} \to f(0) \frac{\pi}{2} \quad (h \to 0^+),$$
+$$|I_2| = \left| \int_{h^{\frac{1}{4}}}^{1} \frac{h}{h^2+x^2}f(x)dx \right| \le M \int_{h^{\frac{1}{4}}}^{1} \frac{h}{h^2+x^2}dx \quad (|f(x)| \le M)$$
+$$= M \left( \arctan \frac{1}{h} - \arctan \frac{1}{h^{\frac{3}{4}}} \right) \to 0 \quad (h \to 0^+).$$
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{note}
+    核心思想是\textbf{分段处理积分}，并利用当 $h$ 趋于 $0$ 时，被积函数中 $\frac{h}{h^2+x^2}$ 这一项的特性。这一项在 $x$ 接近 $0$ 时贡献较大(因为$h$在趋于$0$)，而在 $x$ 远离 $0$ 时贡献较小。为了精确地分析这种特性，证明中将积分区间 $[0,1]$ 分割成两部分：一部分是 $x$ 非常靠近 $0$ 的区间（$[0, h^{\frac{1}{4}}]$），另一部分是 $x$ 相对远离 $0$ 的区间（$[h^{\frac{1}{4}}, 1]$）。然后分别估计这两部分积分的极限。
+\begin{enumerate}
+    \item \textbf{积分拆分：} \\
+    将原积分 $\int_{0}^{1} \frac{h}{h^2+x^2}f(x)dx$ 拆分成两个积分 $I_1$ 和 $I_2$。拆分点选择为 $x = h^{\frac{1}{4}}$。这个点的选择是为了在 $h \to 0^+$ 时，它本身也趋于 $0$，但比 $h$ 趋于 $0$ 的速度慢。
+    $$\int_{0}^{1} \frac{h}{h^2+x^2}f(x)dx = \underbrace{\int_{0}^{h^{\frac{1}{4}}} \frac{hf(x)}{h^2+x^2}dx}_{I_1} + \underbrace{\int_{h^{\frac{1}{4}}}^{1} \frac{hf(x)}{h^2+x^2}dx}_{I_2}$$
+
+    \item \textbf{处理积分 $I_1 = \int_{0}^{h^{\frac{1}{4}}} \frac{hf(x)}{h^2+x^2}dx$：}
+    \begin{itemize}
+        \item \underline{应用积分中值定理：} 由于 $f(x)$ 连续，且 $\frac{h}{h^2+x^2} \ge 0$，因此存在 $\xi \in [0, h^{\frac{1}{4}}]$ 使得：
+        $$I_1 = f(\xi) \int_{0}^{h^{\frac{1}{4}}} \frac{h}{h^2+x^2}dx$$
+        当 $h \to 0^+$ 时， $h^{\frac{1}{4}} \to 0$，所以 $\xi \to 0$。根据 $f(x)$ 的连续性，$f(\xi) \to f(0)$。
+        \item \textbf{计算定积分：} $\int \frac{h}{h^2+x^2}dx = \arctan\left(\frac{x}{h}\right)$。所以：
+        $$\int_{0}^{h^{\frac{1}{4}}} \frac{h}{h^2+x^2}dx = \arctan\left(\frac{x}{h}\right) \Big|_{0}^{h^{\frac{1}{4}}} = \arctan\left(\frac{h^{\frac{1}{4}}}{h}\right) - \arctan(0) = \arctan\left(\frac{1}{h^{\frac{3}{4}}}\right)$$
+        \item \textbf{求极限：} 当 $h \to 0^+$ 时，$h^{\frac{3}{4}} \to 0^+$，因此 $\frac{1}{h^{\frac{3}{4}}} \to +\infty$。所以 $\arctan\left(\frac{1}{h^{\frac{3}{4}}}\right) \to \frac{\pi}{2}$。
+        \item 综合起来，$I_1 \to f(0) \cdot \frac{\pi}{2}$。
+    \end{itemize}
+
+    \item \textbf{处理积分 $I_2 = \int_{h^{\frac{1}{4}}}^{1} \frac{hf(x)}{h^2+x^2}dx$：}
+    \begin{itemize}
+        \item \textbf{利用函数有界性：} $f(x)$ 在 $[0,1]$ 上连续，因此有界，即存在 $M > 0$ 使得 $|f(x)| \le M$。
+        $$|I_2| = \left| \int_{h^{\frac{1}{4}}}^{1} \frac{h}{h^2+x^2}f(x)dx \right| \le M \int_{h^{\frac{1}{4}}}^{1} \frac{h}{h^2+x^2}dx$$
+        \item \textbf{计算定积分：}
+        $$\int_{h^{\frac{1}{4}}}^{1} \frac{h}{h^2+x^2}dx = \arctan\left(\frac{x}{h}\right) \Big|_{h^{\frac{1}{4}}}^{1} = \arctan\left(\frac{1}{h}\right) - \arctan\left(\frac{h^{\frac{1}{4}}}{h}\right) = \arctan\left(\frac{1}{h}\right) - \arctan\left(\frac{1}{h^{\frac{3}{4}}}\right)$$
+        \item \textbf{求极限：} 当 $h \to 0^+$ 时，$\frac{1}{h} \to +\infty$ 且 $\frac{1}{h^{\frac{3}{4}}} \to +\infty$。因此 $\arctan\left(\frac{1}{h}\right) \to \frac{\pi}{2}$ 且 $\arctan\left(\frac{1}{h^{\frac{3}{4}}}\right) \to \frac{\pi}{2}$。
+        \item 所以，$|I_2| \le M \left( \frac{\pi}{2} - \frac{\pi}{2} \right) = 0$。这意味着 $I_2 \to 0$。
+    \end{itemize}
+
+    \item \textbf{合并结果：} \\
+    将 $I_1$ 和 $I_2$ 的极限相加：
+    $$\lim_{h \to 0^+} \int_{0}^{1} \frac{h}{h^2 + x^2} f(x) dx = \lim_{h \to 0^+} I_1 + \lim_{h \to 0^+} I_2 = f(0)\frac{\pi}{2} + 0 = \frac{\pi}{2}f(0)$$
+\end{enumerate}
+
+该证明巧妙地利用了积分区间的分割，将问题分解为两个部分：
+\begin{itemize}
+    \item 一个部分 ($I_1$) 集中在 $x=0$ 附近，由于 $f(x)$ 的连续性，可以将其近似为 $f(0)$ 乘以一个趋向于 $\frac{\pi}{2}$ 的积分。这里的关键是积分上限 $h^{\frac{1}{4}}$ 使得 $\arctan$ 函数的变量 $\frac{h^{\frac{1}{4}}}{h} = \frac{1}{h^{\frac{3}{4}}}$ 趋向无穷大。
+    \item 另一个部分 ($I_2$) 对于远离 $0$ 的 $x$ 值，被积函数中的因子 $\frac{h}{h^2+x^2}$ 随着 $h \to 0^+$ 而迅速减小，使得这部分积分的极限为 $0$。这里通过计算两个都趋向于 $\frac{\pi}{2}$ 的 $\arctan$ 项的差来得到 $0$。
+\end{itemize}
+这种处理方式有效地捕捉了当 $h$ 非常小时，被积函数的主要贡献来源于 $x$ 接近 $0$ 的区域的特性。
+\end{note}
+
+\begin{proof}[证 II (拟合法)]
+因 \boxed{$$\lim\limits_{h \to 0^+} \int_{0}^{1} \frac{h}{h^2+x^2}dx = \frac{\pi}{2}$$}, 故极限值可改写为
+$$ \frac{\pi}{2}f(0) = \lim_{h \to 0^+} \int_{0}^{1} \frac{h}{h^2+x^2}f(0)dx. $$
+问题归结为证明: $\lim\limits_{h \to 0^+} \int_{0}^{1} \frac{h}{h^2+x^2}[f(x)-f(0)]dx = 0$. 但是
+$$ \int_{0}^{1} \frac{h}{h^2+x^2}[f(x)-f(0)]dx = \left(\int_{0}^{\delta} + \int_{\delta}^{1}\right) \frac{h}{h^2+x^2}[f(x)-f(0)]dx. $$
+因为 $f(x)$ 在 $x=0$ 处连续, 所以 $\forall \varepsilon > 0$, 当 $\delta > 0$ 充分小时, 在 $[0, \delta]$ 上, $|f(x)-f(0)| < \frac{\varepsilon}{\pi}$\underline{(用到了x=0处的连续性)}. 从而
+\begin{align*} \left| \int_{0}^{\delta} \frac{h}{h^2+x^2}[f(x)-f(0)]dx \right| &\le \int_{0}^{\delta} \frac{h}{h^2+x^2}|f(x)-f(0)|dx \\ &\le \frac{\varepsilon}{\pi} \int_{0}^{\delta} \frac{h}{h^2+x^2}dx \\ &= \frac{\varepsilon}{\pi} \arctan \frac{\delta}{h} \\ &\le \frac{\varepsilon}{\pi} \cdot \frac{\pi}{2} = \frac{\varepsilon}{2}. \end{align*}
+再将 $\delta$ 固定, 这时第二个积分
+$$ \left| \int_{\delta}^{1} \frac{h}{h^2+x^2}[f(x)-f(0)]dx \right| \le h \int_{\delta}^{1} \frac{1}{x^2}|f(x)-f(0)|dx = h \cdot M_0. $$
+故当 $0 < h < \frac{\varepsilon}{2M_0}$ 时, $\left| \int_{0}^{1} \frac{h}{h^2+x^2}[f(x)-f(0)]dx \right| < \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon$. 
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{exercise}
+设$f$为连续函数，证明：$\lim\limits_{n \to \infty} \frac{2}{\pi} \int_{0}^{1} \frac{n}{n^2x^2+1} f(x) dx = f(0)$. 
+\end{exercise}
+
+\begin{proof}
+即证 $\lim\limits_{n \to \infty} \int_0^1 \frac{n}{n^2x^2+1} f(x) \,dx = \frac{\pi}{2} f(0)$
+令 $h = \frac{1}{n}$
+则原式 $\Leftrightarrow \lim\limits_{h \to 0^+} \int_0^1 \frac{\frac{1}{h}}{\frac{1}{h^2}x^2+1} f(x) \,dx = \lim\limits_{h \to 0^+} \int_0^1 \frac{h}{x^2+h^2} f(x) \,dx = \frac{\pi}{2} f(0)$
+同上题
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{exercise}\label{eg:4.1.5_2}
+设$f(x)$在$[a,b]$上可积，在$x=b$处左连续，求证：
+$$ \lim\limits_{n \to \infty} \frac{n+1}{(b-a)^{n+1}} \int_{a}^{b} (x-a)^n f(x) dx = f(b). $$
+\end{exercise}
+
+\begin{proof}
+注意到 $\frac{n+1}{(b-a)^{n+1}} \int_a^b (x-a)^n \,dx = 1$
+那么等价于证明 $\lim\limits_{n \to \infty} \frac{n+1}{(b-a)^{n+1}} \int_a^b (x-a)^n [f(x)-f(b)] \,dx = 0$
+\begin{itemize}
+    \item 由于 $f(x)$ 在 $x=b$ 处\underline{左连续}, $\forall \varepsilon > 0, \exists \delta > 0$, 当 $b-\delta < x < b$ 时
+有 $|f(x)-f(b)| < \frac{\varepsilon}{2}$.
+    \item 由于 $f(x)$ 可积, 则 $f(x)$ 必有界: $\exists M$, 使得 $|f(x)| \leq M$ ( $f(x)-f(b)$ 也是有界的, $|f(x)-f(b)| \leq |f(x)| + |f(b)| \leq M + M = 2M$,其中 $M$ 是 $|f(x)|$ 的界).
+\end{itemize}
+
+
+
+固定 $\delta$, 则 $\lim\limits_{n \to \infty} \left(\frac{b-a-\delta}{b-a}\right)^{n+1} = 0$. 则 $\exists N>0$, s.t. 当 $n>N$ 时有
+$0 \leq 2M \left(\frac{b-a-\delta}{b-a}\right)^{n+1} \leq \frac{\varepsilon}{2}$ 
+那么
+\begin{align*} &\left| \frac{n+1}{(b-a)^{n+1}} \int_a^b (x-a)^n [f(x)-f(b)] \,dx \right| \\ &\leq \frac{n+1}{(b-a)^{n+1}} \int_a^b (x-a)^n |f(x)-f(b)| \,dx \\ &= \frac{n+1}{(b-a)^{n+1}} \left( \int_a^{b-\delta} (x-a)^n |f(x)-f(b)| \,dx + \int_{b-\delta}^b (x-a)^n |f(x)-f(b)| \,dx \right) \\ &\leq \frac{n+1}{(b-a)^{n+1}} \left( \int_a^{b-\delta} (x-a)^n \cdot 2M \,dx + \int_{b-\delta}^b (x-a)^n \cdot \frac{\varepsilon}{2} \,dx \right) \\ &= \frac{2M}{(b-a)^{n+1}} \int_a^{b-\delta} (n+1)(x-a)^n \,dx + \frac{\varepsilon/2}{(b-a)^{n+1}} \int_{b-\delta}^b (n+1)(x-a)^n \,dx \\ &= \frac{2M}{(b-a)^{n+1}} \left[ (x-a)^{n+1} \right]_a^{b-\delta} + \frac{\varepsilon/2}{(b-a)^{n+1}} \left[ (x-a)^{n+1} \right]_{b-\delta}^b \\ &= \frac{2M}{(b-a)^{n+1}} (b-a-\delta)^{n+1} + \frac{\varepsilon}{2(b-a)^{n+1}} \left( (b-a)^{n+1} - (b-a-\delta)^{n+1} \right) \\ &= 2M \left(\frac{b-a-\delta}{b-a}\right)^{n+1} + \frac{\varepsilon}{2} \left( 1 - \left(\frac{b-a-\delta}{b-a}\right)^{n+1} \right) \\ &\leq \frac{\varepsilon}{2} + \frac{\varepsilon}{2} \left( 1 - \left(\frac{b-a-\delta}{b-a}\right)^{n+1} \right) \leq \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon \end{align*}
+故原式成立.
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{note}
+    我们注意到这一类用拟合法的题目，如\ref{eg:4.1.5}，其系数通常为去掉函数$f(x)$后，剩余部分的积分,如\ref{eg:4.1.5}中$\lim\limits_{h \to 0^+} \int_{0}^{1} \frac{h}{h^2+x^2}dx = \frac{\pi}{2}$,以及本题中$\frac{n+1}{(b-a)^{n+1}} \int_a^b (x-a)^n \,dx = 1$.
+    
+    其目的显然为可以将等式右边项的系数凑成左边项积分的形式，从而得到积分里$f(x) - f(b)$的形式，那么可以用拟合法来证明左边的式子与右边取某点处的积分相差部分趋于0.
+
+    \textbf{操作细节：}
+    
+    我们通常通过划分区间的方式去计算，如\ref{eg:4.1.5}中，用$\left(\int_{0}^{\delta} + \int_{\delta}^{1}\right)$,在本题中用$\left(\int_{a}^{b-\delta} + \int_{b-\delta}^{b}\right)$,
+    这划分区间的目的是为了
+    \begin{itemize}
+        \item 利用函数在某点的连续性去限制一部分(\ref{eg:4.1.5}针对$\int_{0}^{\delta}$,所以利用的是0处的连续性；此题针对$\int_{b-\delta}^{b}$，所以利用在b点的左连续性),限制的方式就是用$\varepsilon - \delta$语言限制$f(x) - f(b)$
+        \item 另一部分利用函数的有界性质(\ref{eg:4.1.5}利用函数在闭区间[0,1]上的连续性推得有界，此题利用可积性推出有界)
+    \end{itemize}
+    通常放缩完后，我们还需要求积分以及利用$n \to \infty$时，各式子的极限情况来判断最后的结果。
+\end{note}
+
+\begin{example}
+设$f(x)$严$\searrow$, 在$[0,1]$上连续, $f(0)=1, f(1)=0$. 试证明: $\forall \delta \in (0,1)$, 有
+
+ $$1) \lim\limits_{n \to \infty} \frac{\int_{\delta}^{1} (f(x))^n dx}{\int_{0}^{\delta} (f(x))^n dx} = 0,\quad 2)\lim\limits_{n \to \infty} \frac{\int_{0}^{\delta} (f(x))^{n+1} dx}{\int_{0}^{1} (f(x))^n dx} = 1$$
+\end{example}
+
+\begin{proof}
+1)(利用两边夹法则.) 因 $f(x) \searrow$, $0 < f(\delta) < f(\delta/2)$, $\left(\frac{f(\delta)}{f(\delta/2)}\right)^n \to 0$ (当 $n \to \infty$ 时). 故对任意固定的 $\delta \in (0,1)$, 有
+$$0 \leq \frac{\int_{\delta}^{1} (f(x))^n \,dx}{\int_{0}^{\delta} (f(x))^n \,dx} \leq \frac{\int_{\delta}^{1} (f(x))^n \,dx}{\int_{0}^{\delta/2} (f(x))^n \,dx} \leq \frac{\int_{\delta}^{1} (f(\delta))^n \,dx}{\int_{0}^{\delta/2} (f(\delta/2))^n \,dx}$$
+$$\leq \left(\frac{f(\delta)}{f(\delta/2)}\right)^n \cdot \frac{(1-\delta)}{\delta/2} \to 0 \quad (n \to \infty).$$
+$\hfill \blacksquare$
+
+2)
+(利用两边夹法则的推广形式) 因 $f(x)$ 严格单调递减, $f(0)=1$, $f(1)=0$, 知 $0 < f(x) < 1 \quad (x \in (0,1))$. 根据连续性, $\forall \varepsilon > 0, \exists \delta_1$ 使得 $0 < \delta_1 < \delta$ ,使得 $f(x) > 1-\varepsilon \quad (\forall x \in [0, \delta_1])$. 于是
+\begin{align*} 1 &= \frac{\int_0^1 (f(x))^n \,dx}{\int_0^1 (f(x))^n \,dx}  \geq \frac{\int_0^1 (f(x))^{n+1} \,dx}{\int_0^1 (f(x))^n \,dx} \geq \frac{\int_0^{\delta} (f(x))^{n+1} \,dx}{\int_0^1 (f(x))^n \,dx} \geq \frac{\int_0^{\delta_1} (1-\varepsilon) (f(x))^n \,dx}{\int_0^{\delta_1} (f(x))^n \,dx + \int_{\delta_1}^1 (f(x))^n \,dx} \\ &= (1-\varepsilon) \frac{\int_0^{\delta_1} (f(x))^n \,dx}{\int_0^{\delta_1} (f(x))^n \,dx + \int_{\delta_1}^1 (f(x))^n \,dx} = (1-\varepsilon) \frac{1}{1 + \frac{\int_{\delta_1}^1 (f(x))^n \,dx}{\int_0^{\delta_1} (f(x))^n \,dx}} \xrightarrow{\text{式(1)}} (1-\varepsilon)  \end{align*}
+因为我们有 $\frac{\int_0^1 (f(x))^{n+1} \,dx}{\int_0^1 (f(x))^n \,dx} \leq 1$ (由于 $f(x) \leq 1$, $(f(x))^{n+1} \leq (f(x))^n$).
+所以 $1-\varepsilon \leq \liminf\limits_{n \to \infty} \frac{\int_0^1 (f(x))^{n+1} \,dx}{\int_0^1 (f(x))^n \,dx} \leq \limsup\limits_{n \to \infty} \frac{\int_0^1 (f(x))^{n+1} \,dx}{\int_0^1 (f(x))^n \,dx} \leq 1$.
+由 $\varepsilon > 0$ 的任意性知
+$$ \lim\limits_{n \to \infty} \frac{\int_0^1 (f(x))^{n+1} \,dx}{\int_0^1 (f(x))^n \,dx} = 1. $$
+$\hfill \blacksquare$
+\end{proof}
+\begin{note}
+    推广的极限版本其实就是$1- \varepsilon \le f(x) \le 1$,再由$\varepsilon$的任意性则知极限，这个$\varepsilon$的来历在此题中为$f(x)$在一个小的区间里的连续性得到，由$\varepsilon - \delta$语言中，不等式的其中一边，如$1-\varepsilon < f(x)$或$f(x)<1+\varepsilon$
+\end{note}
+
+\begin{example}[$\bigstar$]
+设$f(x) \ge 0, g(x) > 0$, 两函数在$[a,b]$上连续, 求证:
+$$ \lim\limits_{n \to \infty} \left[ \int_{a}^{b} (f(x))^n g(x) dx \right]^{\frac{1}{n}} = \max_{a \le x \le b} f(x). $$
+\end{example}
+
+\begin{proof}
+$f(x)$ 在 $[a,b]$ 上连续, 故在 $[a,b]$ 中有最大值, 不妨设 $M = \max\limits_{a \leq x \leq b} f(x)$.
+那么
+$$ \left[ \int_a^b (f(x))^n g(x) \,dx \right]^{\frac{1}{n}} \leq \left[ M^n \int_a^b g(x) \,dx \right]^{\frac{1}{n}} = M \left[ \int_a^b g(x) \,dx \right]^{\frac{1}{n}} $$
+当 $n \to \infty$ 时, 若 $\int_a^b g(x) \,dx > 0$, 则 $M \left[ \int_a^b g(x) \,dx \right]^{\frac{1}{n}} \to M$.
+
+不妨设 $f(x)$ 在 $x_0$ 处达到最大值, 那么, $\forall \varepsilon > 0$, $\exists [\alpha, \beta] \subset [a,b]$, 其中 $x_0 \in [\alpha, \beta]$ (通常也要求 $\alpha < \beta$ 且 $\int_\alpha^\beta g(x)dx > 0$),
+s.t. $f(x) > M-\varepsilon$ 对于所有 $x \in [\alpha, \beta]$. (也可以在一个区间内讨论某点处的连续性，得到不等式，通常在最大最小值点处使用),故
+$$ \left[ \int_a^b (f(x))^n g(x) \,dx \right]^{\frac{1}{n}} \geq \left[ \int_{\alpha}^{\beta} (f(x))^n g(x) \,dx \right]^{\frac{1}{n}} \geq \left[ \int_{\alpha}^{\beta} (M-\varepsilon)^n g(x) \,dx \right]^{\frac{1}{n}} = (M-\varepsilon) \left( \int_{\alpha}^{\beta} g(x) \,dx \right)^{\frac{1}{n}} $$
+当 $n \to \infty$ 时, 若 $\int_{\alpha}^{\beta} g(x) \,dx > 0$, 则 $(M-\varepsilon) \left( \int_{\alpha}^{\beta} g(x) \,dx \right)^{\frac{1}{n}} \to M-\varepsilon$.
+
+综合两边不等式, 并利用 $\varepsilon > 0$ 的任意性, 可得
+$$ \lim\limits_{n \to \infty} \left[ \int_a^b (f(x))^n g(x) \,dx \right]^{\frac{1}{n}} = M = \max\limits_{a \leq x \leq b} f(x). \hfill \blacksquare$$
+\end{proof}
+
+\begin{example}[$\bigstar$]\label{eg:4.1.8}
+设$f(x)$在$[a,b]$上可导, $f'(x)$在$[a,b]$上可积. $\forall n \in \mathbb{N}$, 记
+$$ A_n = \sum_{i=1}^{n} f\left(a+i\frac{b-a}{n}\right)\frac{b-a}{n} - \int_{a}^{b} f(x)dx. $$
+试证: $\lim\limits_{n \to \infty} nA_n = \frac{b-a}{2}(f(b)-f(a))$.
+\end{example}
+
+\begin{proof}[证法I]
+    注意到$\sum_{i=1}^{n} f\left(a+i\frac{b-a}{n}\right)\frac{b-a}{n}$显然是积分和的形式，我们令$x_i=a+i\frac{b-a}{n}$,显然此式子为$\sum_{i=1}^{n} f\left(x_i\right)\Delta x_i = \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i}f\left(x_i\right)$.
+
+    我们采用的方法的核心思想为\underline{转化为 $f'(x)$ 的积分和}.
+\begin{enumerate}
+    \item[$1^\circ$] 令 $x_i = a + i \frac{b-a}{n}$, 则
+    \begin{align*} nA_n &= n \left( \sum_{i=1}^n f(x_i) \frac{b-a}{n} - \sum_{i=1}^n \int_{x_{i-1}}^{x_i} f(x) \,dx \right) = n \sum_{i=1}^n \int_{x_{i-1}}^{x_i} (f(x_i) - f(x)) \,dx \quad  \\ &= n \sum_{i=1}^n \int_{x_{i-1}}^{x_i} f'(\eta_i)(x_i - x) \,dx \quad (\text{其中 } \eta_i \text{ 介于 } x \text{ 与 } x_i \text{ 之间, 故 } \eta_i \in (x_{i-1}, x_i)). \end{align*}
+    \item[$2^\circ$] 因 $(x_i - x)$ 在 $[x_{i-1}, x_i]$上不变号 (非负), 且导函数具有介值性, 因此应用积分第一中值定理, 不难知道: $\exists \xi_i \in [x_{i-1}, x_i]$ 使得
+    $$ \int_{x_{i-1}}^{x_i} f'(\eta_i)(x_i - x) \,dx = f'(\xi_i) \int_{x_{i-1}}^{x_i} (x_i - x) \,dx. $$
+    于是式(1)成为
+    \begin{align*} nA_n &= n \sum_{i=1}^n f'(\xi_i) \int_{x_{i-1}}^{x_i} (x_i - x) \,dx = n \sum_{i=1}^n f'(\xi_i) \left[ -\frac{(x_i-x)^2}{2} \right]_{x_{i-1}}^{x_i} = n \sum_{i=1}^n f'(\xi_i) \frac{(x_i-x_{i-1})^2}{2} \\ &= \frac{n}{2} \sum_{i=1}^n f'(\xi_i) \left(\frac{b-a}{n}\right)^2 = \frac{n}{2} \frac{(b-a)}{n} \sum_{i=1}^n f'(\xi_i) \frac{b-a}{n} = \frac{b-a}{2} \sum_{i=1}^n f'(\xi_i) (x_i-x_{i-1}) \end{align*}
+    当 $n \to \infty$ 时, 上式趋向于
+    $$ \frac{b-a}{2} \int_a^b f'(x) \,dx = \frac{b-a}{2} (f(b)-f(a)). $$
+\end{enumerate}
+\begin{remark}
+    注: 积分第一中值定理通常表述为 $\int_a^b g(x)h(x)dx = g(\xi)\int_a^b h(x)dx$ 需要 $g$ 连续且 $h(x)$ 不变号. 此处 $g(x)$ 对应于 $f'(\eta_i(x))$. 若 $f'$ 连续, 则 $f'(\eta_i(x))$ 作为 $x$ 的函数是连续的 (假设 $\eta_i(x)$ 选择得当). 若仅知 $f'$ 具有介值性, 则论证会更复杂一些, 但结论通常成立.
+\end{remark}
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{proof}[证法II$\bigstar$]
+利用两边夹法则及 $f'(x)$ 的 Darboux 和 (即若 $f'(x)$ 可积, 则 $\lim\limits_{\|\Delta\| \to 0} \sum_{i=1}^n m_i \Delta x_i = \lim\limits_{\|\Delta\| \to 0} \sum_{i=1}^n M_i \Delta x_i = \int_a^b f'(x) \,dx$).
+令 $x_i = a + i \frac{b-a}{n}$, 将 $[a,b]$ $n$ 等分, 作分割. 如前一证明 (证法 I 的$1^{\circ}$), 我们有
+$$ nA_n = n \sum_{i=1}^n \int_{x_{i-1}}^{x_i} f'(\eta_i)(x_i - x) \,dx $$
+其中 $\eta_i$ 介于 $x$ 与 $x_i$ 之间.
+
+记 $m_i = \inf_{x \in [x_{i-1}, x_i]} f'(x)$, $M_i = \sup_{x \in [x_{i-1}, x_i]} f'(x)$,$i=1,2,\dots,n$.
+由于 $\eta_i \in [x_{i-1}, x_i]$ (因为 $x \in [x_{i-1}, x_i]$), 则 $m_i \leq f'(\eta_i) \leq M_i$.
+因为 $x_i - x \geq 0$, $x \in [x_{i-1}, x_i]$, 则
+$$ m_i(x_i-x) \leq f'(\eta_i)(x_i-x) \leq M_i(x_i-x). $$
+对此不等式在 $[x_{i-1}, x_i]$ 上积分, 得
+$$ m_i \int_{x_{i-1}}^{x_i} (x_i-x) \,dx \leq \int_{x_{i-1}}^{x_i} f'(\eta_i)(x_i-x) \,dx \leq M_i \int_{x_{i-1}}^{x_i} (x_i-x) \,dx. $$
+计算积分 $\int_{x_{i-1}}^{x_i} (x_i-x) \,dx = \left[ -\frac{(x_i-x)^2}{2} \right]_{x_{i-1}}^{x_i} = 0 - \left( -\frac{(x_i-x_{i-1})^2}{2} \right) = \frac{(x_i-x_{i-1})^2}{2}$.
+所以
+$$ m_i \frac{(x_i-x_{i-1})^2}{2} \leq \int_{x_{i-1}}^{x_i} f'(\eta_i)(x_i-x) \,dx \leq M_i \frac{(x_i-x_{i-1})^2}{2}. $$
+代入 $nA_n$ 的表达式中, 并求和:
+$$ n \sum_{i=1}^n m_i \frac{(x_i-x_{i-1})^2}{2} \leq nA_n \leq n \sum_{i=1}^n M_i \frac{(x_i-x_{i-1})^2}{2}. $$
+注意到 $x_i - x_{i-1} = \frac{b-a}{n}$, 上式变为
+$$ n \sum_{i=1}^n m_i \frac{1}{2}\left(\frac{b-a}{n}\right)^2 \leq nA_n \leq n \sum_{i=1}^n M_i \frac{1}{2}\left(\frac{b-a}{n}\right)^2 $$
+$$ \frac{b-a}{2} \sum_{i=1}^n m_i \frac{b-a}{n} \leq nA_n \leq \frac{b-a}{2} \sum_{i=1}^n M_i \frac{b-a}{n}. $$
+其中 $\sum_{i=1}^n m_i \frac{b-a}{n}$ 和 $\sum_{i=1}^n M_i \frac{b-a}{n}$ 分别为 $f'(x)$ 在区间 $[a,b]$ 上的 Darboux 下和与上和.
+令 $n \to \infty$, 由于 $f'(x)$ 可积, Darboux 和均趋向于 $\int_a^b f'(x) \,dx$. 因此取极限知
+$$ \lim\limits_{n \to \infty} nA_n = \frac{b-a}{2} \int_a^b f'(x) \,dx = \frac{b-a}{2} [f(b)-f(a)]. $$
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{example}
+设$f(x)$在$[a,b]$上可积, $g(x) \ge 0$, $g$是以$T>0$为周期的函数, 在$[0,T]$上可积, 试证
+$$ \lim\limits_{n \to \infty} \int_{a}^{b} f(x) g(nx) dx = \frac{1}{T} \int_{0}^{T} g(x) dx \int_{a}^{b} f(x) dx. $$
+\end{example}
+
+\begin{example}[(Riemann 引理)]
+证明:若$f(x)$在$[a,b]$上可积, $g(x)$以$T$为周期, 在$[0,T]$上可积, 则
+$$ \lim\limits_{n \to \infty} \int_{a}^{b} f(x)g(nx)dx = \frac{1}{T}\int_{0}^{T} g(x)dx \int_{a}^{b} f(x)dx. $$
+\end{example}
+
+\begin{lemma}[Riemann 引理]\label{lem:riemann}
+ 证明:若$f(x)$在$[a,b]$上可积, $g(x)$以$T$为周期, 在$[0,T]$上可积, 则
+$$ \lim\limits_{n \to \infty} \int_{a}^{b} f(x)g(nx)dx = \frac{1}{T}\int_{0}^{T} g(x)dx \int_{a}^{b} f(x)dx. $$
+\end{lemma}
+
+\begin{solution}
+第一步：设 $g(x) \ge 0$. 由于 $g(x)$ 以 $T$ 为周期, 所以 $g(nx)$ 以 $\frac{T}{n}$ 为周期. 显然 $n$ 足够大时, $[a, b]$ 会含有 $g(nx)$ 的多个周期. 为了采用“子区间法”, \underline{我们需将定义域 $[a, b]$ 延拓为 $\frac{T}{n}$ 的整数倍}, 不妨设 $[a, b] = [-mT, mT] \supseteq [a, b]$, 其中 $m$ 是一个固定的正整数. 此时对每个正整数 $n$, $[A, B]$ 正好含有 $g(nx)$ 的 $2mn$ 个周期. 同时 $f(x)$ 也需要延拓为 $[A, B]$ 上的函数, 设为
+$$F(x) = \begin{cases} f(x), & x \in [a, b]; \\ 0, & x \in [A, B]/[a, b]. \end{cases}$$
+显然 $F(x)$ 在 $[A, B]$ 可积, 且对任意的正整数 $n$, 有 $\int_A^B F(x)g(nx) dx = \int_a^b f(x)g(nx) dx$.
+现将 $[A, B]$ 平均分割为 $2mn$ 份, 设为
+$$T' = \{A=x_0, x_1, \cdots, x_{2mn}=B \}.$$
+则每个小区间 $[x_{i-1}, x_i]$ 的长度 $x_i - x_{i-1}$ 均为 $g(nx)$ 的一个周期 $\frac{T}{n}$, 进而
+$$\int_{x_{i-1}}^{x_i} g(nx) dx = \int_0^{\frac{T}{n}} g(nx) dx = \frac{1}{n} \int_0^T g(x) dx \quad (i=1, 2, \cdots, 2mn).$$
+另外, 记 $M_i, m_i (i=1, 2, \cdots, 2mn)$ 分别为 $F(x)$ 在 $[x_{i-1}, x_i]$ 上的上确界与下确界. 根据假设 $g(x) \ge 0$, 由\underline{积分第一中值定理}, 存在 $\mu_i \in [m_i, M_i]$, 使得
+\begin{equation*}
+\int_A^B F(x)g(nx) dx = \sum_{i=1}^{2mn} \int_{x_{i-1}}^{x_i} F(x)g(nx) dx = \sum_{i=1}^{2mn} \eqnmarkbox[red]{node1}{\mu_i} \int_{x_{i-1}}^{x_i} g(nx) dx
+\end{equation*}
+$$= \frac{1}{n} \int_0^T g(x) dx \sum_{i=1}^{2mn} \mu_i = \frac{T}{n} \cdot \frac{1}{T} \int_0^T g(x) dx \cdot \sum_{i=1}^{2mn} \mu_i.$$
+而显然(可用上下确界去限制$F(x)$的介值$\mu_i$，再利用达布上下和去限制整个$\frac{T}{n} \sum_{i=1}^{2mn} \mu_i$)
+\begin{equation*}
+\eqnmarkbox[blue]{node1}{s(T') = \frac{T}{n} \sum_{i=1}^{2mn} m_i \le \frac{T}{n} \sum_{i=1}^{2mn} \mu_i \le \frac{T}{n} \sum_{i=1}^{2mn} M_i = S(T').}
+\end{equation*}
+其中 $s(T'), S(T')$ 分别为 $F(x)$ 关于分割 $T'$ 的积分上和与下和. 根据可积的第一充要条件可知
+$$\lim_{n \to \infty} s(T') = \lim_{n \to \infty} S(T') = \int_A^B F(x) dx = \int_a^b f(x) dx.$$
+从而由迫敛性可知 $\lim\limits_{n \to \infty} \frac{T}{n} \sum\limits_{i=1}^{2mn} \mu_i = \int_a^b f(x) dx$, 即有
+$$\lim_{n \to \infty} \int_a^b f(x)g(nx) dx = \lim_{n \to \infty} \int_A^B F(x)g(nx) dx = \frac{1}{T} \int_0^T g(x) dx \lim_{n \to \infty} \frac{T}{n} \sum_{i=1}^{2mn} \mu_i = \frac{1}{T} \int_0^T g(x) dx \int_a^b f(x) dx.$$
+第二步: 考虑一般的周期函数 $g(x)$, 此时可通过取函数的正部与负部的方法以利用第一步的结果. 记
+$$g^+(x) = \begin{cases} g(x), & g(x) \ge 0; \\ 0, & g(x) < 0. \end{cases}, \quad g^-(x) = \begin{cases} -g(x), & g(x) \le 0; \\ 0, & g(x) > 0. \end{cases}$$
+显然 $g^+(x)$ 与 $g^-(x)$ 都是以 $T$ 为周期的非负可积函数, 同时 $g(x) = g^+(x) - g^-(x)$. 因此根据第一步的结论有
+\begin{align*} \lim_{n \to \infty} \int_a^b f(x)g(nx) dx &= \lim_{n \to \infty} \int_a^b f(x)[g^+(nx) - g^-(nx)] dx \\ &= \lim_{n \to \infty} \int_a^b f(x)g^+(nx) dx - \lim_{n \to \infty} \int_a^b f(x)g^-(nx) dx \\ &= \frac{1}{T} \int_0^T g^+(x) dx \int_a^b f(x) dx - \frac{1}{T} \int_0^T g^-(x) dx \int_a^b f(x) dx \\ &= \frac{1}{T} \int_0^T [g^+(x) - g^-(x)] dx \int_a^b f(x) dx \\ &= \frac{1}{T} \int_0^T g(x) dx \int_a^b f(x) dx. \quad \end{align*}$\hfill \blacksquare $
+\end{solution}
+
+\begin{remark}
+（知乎上的一个大致解释）裴上的证明将介值的过程详细写出来了，这里只是一个助于理解的解释。
+
+先考虑 $g \ge 0$ 非负. 假设 $[a, b] \subseteq [-mT, mT]$ 且 $m$ 是最小的. 将 $f$ 在 $[a, b]$ 外作零延拓, 可以认为积分现在为 $[-mT, mT]$. 作 $2mn$ 等分, 即取分点
+$x_i = -mT + \frac{i}{n}T, 0 \le i \le 2mn$, 则
+\begin{align*} \lim_{n \to \infty} \int_{-mT}^{mT} f(x)g(nx) dx &= \lim_{n \to \infty} \sum_{i=1}^{2mn} \int_{x_{i-1}}^{x_i} f(x)g(nx) dx = \lim_{n \to \infty} \sum_{i=1}^{2mn} f(\xi_i) \int_{x_{i-1}}^{x_i} g(nx) dx \\ &= \lim_{n \to \infty} \frac{1}{n} \sum_{i=1}^{2mn} f(\xi_i) \int_0^T g(x) dx = \frac{1}{T} \int_{-mT}^{mT} f(x) dx \int_0^T g(x) dx, \end{align*}
+其中用积分中值定理时我们用了 $f(\xi_i)$ 的记号, 这在 $f$ 连续时可以使用. 但当 $f$ 仅仅可积时将其换为介于上下界之间的一个介值, 那么这也构成 Riemann 和, 于是证明对可积函数 $f$ 也是对的.
+注意到等式两侧对 $g$ 都是线性的, 将 $g$ 拆分为正负部就完成了证明. 
+\end{remark}
+
+\begin{corollary}
+设 $f(x)$ 在 $[a, b]$ 上可积, 则
+$$\lim_{n \to \infty} \int_a^b f(x) \cos nx dx = \lim_{n \to \infty} \int_a^b f(x) \sin nx dx = 0.$$
+
+另外, 也有
+$$\lim_{n \to \infty} \int_a^b f(x) \cos \left(n + \frac{1}{2}\right) x dx = \lim_{n \to \infty} \int_a^b f(x) \sin \left(n + \frac{1}{2}\right) x dx = 0.$$
+\end{corollary}
+
+上述推论为黎曼引理的直接推论，若直接证明，我们可以证明更强的两个推论：
+
+\begin{lemma}
+设 $f(x)$ 在 $[a, b]$ 上可积, 证明: $\lim\limits_{\lambda \to +\infty} \int_{a}^{b} f(x) \sin \lambda x \,dx = 0$.
+\end{lemma}
+\begin{solution}
+由于 $f(x)$ 在 $[a, b]$ 上可积, 所以有界, 不妨设正数 $M$ 满足 $|f(x)| \leq M$, $x \in [a, b]$. 对任意的 $\lambda > 0$, 记 $n = [\sqrt{\lambda}]$, 显然当 $\lambda \to +\infty$ 时, 有 $n \to +\infty$, 并且 $\lim\limits_{\lambda \to +\infty} \frac{n}{\lambda} = 0$. 将区间 $[a, b]$ 作 $n$ 等分, 记分割点为
+\begin{equation*}
+\eqnmarkbox[blue]{node1}{x_i = a + \frac{i}{n}(b-a), \quad i = 0, 1, 2, \dots, n.}
+\end{equation*}
+再记 $\omega_i$ 为 $f$ 在 $[x_{i-1}, x_i]$ 上的振幅, $\Delta x_i = x_i - x_{i-1}$, 由于 $f$ 在 $[a, b]$ 上可积, 所以
+$$\lim\limits_{n \to \infty} \sum_{i=1}^{n} \omega_i \Delta x_i = 0.$$
+同时
+\begin{align*} \int_{a}^{b} f(x) \sin \lambda x \,dx &= \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} f(x) \sin \lambda x \,dx \\ &= \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} [f(x) - f(x_i)] \sin \lambda x \,dx + \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} f(x_i) \sin \lambda x \,dx \\ &= \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} [f(x) - f(x_i)] \sin \lambda x \,dx - \sum_{i=1}^{n} \frac{1}{\lambda} f(x_i) (\cos \lambda x_i - \cos \lambda x_{i-1}). \end{align*}
+由于
+$$\left| \int_{x_{i-1}}^{x_i} [f(x) - f(x_i)] \sin \lambda x \,dx \right| \leq \int_{x_{i-1}}^{x_i} |f(x) - f(x_i)| |\sin \lambda x| \,dx \leq \int_{x_{i-1}}^{x_i} \omega_i \cdot 1 \,dx = \omega_i (x_i - x_{i-1}) = \omega_i \Delta x_i$$
+那么整个式子取绝对值放缩, 便有
+$$\left| \int_{a}^{b} f(x) \sin \lambda x \,dx \right| \leq \sum_{i=1}^{n} \omega_i \Delta x_i + \sum_{i=1}^{n} \frac{2M}{\lambda} = \sum_{i=1}^{n} \omega_i \Delta x_i + \frac{2Mn}{\lambda} \to 0 \quad (\lambda \to +\infty).$$
+这就说明 $\lim\limits_{\lambda \to +\infty} \int_{a}^{b} f(x) \sin \lambda x \,dx = 0$.
+$\hfill \blacksquare$
+\end{solution}
+
+\begin{lemma}
+设 $f(x)$ 在 $[a, b]$ 上黎曼可积, 
+$$\lim\limits_{\lambda \to +\infty} \int_{a}^{b} f(x) \cos(\lambda x) \,dx = 0.$$
+\end{lemma}
+\begin{solution}
+由于 $f(x)$ 在 $[a, b]$ 上黎曼可积, 所以有界, 不妨设正数 $M$ 满足 $|f(x)| \leq M$, $x \in [a, b]$. 对任意的 $\lambda > 0$, 记 $n = [\sqrt{\lambda}]$, 显然当 $\lambda \to +\infty$ 时, 有 $n \to +\infty$, 并且 $\lim\limits_{\lambda \to +\infty} \frac{n}{\lambda} = 0$. 将区间 $[a, b]$ 作 $n$ 等分, 记分割点为
+$$x_i = a + \frac{i}{n}(b-a), \quad i = 0, 1, 2, \dots, n.$$
+再记 $\omega_i$ 为 $f$ 在 $[x_{i-1}, x_i]$ 上的振幅, $\Delta x_i = x_i - x_{i-1}$, 由于 $f$ 在 $[a, b]$ 上可积, 所以
+$$\lim\limits_{n \to \infty} \sum_{i=1}^{n} \omega_i \Delta x_i = 0.$$
+同时
+\begin{align*} \int_{a}^{b} f(x) \cos(\lambda x) \,dx &= \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} f(x) \cos(\lambda x) \,dx \\ &= \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} [f(x) - f(x_i)] \cos(\lambda x) \,dx + \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} f(x_i) \cos(\lambda x) \,dx \\ &= \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} [f(x) - f(x_i)] \cos(\lambda x) \,dx + \sum_{i=1}^{n} \frac{1}{\lambda} f(x_i) [\sin(\lambda x_i) - \sin(\lambda x_{i-1})]. \end{align*}
+由于
+$$\left| \int_{x_{i-1}}^{x_i} [f(x) - f(x_i)] \cos \lambda x \,dx \right| \leq \int_{x_{i-1}}^{x_i} |f(x) - f(x_i)| |\cos \lambda x| \,dx \leq \int_{x_{i-1}}^{x_i} \omega_i \cdot 1 \,dx = \omega_i (x_i - x_{i-1}) = \omega_i \Delta x_i$$
+那么整个式子取绝对值放缩, 便有
+$$\left| \int_{a}^{b} f(x) \cos(\lambda x) \,dx \right| \leq \sum_{i=1}^{n} \omega_i \Delta x_i + \sum_{i=1}^{n} \frac{2M}{\lambda} = \sum_{i=1}^{n} \omega_i \Delta x_i + \frac{2Mn}{\lambda} \to 0 \quad (\lambda \to +\infty).$$
+这就说明 $\lim\limits_{\lambda \to +\infty} \int_{a}^{b} f(x) \cos(\lambda x) \,dx = 0$.
+$\hfill \blacksquare$
+\end{solution}
+
+
+
+\begin{exercise}
+设函数 $f(x)$ 在区间 $[0,1]$ 上有一阶连续导数, 且 $f(0)=f(1)$, $g(x)$ 是周期为 $1$ 的连续函数. 记 $a_n = \int_{0}^{1} f(x)g(nx)dx$, 求证: $\lim\limits_{n \to \infty} na_n = 0$.
+\end{exercise}
+\begin{proof}
+由题设可知: $G(x) = \int_0^x g(t) \,dt$ 以 $1$ 为周期, 且 $G'(x) = g(x)$ 连续.
+
+\begin{align*} na_n &= \int_0^1 f(x) g(nx) \,d(nx) = \int_0^1 f(x) \,dG(nx) \\ &= f(x)G(nx) \Big|_0^1 - \int_0^1 f'(x)G(nx) \,dx \\ &= -\int_0^1 f'(x)G(nx) \,dx. \end{align*}
+(上述步骤中, $f(x)G(nx) \Big|_0^1 = f(1)G(n) - f(0)G(0)$. 由于 $G(x)$ 是以 $1$ 为周期的函数, $G(n) = G(n \cdot 1) = G(0)$. 又 $G(0) = \int_0^0 g(t) \,dt = 0$. 所以 $f(1)G(n) - f(0)G(0) = f(1) \cdot 0 - f(0) \cdot 0 = 0$.)
+
+再利用 Riemann 引理, 当 $n \to \infty$ 时,
+$$ \int_0^1 f'(x)G(nx) \,dx \to \left( \int_0^1 G(x) \,dx \right) \cdot \left( \int_0^1 f'(x) \,dx \right) = \left( \int_0^1 G(x) \,dx \right) \cdot [f(1)-f(0)] = 0. \hfill \blacksquare $$
+
+\end{proof}
+
+\begin{example}[（难难）]
+设$f(x)$在$[a,b]$上可积, 在$[a,b]$外保持有界. 试证: 函数$f(x)$具有积分连续性, 即
+$$ \lim\limits_{h \to 0} \int_{a}^{b} |f(x+h)-f(x)|dx = 0. $$
+\end{example}
+\begin{proof}
+
+\begin{remark}
+问题在于证明: $\forall \varepsilon > 0, \exists \delta > 0$, 当 $|h| < \delta$ 时, 有
+$$ \int_a^b |f(x+h) - f(x)| \,dx < \varepsilon. $$
+\end{remark}
+为了利用可积性, 将 $[a,b]$ 作一分割, 例如令 $x_i = a + i \frac{b-a}{n}$, 将其 $n$ 等分, 这时小区间长度为 $\Delta x_i = \frac{b-a}{n}$.
+$$ \int_a^b |f(x+h) - f(x)| \,dx = \sum_{i=1}^n \int_{x_{i-1}}^{x_i} |f(x+h) - f(x)| \,dx. $$
+若令 $|h| < \frac{b-a}{n}$ (i.e., $|h| < \Delta x_i$), 则点 $(x+h)$ 对于 $x \in [x_{i-1}, x_i]$:
+\begin{itemize}
+    \item 要么 $x+h$ 仍位于 $x$ 所在的第 $i$ 个小区间 $[x_{i-1}, x_i]$ (或由于 $f(x)$ 定义域的延拓, 考虑包含 $x$ 和 $x+h$ 的某个区间上的振幅), 此时 $|f(x+h)-f(x)| \leq \omega_i$ (其中 $\omega_i = \sup_{u,v \in [x_{i-1},x_i]} |f(u)-f(v)|$ 为 $f$ 在第 $i$ 个小区间上的振幅).
+    \item 要么 $x+h$ 在相邻的一个区间上. 例如, 当 $h>0$ 且 $x \in [x_{i-1}, x_i]$ 时, $x+h$ 可能在 $[x_i, x_{i+1}]$. 此时,
+    $$ |f(x+h)-f(x)| \leq |f(x+h)-f(x_i)| + |f(x_i)-f(x)| \leq \omega_{i+1} + \omega_i. $$
+    （这里 $\omega_{i+1}$ 是 $[x_i, x_{i+1}]$ 上的振幅.）
+    当 $h<0$ 且 $x \in [x_{i-1}, x_i]$ 时, $x+h$ 可能在 $[x_{i-2}, x_{i-1}]$. 此时,
+    $$ |f(x+h)-f(x)| \leq |f(x+h)-f(x_{i-1})| + |f(x_{i-1})-f(x)| \leq \omega_{i-1} + \omega_i. $$
+    （这里 $\omega_{i-1}$ 是 $[x_{i-2}, x_{i-1}]$ 上的振幅.）
+\end{itemize}
+可以给出一个更概括的界: 总之有 $|f(x+h)-f(x)| \leq \omega_{i-1} + \omega_i + \omega_{i+1}$.
+(这个界适用于 $x$ 在第 $i$ 个区间, $x+h$ 在第 $i-1, i,$ 或 $i+1$ 个区间的情况. 对于端点区间 $i=1$ 或 $i=n$, 将 $\omega_0$ 或 $\omega_{n+1}$ 对应的振幅项看作与 $M$ 相关的值, 其中 $M$ 是 $f(x)$ 的一个界, $|f(x)| \leq M$ $\forall x$. 这通常意味着在 $[a,b]$ 外部的区域, $f(x+h)-f(x)$ 最多为 $2M$.)
+
+于是, 给出如下估计:
+$$ \sum_{i=1}^n \int_{x_{i-1}}^{x_i} |f(x+h)-f(x)| \,dx \leq 3 \sum_{i=1}^n \omega_i \Delta x_i + 2M \frac{b-a}{n}. $$
+(此处的 $3 \sum \omega_i \Delta x_i$ 是对主要部分的估计, $2M \frac{b-a}{n}$ 用于处理边界或 $x+h$ 落在 $[a,b]$ 外的情况, 或者是对上述 $\omega_{i-1}+\omega_i+\omega_{i+1}$ 求和并处理边界项后的简化结果. $\Delta x_i = \frac{b-a}{n}$ 已代入.)
+
+由于 $f$ 在 $[a,b]$ 上可积, $\forall \varepsilon' > 0$, 可以选择 $n$ 取得足够大, 使得 $\sum_{i=1}^n \omega_i \Delta x_i < \varepsilon'$.
+具体地, 给定 $\varepsilon > 0$, 选择 $n$ 使得
+$$ \sum_{i=1}^n \omega_i \Delta x_i < \frac{\varepsilon}{6} \quad \text{及} \quad 2M \frac{b-a}{n} < \frac{\varepsilon}{2}. $$
+(第一个条件保证 $3 \sum_{i=1}^n \omega_i \Delta x_i < 3 \cdot \frac{\varepsilon}{6} = \frac{\varepsilon}{2}$.)
+然后, 取 $\delta < \frac{b-a}{n}$. 则当 $|h| < \delta$ 时 (保证了之前的 $|h| < \Delta x_i$), 便恒有
+$$ 0 \leq \int_a^b |f(x+h)-f(x)| \,dx \leq 3 \sum_{i=1}^n \omega_i \Delta x_i + 2M \frac{b-a}{n} < \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon. $$
+因此, $\lim\limits_{h \to 0} \int_a^b |f(x+h) - f(x)| \,dx = 0$.
+$\hfill \blacksquare$
+\end{proof}
+
+\subsubsection*{积分极限的洛必达法则}
+\begin{example}[$\bigstar$]\label{eg:4.1.12}
+设$f(x)$在$[A,B]$上连续, $A<a<b<B$. 试证:
+$$ \lim\limits_{h \to 0} \int_{a}^{b} \frac{f(x+h)-f(x)}{h} dx = f(b)-f(a). $$
+\end{example}
+
+\begin{proof}
+\begin{align*} \lim\limits_{h \to 0} \int_a^b \frac{f(x+h)-f(x)}{h} \,dx &= \lim\limits_{h \to 0} \frac{1}{h} \left[ \int_a^b f(x+h) \,dx - \int_a^b f(x) \,dx \right] \\ &= \lim\limits_{h \to 0} \frac{1}{h} \left[ \int_{a+h}^{b+h} f(t) \,dt - \int_a^b f(x) \,dx \right]. \end{align*}
+
+这是一个 $\frac{0}{0}$ 型的极限, 可以使用 L'Hospital 法则.
+根据 Leibniz 积分法则, $\frac{d}{dh} \left( \int_{a+h}^{b+h} f(t) \,dt \right) = f(b+h) \cdot \frac{d(b+h)}{dh} - f(a+h) \cdot \frac{d(a+h)}{dh} = f(b+h) - f(a+h)$.
+$\frac{d}{dh} \left( \int_a^b f(x) \,dx \right) = 0$.
+因此, 原极限可变为
+$$  \lim\limits_{h \to 0} [f(b+h)-f(a+h)]. $$
+由于 $f(x)$ 在 $[A,B]$ 上连续, 且 $A<a<b<B$, 当 $h$ 足够小时, $a+h$ 和 $b+h$ 均在 $[A,B]$ 内, 故
+$$ \lim\limits_{h \to 0} [f(b+h)-f(a+h)] = f(b)-f(a). $$ $\hfill \blacksquare$
+\end{proof}
+
+\begin{exercise}[$\bigstar$]
+已知 $f(x)$ 在 $x=0$ 处连续可导, 且 $f(0)=0, f'(0)=5$, 求极限 $\lim\limits_{x \to 0} \frac{1}{x} \int_{0}^{x} f(xt) dt$.
+\end{exercise}
+
+\begin{solution}[解 I]
+\begin{align*} \lim\limits_{x \to 0} \frac{1}{x} \int_0^1 f(xt) \,dt &\xrightarrow{\text{令 } u=xt} \lim\limits_{x \to 0} \frac{\int_0^x f(u) \,du}{x^2} \xrightarrow{\text{L'Hospital法则}} \lim\limits_{x \to 0} \frac{f(x)}{2x} \\ &= \frac{1}{2} \lim\limits_{x \to 0} \frac{f(x)-f(0)}{x} \quad = \frac{1}{2} f'(0) = \frac{5}{2}. \end{align*}
+\end{solution}
+
+\begin{solution}[解 II]
+对 $f(x)$ 应用 Taylor 公式, 在 $x=0$ 处展开:
+$$ f(xt) = f(0) + f'(0)xt + o(xt) = 5xt + o(xt) . $$
+因此
+$$ \lim\limits_{x \to 0} \frac{1}{x} \int_0^1 f(xt) \,dt = \lim\limits_{x \to 0} \frac{1}{x} \int_0^1 [5xt + o(xt)] \,dt = \frac{5}{2}. $$
+\end{solution}
+\begin{remark}
+\begin{enumerate}
+    \item[1)] 为什么说 $\lim\limits_{x \to 0} \frac{1}{x} \int_0^1 o(xt) \,dt = 0$? 因为 $f$ 连续 $f(u)=5u+o(u)$, 因此余项 $o(u) = f(u)-5u$ 也连续, 故 $\left(\int_0^x o(u) \,du\right)' = o(x)$. 于是 $\lim\limits_{x \to 0} \frac{1}{x^2} \int_0^x o(u) \,du \xrightarrow{\text{令 } u=xt} \lim\limits_{x \to 0} \frac{1}{x^2} \int_0^1 o(u) \,du \xrightarrow{\text{L'Hospital法则}} \lim\limits_{x \to 0} \frac{o(x)}{2x} = 0$.
+
+    \item[2)] 也可用 $\varepsilon-\delta$ 方法证明. 因 $\lim\limits_{u \to 0^+} \frac{o(u)}{u} = 0$, 对于 $0<u \leq x$, $\forall \varepsilon > 0, \exists \delta > 0$, 当 $0 < x < \delta$ 时, 有 $\left|\frac{o(u)}{u}\right| < \varepsilon$. 因此
+    $$ \left| \frac{1}{x^2} \int_0^x o(xt) \,dt \right| \xrightarrow{\text{令 } u=xt} \left| \frac{1}{x^2} \int_0^x o(u) \,du \right| \leq \frac{1}{x^2} \int_0^x \left| \frac{o(u)}{u} \right| |u| \,du < \frac{1}{x^2} \int_0^x \varepsilon |u| \,du = \frac{\varepsilon}{x^2} \int_0^x u \,du = \frac{\varepsilon}{2}. $$既然对于任意 $\varepsilon > 0$, 表达式的绝对值可以小于 $\frac{\varepsilon}{2}$ (从而小于任何给定的正数), 那么极限为 $0$.
+\end{enumerate}
+\end{remark}
+
+
+\begin{example}[(难难)]
+设$f(x)$在$[a,b]$上\underline{非负、连续、严格递增}. 由积分中值定理, $\forall n \in \mathbb{N}, \exists x_n \in [a,b]$, 使得
+$$ f^n(x_n) = \frac{1}{b-a} \int_{a}^{b} f^n(x) dx. $$
+求极限 $\lim\limits_{n \to \infty} x_n$ (注意这里$f^n$是$f$的$n$次幂).
+\end{example}
+
+\begin{solution}
+分析 首先, \underline{通过变换可把 $[a,b]$ 上的问题化为 $[0,1]$ 上类似的问题}. 
+
+令 $x = a + t(b-a), x_n = a + t_n(b-a), F(t) = f[a+t(b-a)]$, 则 $F(t) \ge 0$ 严 $\nearrow (t \in [0,1])$, 且 $F^n(t_n) = \int_0^1 F^n(t) dt$. 只要求出了 $\lim\limits_{n \to \infty} t_n$, 则 $\lim\limits_{n \to \infty} x_n = a + (b-a) \lim\limits_{n \to \infty} t_n$.
+
+为了\underline{猜测极限} $\lim\limits_{n \to \infty} t_n$ 的值, 考虑 $F(t) = t$ 的情况. 此时
+$$ F^n(t_n) = t_n^n = \int_0^1 t^n dt = \frac{1}{n+1}, $$
+$$ t_n = \sqrt[n]{\frac{1}{n+1}} \to 1 \quad (\text{当 } n \to \infty \text{ 时}). $$
+因此, 我们希望能证明, 在一般情况下仍有 $\lim\limits_{n \to \infty} t_n = 1$. \underline{由于 $t_n \in [0,1]$}, 为此只要证明:
+$\forall \varepsilon > 0$, 当 $n$ 充分大时, 有 $1-\varepsilon < t_n$. 注意 $F(t) \ge 0$ 严 $\nearrow$, 这等价于
+$$ F^n(1-\varepsilon) < F^n(t_n) = \int_0^1 F^n(t) dt. \quad (1) $$
+此式解不出 $n$, 我们设法将式 (1) 右端进行化简和缩小, 只要使缩小后的量大于式 (1) 左端的 $F^n(1-\varepsilon)$, 则式 (1) 自然成立. 任取 $\xi \in (0,1)$, 有
+$$ \int_0^1 F^n(t) dt \ge \int_\xi^1 F^n(t) dt \ge F^n(\xi) \cdot (1-\xi). $$
+故要式 (1) 成立, 只要使
+\begin{equation*}
+    \eqnmarkbox[blue]{node1}{F^n(\xi) \cdot (1-\xi) > F^n(1-\varepsilon)}, \quad (2) 
+\end{equation*}
+(找一个中间值去证明不等式)亦即
+$$ \left[ \frac{F(1-\varepsilon)}{F(\xi)} \right]^n < 1-\xi. \quad (3) $$
+因 $0 \le F(x)$ 严 $\nearrow$, 取 $\xi = 1 - \frac{\varepsilon}{2} > 1-\varepsilon$, 则 $0 < \frac{F(1-\varepsilon)}{F(\xi)} < 1$,
+$$ \lim\limits_{n \to \infty} \left[ \frac{F(1-\varepsilon)}{F(\xi)} \right]^n = 0. $$
+故 $n$ 充分大时式 (3) 成立. 故有式 (1) 成立, 等价地有 $1-\varepsilon < t_n \le 1$, 这就证明了 $\lim\limits_{n \to \infty} t_n = 1$, 从而 $\lim\limits_{n \to \infty} x_n = b$. $\hfill \blacksquare$
+\end{solution}
+
+\begin{remark}
+    我们对变量代换部分进行说明：
+
+    给定的变换是：
+    \begin{enumerate}
+        \item $x = a + t(b-a)$;
+        \item $x_n = a + t_n(b-a)$;
+        \item $F(t) = f[a+t(b-a)]$.
+    \end{enumerate}
+
+    我们还知道 $f(x)$ 在 $[a,b]$ 上非负、连续、严格递增。
+
+    \begin{enumerate}
+        \item   定义域变换:
+
+                    当 $t=0$ 时，$x = a + 0(b-a) = a$。
+                    当 $t=1$ 时，$x = a + 1(b-a) = b$。
+                    由于 $t$ 在 $[0,1]$ 之间线性变化，所以 $x = a+t(b-a)$ 会将区间 $[0,1]$ 映射到区间 $[a,b]$。
+
+        \item   为什么 $F^n(t_n) = \int_0^1 F^n(t) dt$？
+
+        原始的方程是：
+        $$f^n(x_n) = \frac{1}{b-a} \int_a^b f^n(x) dx$$
+        我们进行变量代换 $x = a + t(b-a)$。
+        有 $dx = d(a+t(b-a)) = (b-a)dt$。
+
+        那么代入，并改变积分上下限有：
+        $$\int_a^b f^n(x) dx = \int_0^1 f^n(a+t(b-a)) (b-a) dt$$
+        根据 $F(t)$ 的定义，$F(t) = f(a+t(b-a))$，所以 $F^n(t) = f^n(a+t(b-a))$。
+        于是积分变为：
+        $$\int_a^b f^n(x) dx = \int_0^1 F^n(t) (b-a) dt = (b-a) \int_0^1 F^n(t) dt$$
+        将这个结果代回原始方程：
+        $$f^n(x_n) = \frac{1}{b-a} \left( (b-a) \int_0^1 F^n(t) dt \right)$$
+        $$f^n(x_n) = \int_0^1 F^n(t) dt$$
+        现在看等式的左边。我们有 $x_n = a + t_n(b-a)$。
+        所以 $f(x_n) = f(a+t_n(b-a))$。
+        根据 $F(t)$ 的定义，令 $t=t_n$，我们得到 $F(t_n) = f(a+t_n(b-a))$。
+        因此，$f^n(x_n) = (f(a+t_n(b-a)))^n = (F(t_n))^n = F^n(t_n)$。
+        所以，最终我们得到：
+        $$F^n(t_n) = \int_0^1 F^n(t) dt$$
+    \end{enumerate}
+\end{remark}
+
+\subsection{单元练习1}
+\begin{problem}[$\bigstar$]
+设 $f(x)$ 在 $[0,1]$ 上连续, 且 $f(x) > 0$, 求极限
+$$ \lim_{n \to \infty} \sqrt[n]{f\left(\frac{1}{n}\right)f\left(\frac{2}{n}\right)\cdots f\left(\frac{n-1}{n}\right)f(1)}. $$
+\end{problem}
+
+\begin{solution}
+取对数有 $\frac{1}{n} \sum_{i=1}^{n} \ln f\left(\frac{i}{n}\right) = \int_{0}^{1} \ln f(x) \mathrm{d}x$ (选取右端点为标志点)
+区间 $\Delta_i = \left[\frac{i-1}{n}, \frac{i}{n}\right]$, $i=1, \cdots, n$, $\xi_i = \frac{i}{n}$
+故原极限 $= e^{\int_{0}^{1} \ln f(x) \mathrm{d}x}$
+$\hfill \blacksquare$
+\end{solution}
+
+
+\begin{problem}[$\bigstar$]
+考虑积分 $\int_{0}^{x} (1-x)^n \mathrm{d}x$, 证明:
+$$ C_n^0 - \frac{1}{2}C_n^1 + \frac{1}{3}C_n^2 - \cdots + \frac{(-1)^n}{n+1}C_n^n = \frac{1}{n+1}. $$
+\end{problem}
+
+\begin{proof}
+证明: 注意到 $\int_{0}^{1} (1-x)^n \mathrm{d}x = \frac{1}{n+1}$
+$$(1-x)^n = C_n^0 1^n (-x)^0 + C_n^1 1^{n-1} (-x)^1 + C_n^2 1^{n-2} (-x)^2 + \cdots + C_n^n 1^0 (-x)^n$$
+
+即$$(1-x)^n = C_n^0 - C_n^1 x + C_n^2 x^2 + \cdots + (-1)^n C_n^n x^n$$
+两边对 $x$ 从 $0$ 积分到 $1$ 有 $$\frac{1}{n+1} = C_n^0 - \frac{1}{2}C_n^1 + \frac{1}{3}C_n^2 + \cdots + \frac{(-1)^n}{n+1}C_n^n$$
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{problem}[$\bigstar$]
+设 $f(x)$ 在 $[0,1]$ 上可微, 且对任意 $x \in (0,1)$ 有 $|f'(x)| \le M$. 求证: 对任意正整数 $n$, 有
+$$ \left| \int_{0}^{1} f(x) \mathrm{d}x - \frac{1}{n} \sum_{i=1}^{n} f\left(\frac{i}{n}\right) \right| \le \frac{M}{n}, $$
+其中 $M$ 是一个与 $x$ 无关的常数. (南开大学)
+\end{problem}
+
+\begin{proof}
+对区间 $[0,1]$, $\Delta_i = \left[\frac{i-1}{n}, \frac{i}{n}\right]$, $i=1,2,\cdots,n$. 不妨设 $x_{i-1} = \frac{i-1}{n}$, $x_i = \frac{i}{n}$.
+$$\int_{0}^{1} f(x) \mathrm{d}x = \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} f(x) \mathrm{d}x = \sum_{i=1}^{n} f(\xi_i) (x_i - x_{i-1}) = \frac{1}{n} \sum_{i=1}^{n} f(\xi_i), \quad \xi_i \in \left(\frac{i-1}{n},  \frac{i}{n}\right)$$.
+那么 $$\left| \int_{0}^{1} f(x) \mathrm{d}x - \frac{1}{n} \sum_{i=1}^{n} f\left(\frac{i}{n}\right) \right| = \left| \frac{1}{n} \sum_{i=1}^{n} f(\xi_i) - \frac{1}{n} \sum_{i=1}^{n} f\left(\frac{i}{n}\right) \right| = \frac{1}{n} \left| \sum_{i=1}^{n} \left(f(\xi_i) - f\left(\frac{i}{n}\right)\right) \right|$$
+$$\le \frac{1}{n} \sum_{i=1}^{n} \left| f(\xi_i) - f\left(\frac{i}{n}\right) \right| = \frac{1}{n} \sum_{i=1}^{n} \left| f'(\eta_i) \left(\xi_i - \frac{i}{n}\right) \right| \le \frac{M}{n} \sum_{i=1}^{n} \left|\xi_i - \frac{i}{n}\right|$$
+而由于 $\xi_i \in \left(\frac{i-1}{n}, \frac{i}{n}\right)$. 故 $$\sum_{i=1}^{n} \left|\xi_i - \frac{i}{n}\right| \le \sum_{i=1}^{n} \frac{1}{n} = 1.$$ 故综上, 原式成立.
+$\hfill \blacksquare$
+\end{proof}
+
+
+\begin{problem}
+若 $f(x)$ 在 $[a,b]$ 上可积, $g(x)$ 是以 $T$ 为周期的函数, 且在 $[0,T]$ 上可积. 试证:
+$$ \lim_{\lambda \to +\infty} \int_{a}^{b} f(x) g(\lambda x) \mathrm{d}x = \frac{1}{T} \int_{0}^{T} g(x) \mathrm{d}x \int_{a}^{b} f(x) \mathrm{d}x. $$
+\end{problem}
+
+\begin{proof}
+    黎曼引理推广。
+\end{proof}
+
+\begin{problem}
+设 $s(x) = x - [x] - 2[2x] + 1$, 其中 $[x]$ 代表数 $x$ 的整数部分 (即不超过 $x$ 的整数之最大值), $n$ 代表自然数. $f(x)$ 在 $[0,1]$ 上可积. 证明 $\lim\limits_{n \to \infty} \int_{0}^{1} f(x)s(nx) \mathrm{d}x = 0$. (兰州大学)
+\end{problem}
+
+\begin{proof}
+证明:
+$$S(x+1) = 4[x+1] - 2[2(x+1)] + 1
+= 4([x]+1) - 2([2x+2]) + 1
+= 4[x]+4 - 2([2x]+2) + 1
+= 4[x] - 2[2x] + 1$$
+即 $S(x) = S(x+1)$, 即 $S(x)$ 以 $1$ 为周期, 且 $\int_{0}^{1} S(x) \mathrm{d}x = 0$
+故满足 Riemann 引理条件
+则 $\lim\limits_{n \to \infty} \int_{0}^{1} f(x) S(nx) \mathrm{d}x = \int_{0}^{1} S(x) \mathrm{d}x \int_{0}^{1} f(x) \mathrm{d}x = 0$
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{problem}
+设 $f_0(x)$ 在 $[0,1]$ 上可积, $f_n(x) > 0, f_n(x) = \sqrt[n]{\int_{0}^{x} f_{n-1}(t) \mathrm{d}t}, n=1,2,\cdots$.
+
+1) 若 $f_0(x)$ 在 $[0,1]$ 上最大值为 $M$, 试证:
+$$ f_n(x) \le M^{\frac{1}{n}} a_n x^{\frac{n-1}{n}}, \quad n=1,2,\cdots, $$
+其中 $a_n = \prod_{k=1}^{n-2} \left( \frac{2^k}{2^k-1} \right)^{\frac{1}{2^{n-1-k}}}$;
+
+2) 若记 $f_0(x)$ 在 $[\delta, 1]$ 上的最小值为 $m > 0$ ($0 < \delta < 1$ 任意给定), 试证:
+$$ m^{\frac{1}{2^{n-1}}} a_n (x-\delta)^{\frac{1}{2^{n-1}}} \le f_n(x) \le M^{\frac{1}{2^{n-1}}} a_n x^{\frac{1}{2^{n-1}}}, \quad n=1,2,\cdots. $$
+
+3) 已知 $\lim\limits_{n \to \infty} \sum_{k=1}^{n-2} \frac{1}{2^{n-1-k}} \left[ \ln\left(1+\frac{1}{2^{k+1}-1}\right) \right] = 0$ (见例 5.1.57 及其练习), 试证: $\lim\limits_{n \to \infty} f_n(x) = \frac{x}{2}$.
+\end{problem}
+
+\begin{problem}[$\bigstar$]
+设 $f(x), g(x)$ 在 $[a,b]$ 上连续, $f(x) > 0, g(x) > 0$, 求 $\lim\limits_{p \to \infty} \left( \int_{a}^{b} g(x) f^p(x) \mathrm{d}x \right)^{\frac{1}{p^2}}$.
+\end{problem}
+
+\begin{proof}
+解: 设 $f(x)$ 在 $[a,b]$ 连续, 则存在最大值和最小值, 令 $M = \max_{x \in [a,b]} f(x)$, $m = \min_{x \in [a,b]} f(x)$.
+那么 $$m^{\frac{1}{p}} \left( \int_{a}^{b} g(x) \mathrm{d}x \right)^{\frac{1}{p}} \le \left( \int_{a}^{b} g(x) f^p(x) \mathrm{d}x \right)^{\frac{1}{p}} \le M^{\frac{1}{p}} \left( \int_{a}^{b} g(x) \mathrm{d}x \right)^{\frac{1}{p}}$$
+令 $p \to \infty$. 显然极限为 $1$. 
+$\hfill \blacksquare$
+\end{proof}
+
+
+\begin{problem}\label{pro:4.1.8}
+设 $f(x)$ 在 $[a,b]$ 上二次可微, 且 $f''(x)$ 在 $[a,b]$ 上可积, 记
+$$ B_n = \int_{a}^{b} f(x) \mathrm{d}x - \frac{b-a}{n} \sum_{i=1}^{n} f\left[a+(2i-1)\frac{b-a}{2n}\right]. $$
+试证:
+$$ \lim_{n \to \infty} n^2 B_n = \frac{(b-a)^2}{24} [f'(b) - f'(a)]. $$
+\end{problem}
+\begin{proof}
+    与例\ref{eg:4.1.8}类似, 但这里 $f(x)$ 是二次可微的, 因此需利用Taylor公式。
+
+    提示 跟例4.1.8不同的是: 将区间 $[a,b]$ $n$ 等分, 则小区间 $[x_{i-1}, x_i]$ 的端点为 $x_i = a+i\frac{b-a}{n}$, 中点为 $\eta_i = a+(2i-1)\frac{b-a}{2n}$. 题中的
+    $$ B_n = \int_{a}^{b} f(x) \mathrm{d}x - \frac{b-a}{n} \sum_{i=1}^{n} f(\eta_i), \quad (1) $$
+    积分
+    $$ \int_{a}^{b} f(x) \mathrm{d}x = \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} f(x) \mathrm{d}x. \quad (2) $$
+    将 $f(x)$ 在 $\eta_i$ 点按 Taylor 公式展开:
+    $$ f(x) = f(\eta_i) + f'(\eta_i)(x-\eta_i) + f''(\xi_i) \frac{(x-\eta_i)^2}{2} \quad (3) $$
+    再提示 $$n^2 B_n \stackrel{式(1),(2)}{=} n^2 \left( \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} f(x) \mathrm{d}x - \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} f(\eta_i) \mathrm{d}x \right)$$
+    \begin{equation*}
+    = n^2 \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} [\eqnmarkbox[blue]{node1}{f(x) - f(\eta_i)}] \mathrm{d}x\stackrel{式(3)}{=} n^2 \sum_{i=1}^{n} \int_{x_{i-1}}^{x_i} \left[ \eqnmarkbox[blue]{node1}{f'(\eta_i)(x-\eta_i) + f''(\xi_i)\frac{(x-\eta_i)^2}{2} }\right] \mathrm{d}x, 
+    \end{equation*}
+    其中第一个积分
+    $$ \int_{x_{i-1}}^{x_i} f'(\eta_i)(x-\eta_i) \mathrm{d}x = f'(\eta_i) \int_{x_{i-1}}^{x_i} (x-\eta_i) \mathrm{d}x = 0, $$
+    第二个积分
+    $$ \int_{x_{i-1}}^{x_i} f''(\xi_i) \frac{(x-\eta_i)^2}{2} \mathrm{d}x = f''(\xi_i) \int_{x_{i-1}}^{x_i} \frac{(x-\eta_i)^2}{2} \mathrm{d}x = \frac{1}{2} f''(\xi_i) \left. \frac{1}{3}(x-\eta_i)^3 \right|_{x_{i-1}}^{x_i} $$
+    $$ = \frac{f''(\xi_i)}{24n^3} (b-a)^3. $$
+    所以
+    $$ n^2 B_n = \frac{(b-a)^2}{24} \sum_{i=1}^{n} f''(\xi_i) \frac{b-a}{n} \xrightarrow{n \to \infty} \frac{(b-a)^2}{24} \int_{a}^{b} f''(x) \mathrm{d}x $$
+    $$ = \frac{(b-a)^2}{24} [f'(b)-f'(a)].     \hfill \blacksquare$$
+
+
+\end{proof}
+
+\begin{problem}
+设
+$$ A_n = \frac{1}{n+1} + \frac{1}{n+2} + \cdots + \frac{1}{2n}, \quad B_n = \frac{2}{2n+1} + \frac{2}{2n+3} + \cdots + \frac{2}{4n-1}. $$
+试证:
+$$ \lim_{n \to \infty} n(\ln 2 - A_n) = \frac{1}{4}, \quad \lim_{n \to \infty} n^2(\ln 2 - B_n) = \frac{1}{32}. $$
+\end{problem}
+\begin{proof}
+    为例\ref{eg:4.1.8}和练习\ref{pro:4.1.8}的直接应用.
+\end{proof}
+
+\begin{problem}
+设 $f(x)$ 在 $[a,b]$ 上可积, 记 $f_{in} = f\left(a+i\frac{b-a}{n}\right)$. 试利用不等式
+$$ |\ln(1+x)-x| \le 2x^2 \quad \left(\text{当 } |x| < \frac{1}{2} \text{ 时}\right) $$
+证明:
+$$ \lim_{n \to \infty} \left(1+f_{1n}\frac{b-a}{n}\right)\left(1+f_{2n}\frac{b-a}{n}\right)\cdots\left(1+f_{nn}\frac{b-a}{n}\right) = e^{\int_{a}^{b} f(x) \mathrm{d}x}. $$
+\end{problem}
+
+\begin{problem}[$\bigstar$]
+设 $f(x)$ 是在 $[-1,1]$ 上可积, 在 $x=0$ 处连续的函数. 记
+$$ \varphi_n(x) = \begin{cases} (1-x)^n, & 0 \le x \le 1, \\ e^{nx}, & -1 \le x \le 0, \end{cases} $$
+证明: $\lim\limits_{n \to \infty} \frac{n}{2} \int_{-1}^{1} f(x) \varphi_n(x) \mathrm{d}x = f(0)$. 
+\end{problem}
+
+\begin{proof}
+证 因为 $\lim\limits_{x \to 0_+} \varphi_n(0) = 1 = \lim\limits_{x \to 0_-} \varphi_n(x) = \varphi_n(x)$, 故 $\varphi_n(x) \in C_{[-1,1]}, f(x)\varphi_n(x)$在$[-1,1]$上必可积.
+\begin{equation*}
+\frac{n}{2}\int_{-1}^{1} f(x)\varphi_n(x)dx - f(0) = \eqnmarkbox[blue]{node1}{\frac{n}{2}\int_{-1}^{0} f(x)e^{nx}dx - \frac{n}{2}\int_{-1}^{0} f(0)e^{nx}dx - \frac{1}{2}f(0)e^{-n} }
+\end{equation*}
+\begin{equation*}
+\eqnmarkbox[blue]{node1}{+ \frac{n}{2}\int_{0}^{1} f(x)(1-x)^n dx - \frac{n+1}{2}\int_{0}^{1} f(0)(1-x)^n dx}
+\end{equation*}
+对于 $\frac{n}{2}\int_{-1}^{0} [f(x)-f(0)]e^{nx}dx, \forall \varepsilon > 0$, 存在 $\delta > 0$, 使 $x \in (-\delta, 0]$时, 有
+$$|f(x)-f(0)| < \varepsilon$$
+则
+$$\left| \frac{n}{2}\int_{-1}^{0} [f(x)-f(0)]e^{nx}dx \right| \le \frac{n}{2}\int_{-1}^{-\delta} |f(x)-f(0)|e^{nx}dx + \frac{n}{2}\int_{-\delta}^{0} \varepsilon e^{nx}dx \le M(e^{-n\delta} - e^{-n}) + \frac{\varepsilon}{2}(1-e^{-n\delta})$$
+其中 $|f(x)| \le M, \forall x \in [-1,1]$, 所以
+$$\lim\limits_{n \to \infty} \frac{n}{2}\int_{-1}^{0} [f(x)-f(0)]e^{nx}dx = 0$$
+同理可证
+$$\lim\limits_{n \to \infty} \frac{n}{2}\int_{0}^{1} [f(x)-f(0)](1-x)^n dx = 0.$$
+又
+$$\lim\limits_{n \to \infty} \frac{1}{2}f(0)e^{-n} = 0, \quad \lim\limits_{n \to \infty} \frac{1}{2}\int_{0}^{1}f(0)(1-x)^n dx = 0$$
+故
+$$\lim\limits_{n \to \infty} \frac{n}{2}\int_{-1}^{1} f(x)\varphi_n(x)dx = f(0).\hfill \blacksquare$$
+\end{proof}
+
+\end{document}
