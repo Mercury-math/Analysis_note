@@ -1,0 +1,67 @@
+\chapter{计算技巧}
+\section{有理函数积分}
+有理函数积分是指对形如 $\frac{R(x)}{P(x)}$ 的函数积分.通常分为如下三个步骤：
+有理函数拆分、求待定系数、积分.
+\vspace{-1em}
+\subsubsection*{有理函数拆分}
+
+\begin{enumerate}
+    \item 确保有理函数是真分式.如果有理函数不是真分式,需要先把它拆分成多项式和真分式之和.假设$\frac{R(x)}{P(x)}=R_1(x)+\frac{r(x)}{P(x)}$,其中$r(x)$也是$x$的多项式函数,$\frac{r(x)}{P(x)}$为真分式.然后继续对$\frac{r(x)}{P(x)}$进行拆分.
+    \item 在实数范围内分母因式分解彻底,设为$\frac{r(x)}{P(x)}=\frac{r(x)}{(x-A)^p(x^2+Mx+N)^q}$.
+    \item 拆分$\frac{r(x)}{(x-A)^p(x^2+Mx+N)^q}  = \frac{a_1}{x-A} + \frac{a_2}{(x-A)^2} + \cdots + \frac{a_p}{(x-A)^p} + \frac{b_1x+c_1}{x^2+Mx+N} + \cdots + \frac{b_qx+c_q}{(x^2+Mx+N)^q} $
+\end{enumerate}
+
+\begin{note}
+    这边的拆分方式和我们刚开始学的方法不同，例如 按这种拆分方式为$\frac{3x^2 +1}{x(x+1)^2} = \frac a x + \frac{b}{x+1} + \frac{c}{(x+1)^2}$,而按我们学的拆分法应拆为$\frac{3x^2 +1}{x(x+1)^2} = \frac a x + \frac{bx+c}{(x+1)^2}$,但本质是相同的.
+    之后均采用这种拆分方式，它在计算系数和处理积分的时候更方便.
+\end{note}
+\vspace{-1em}
+\subsubsection*{求待定系数}
+主要有以下几个方法：
+\begin{enumerate}
+    \item \textbf{构造方程组法.}通分,化简,相同次幂的系数相同,构造方程组,解出待定系数.
+    \item \textbf{留数法.}等式两边同时乘以某个因子,再令该因子为零,解出待定系数.
+    \item \textbf{极限法.}如果已经求得几个待定系数,可以用对$x$取极限的方法求得剩余待定系数.
+    \item \textbf{特殊值法.}如果已经求得几个待定系数,可以用对$x$取特殊值的方法求得剩余待定系数.
+\end{enumerate}
+
+\begin{remark}
+    第一种方法就是通分求待定系数，过程往往较为繁琐,我们通常采用后三种方法.
+\end{remark}
+
+\begin{example}
+    $
+    \int \frac{\mathrm d x}{(x-1)(x-2)(x-3)} =\frac{a}{x-1} + \frac{b}{x-2} + \frac{c}{x-3}
+    $
+\end{example}
+\begin{solution}[留数法]
+    两边同乘以$(x-1)$可得
+    $\frac{1}{(x-2)(x-3)} = a + (\frac{b}{x-2} + \frac{c}{x-3})(x-1)$,再令$x = 1$即可得$a = -\frac{1}{2}$.同理得$b=-1.c=\frac{1}{2}$
+    所以$\int \frac{\mathrm d x}{(x-1)(x-2)(x-3)} = -\frac{1}{2}\ln|x-1| + \frac{1}{2}\ln|x-2| - \frac{1}{2}\ln|x-3| + C$. $\hfill \blacksquare$
+\end{solution}
+
+\begin{example}
+    $\frac{3x^2 +1}{x(x+1)^2} = \frac a x + \frac{b}{x+1} + \frac{c}{(x+1)^2}$
+\end{example}
+
+\begin{solution}
+    两边同乘$x$可得$\frac{3x^2 + 1}{(x+1)^2} = a + (\frac{b}{x+1} + \frac{c}{(x+1)^2})x$.
+    令$x = 0$可得$a = 1$.
+
+    两边同乘$x+1$时会出现$\frac{3x^2+1}{x(x+1)} = (\frac{a}{x}+ \frac{c}{(x+1)^2})(x+1) + b $,但此时不能令$ x = -1$.
+
+    我们考虑以下两种处理方法：
+
+    \textbf{留数法:}先考虑同乘$(x+1)^2$有$\frac{3x^2+1}{x}=c+(\frac{1}{x}+\frac{b}{x+1})(x+1)^2$,令$x = -1$可得$c = -4$
+
+    \textbf{极限法:}在$\frac{3x^2+1}{x(x+1)} = (\frac{a}{x}+ \frac{c}{(x+1)^2})(x+1) + b $中令$x \to \infty$ 有$3=1+b$,则$b = 2 $
+$\hfill \blacksquare$
+\end{solution}
+
+\begin{note}
+1. 因子 \(\frac{1}{(x-A)^p}\) 最高次幂的系数$p=1$，可以直接用留数法（不求导）求得。
+
+2. 因子 \(\frac{1}{(x-A)^p}\) 其他次幂的系数，可以通过留数法（求导）求得，也可以用极限法或者特殊值法求得。
+
+3. 因子 \(\frac{1}{\left(x^2+Mx+N\right)^q}\) 一般同特殊值法和极限法求得待定系数。
+\end{note}
