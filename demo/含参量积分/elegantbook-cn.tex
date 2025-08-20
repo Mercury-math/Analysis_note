@@ -234,6 +234,12 @@ $$
     此命题用万能公式即可.
 \end{remark}
 
+如果直接求$\varphi(t) = \int_{a}^{b}f(x,t) \mathrm d x$有困难，那么通常采用以下两种方法：
+\textcolor{blue}{\begin{enumerate}
+    \item \textbf{积分号下积分}：把$f(x,t)$表示为积分形式，再用积分号下求积分的方法,此时通常要交换积分次序,所以要先判断函数的连续性.
+    \item \textbf{积分号下微分}：先求$\varphi'(t)$,即先求$\int_{a}^{b}f_t(x,t) \mathrm d x$,然后再对$t$积分求出$\varphi(t)$,所以要先判断$f(x,t)$和$f_t(x,t)$的连续性.
+\end{enumerate}}
+
 \subsubsection{积分号下积分}
 
 \begin{example}
@@ -605,4 +611,92 @@ $$|F^{(n)}(\xi)| = \left| \int_{0}^{2\pi} e^{\xi \cos\theta} \cos(\xi \sin\theta
 所以对固定的 $t \in (-\infty, +\infty)$, 有 $\lim\limits_{n \to \infty} \frac{t^n}{n!} F^{(n)}(\xi) = 0$, 从而关于 $n \to \infty$ 取极限可得 $F(t) = 2\pi$.
 $\hfill \blacksquare$
 \end{solution}
+
+\section{含参变量反常积分}
+
+\subsection{基本定理以及简单应用}
+\begin{definition}[含参量反常积分]
+设 $f(x,t)$ 在 $\{(x,t) | x \in [c, +\infty), t \in I\}$ 上有定义, 其中 $I$ 为一个区间, 若对每个固定的 $t \in I$, 反常积分
+\begin{equation}{\label{eq13.6}}
+\int_{c}^{+\infty} f(x,t) dx 
+\end{equation}
+都收敛, 则它的值是 $t$ 在 $I$ 上取值的函数, 记为
+\begin{equation}{\label{eq13.7}}
+\varphi(t) = \int_{c}^{+\infty} f(x,t) dx, \quad t \in I.   
+\end{equation}
+称 $\varphi(t)$ 为定义在区间 $I$ 上的含参量 $t$ 的无穷限反常积分, 简称含参量反常积分.
+\end{definition}
+
+\begin{remark}
+    同样可定义含参量的瑕积分，通过倒数变换可以转化为含参量的无穷积分.
+
+    \fcolorbox{blue}{yellow}{函数项级数 =数项级数 +“一致”,对应有:含参反常积分 = 反常积分 +"一致”.}
+    
+    那么本节的核心任务是研究带有参数的反常积分关于参量的\underline{一致收敛性}，另外,函数项级数可看成离散求和的含参量反常积分,其中函数的自变最对应着参变量,即$\sum u_n(x)$中的$x$对应$\int_{c}^{\infty}f(x,t)\mathrm d x$中的参变量$t$,因此含参量反常积分的很多方法和结论都与函数项级数极为相似
+\end{remark}
+
+\begin{definition}[含参量反常积分的一致收敛]
+对于含参量积分 (\ref{eq13.6}) 与函数 (\ref{eq13.7}), 若对任意的 $\epsilon > 0$, 总存在 $N > 0$, 使得 $M > N$ 时, \textcolor{blue}{对任意的 $t \in I$(即$N$与$t$无关)}, 有
+$$ \left| \int_{c}^{M} f(x,t) dx - \varphi(t) \right| = \left| \int_{M}^{+\infty} f(x,t) dx \right| < \epsilon, $$
+则称含参量反常积分 (\ref{eq13.6}) 在区间 $I$ 上\textcolor{blue}{一致收敛}于 $\varphi(t)$, 或简称为 $\varphi(t)$ 在 $I$ 上一致收敛. 若 $\varphi(t)$ 在 $I$ 内的任意闭区间上一致收敛, 则称 $\varphi(t)$ 在 $I$ 上\textbf{内闭一致收敛}.
+\end{definition}
+
+\begin{remark}
+若 $\int_{c}^{+\infty} f(x,t) dx$ 在 $I$ 上收敛, 那么 $\int_{c'}^{+\infty} f(x,t) dx$ 在 $I$ 上一致收敛等价于 $\int_{c}^{+\infty} f(x,t) dx$ 在 $I$ 上一致收敛, 其中 $c' \ge c$ 为任意常数.
+\end{remark}
+\begin{theorem}[柯西准则]
+含参量积分 (\ref{eq13.6}) 在区间 $I$ 上一致收敛的充要条件为: 对任意的 $\varepsilon > 0$, 存在 $M > c$, 使得当 $A_1, A_2 > M$ 时, 对任意的 $t \in I$, 都有
+$$ \left| \int_{A_1}^{A_2} f(x,t) dx \right| < \varepsilon. $$
+\end{theorem}
+
+\begin{theorem}
+含参量积分 (\ref{eq13.6}) 在区间 $I$ 上一致收敛的充要条件为
+$$ \lim\limits_{M \to +\infty} \sup_{t \in I} \left| \int_{M}^{+\infty} f(x,t) dx \right| = 0. $$
+\end{theorem}
+
+\begin{theorem}[魏尔斯特拉斯判别法(M判别法)]
+若存在函数 $g(x)$ 满足
+$$ |f(x,t)| \le g(x), \quad x \in [c, +\infty), t \in I, $$
+且 $\int_{c}^{+\infty} g(x) dx$ 收敛, 则含参量积分 (\ref{eq13.6}) 在 $I$ 上一致收敛.
+\end{theorem}
+\begin{remark}
+    证明可用柯西收敛准则,$|\int_{A_1}^{A_2} f(x,t) dx| \le \int_{A_1}^{A_2} g(x) dx < \varepsilon$, 其中 $g(x)$ 满足 $\int_{c}^{+\infty} g(x) dx$ 收敛.
+\end{remark}
+
+\begin{example}
+设 $f(x,t)$ 在 $[c, +\infty) \times I$ 上连续, 且成立不等式 $|f(x,t)| \le F(x,t)$. 若 $\int_{c}^{+\infty} F(x,t) dx$ 在 $I$ 上一致收敛, 证明 $\int_{c}^{+\infty} f(x,t) dx$ 在 $I$ 上绝对一致收敛.
+\end{example}
+
+\begin{example}
+讨论 $\varphi(x) = \int_{0}^{+\infty} xe^{-xy} dy$ 在 $(0, +\infty)$ 上的一致收敛性.
+\end{example}
+
+\begin{example}
+讨论 $\varphi(u) = \int_{0}^{+\infty} \sqrt{u}e^{-ux^2} dx$ 在 $u \in (0, +\infty)$ 上的一致收敛性.
+\end{example}
+
+\begin{example}
+已知 $\int_{0}^{+\infty} \frac{\sin x}{x} dx = \frac{\pi}{2}$, 讨论 $\varphi(t) = \int_{0}^{+\infty} \frac{\sin tx}{x} dx$ 在 $(0, +\infty)$ 上的一致收敛性.
+\end{example}
+
+\subsection{Abel-Dirichlet判别法及其应用}
+
+\begin{theorem}[13.2.4 (阿尔贝-狄利克雷判别法)]
+对于含参量积分 $\int_{c}^{+\infty} f(x,t) g(x,t) dx$, 有
+
+(1) 若对任意的 $N > c$, 积分 $\int_{c}^{N} f(x,t) dx$ 关于 $t \in I$ 一致有界, 且对每个固定的 $t \in I$, 函数 $g(x,t)$ 关于 $x$ 的单调函数, 同时当 $x \to +\infty$ 时, $g(x,t)$ 关于 $t$ 一致地收敛于 0, 则含参量反常积分
+$$ \int_{c}^{+\infty} f(x,t) g(x,t) dx $$
+在 $I$ 上一致收敛;
+
+(2) 若 $\int_{c}^{+\infty} f(x,t) dx$ 在 $I$ 上一致收敛, 且对每个固定的 $t \in I$, 函数 $g(x,t)$ 是关于 $x$ 的单调函数, 同时 $g(x,t)$ 关于 $t \in I$ 一致有界, 则含参量反常积分
+$$ \int_{c}^{+\infty} f(x,t) g(x,t) dx $$
+在 $I$ 上一致收敛.
+\end{theorem}
+
+\begin{remark}
+    与函数项级数的Abel-Dirichlet判别法相比,“有界”与“收敛”分别改成“一致有界”与“一致收敛”, 其中的“一致”针对的是参量 $t$. 
+
+    此外,应该清楚此处的单调性都是关于 $x$, 即“关于谁求和 (积分) 就关于谁单调”. 此外, 由于含参量反常积分的一致收敛性只与 $+\infty$ 处的性质有关, 所以此处关于 $x$ 的单调性也可以从某点 $d \ge c$ 以后开始.
+\end{remark}
+
 \end{document}
