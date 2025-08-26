@@ -1,0 +1,41 @@
+\documentclass[lang=cn,newtx,10pt,scheme=chinese]{elegantbook}
+
+\title{数学分析学习笔记}
+\subtitle{复习整理笔记}
+
+\author{阮炜挺}
+\institute{宁波大学数学与统计学院}
+\date{}
+
+\extrainfo{Given yourself an epsilon of room!}
+
+\setcounter{tocdepth}{3}
+
+\cover{cover.jpg}
+
+% 本文档命令
+\usepackage{array}
+\newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
+
+% 修改标题页的橙色带
+\definecolor{customcolor}{RGB}{32,178,170}
+\colorlet{coverlinecolor}{customcolor}
+\usepackage{cprotect}
+
+\addbibresource[location=local]{reference.bib} % 参考文献，不要删除
+\everymath{\displaystyle} % 使所有公式默认使用行间公式
+\usepackage{extarrows}
+
+\begin{document}
+
+\maketitle
+\frontmatter
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{勒让德多项式}
+
+
+\end{document}
