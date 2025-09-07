@@ -1,6 +1,6 @@
 \documentclass[lang=cn,newtx,10pt,scheme=chinese]{elegantbook}
 
-\title{数学分析学习笔记}
+\title{含参变量积分}
 \subtitle{复习整理笔记}
 
 \author{阮炜挺}
@@ -1174,7 +1174,7 @@ $\forall t_0 \in I$, 取 $[a,b] \subseteq I$ 且 $t_0 \in [a,b]$. 由于 $\varph
 \end{proof}
 
 \begin{remark}
-    从证明中可以看出,条件只需要$\varphi(t)$在$I$上内闭一致收敛,就有$\varphi(t)$在$I$上连续.
+    从证明中可以看出,\textcolor{blue}{条件只需要$\varphi(t)$在$I$上内闭一致收敛},就有$\varphi(t)$在$I$上连续.
 \end{remark}
 \subsubsection*{基本方法}
 
@@ -1364,6 +1364,1034 @@ $$ < A \cdot \frac{\varepsilon}{A} + \varepsilon = 2\varepsilon, $$
 这说明 $\lim\limits_{y \to +\infty} \int_{0}^{y} [f(\frac{u}{y}) - f(0^{+})] \frac{\sin u}{u} du = 0$, 从而 $\lim\limits_{y \to +\infty} \int_{0}^{1} f(x) \frac{\sin xy}{x} dx = \frac{\pi}{2}f(0^{+})$.
 $\hfill \blacksquare$
 \end{solution}
+
+\subsection{可微性与可积性}
+
+\subsubsection{可微性及其简单应用}
+
+\begin{theorem}[可微性]\label{含参变量反常积分_可微性定理}
+设 $f(x, t)$ 与 $f_t(x, t)$ 在 $[c, +\infty) \times I$ 上连续, 若 $\varphi(t) = \int_{c}^{+\infty} f(x, t) \,dx$ 在 $I$ 上收敛, 且 $\int_{c}^{+\infty} f_t(x, t) \,dx$ 在 $I$ 上一致收敛, 则 $\varphi(t)$ 在 $I$ 上可微, 且
+$$
+\varphi'(t) = \int_{c}^{+\infty} f_t(x, t) \,dx.
+$$
+\end{theorem}
+
+\begin{note}
+思路：
+\begin{align*}
+&\left|\frac{\varphi(t)-\varphi(t_0)}{t-t_0} - \int_c^{+\infty} f_t(x,t_0)dx\right| = \left|\int_c^{+\infty} \frac{f(x,t)-f(x,t_0)}{t-t_0} dx - \int_c^{+\infty} f_t(x,t_0)dx\right|\\
+&\le \left|\int_c^M \left(\frac{f(x,t)-f(x,t_0)}{t-t_0} - f_t(x,t_0)\right) dx\right| + \left|\int_M^{+\infty} \frac{f(x,t)-f(x,t_0)}{t-t_0} dx\right| + \left|\int_M^{+\infty} f_t(x,t_0) dx\right|\\
+&= \int_c^M |f_t(x,\xi)-f_t(x,t_0)|dx + \left|\int_M^{+\infty} f_t(x,\eta)dx\right| + \left|\int_M^{+\infty} f_t(x,t_0)dx\right|\\
+\end{align*}
+
+其中第一项小于 $\varepsilon$ 用 $f_t$ 在 $[c,M]$ 上的一致连续性，后两项小于 $\varepsilon$ 用 $\int_c^{+\infty} f_t(x,t)dx$ 的一致收敛性.
+
+\end{note}
+
+\begin{proof}
+ $\forall t_0 \in I$, 不妨设 $t_0 \in [a,b] \subseteq I$, 对 $\int_c^{+\infty} f_t(x,t)dx$ 在 $I$ 上一致收敛, 则 $\forall \varepsilon > 0, \exists M > 0$, 使得对 $\forall t \in I$, 有 $|\int_M^{+\infty} f_t(x,t)dx| < \varepsilon$.
+
+对上述固定的 $M$, 对 $f_t(x,t)$ 在闭区域 $[c,M] \times [a,b]$ 上连续从而一致连续.
+
+故对上述 $\varepsilon>0, \exists \delta>0$, 使得当 $t \in U(t_0; \delta) \cap [a,b]$ 时, 对 $\forall x \in [c,M]$, 有 $|f_t(x,t)-f_t(x,t_0)| < \frac{\varepsilon}{M-c}$.
+
+从而有 $\left|\frac{\varphi(t) - \varphi(t_0)}{t - t_0} - \int_c^{+\infty} f_t(x, t_0) \,dx\right| < \frac{\varepsilon}{M-c}(M-c) + \varepsilon + \varepsilon = 3\varepsilon$.
+
+这说明 $\varphi(t)$ 在 $t_0$ 处可导, 且 $\varphi'(t_0) = \int_c^{+\infty} f_t(x,t_0)dx$. 由 $t_0$ 的任意性知, $\varphi(t)$ 在 $I$ 上可导, 且 $\varphi'(t) = \int_c^{+\infty} f_t(x,t)dx$.
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{remark}
+    从证明中可以看出,\textcolor{blue}{只要$\int_c^{+\infty} f_t(x,t)dx$在$I$上内闭一致收敛},就有$\varphi(t)$在$I$上可导.
+\end{remark}
+
+\begin{example}
+证明函数 $f(x) = \int_{0}^{+\infty} \frac{\cos xy}{1+y^2} \,dy$ 在 $(0, +\infty)$ 上连续, 在 $(0, +\infty)$ 上连续可导.
+\end{example}
+
+\begin{proof}
+1. 连续性：注意到 $|\frac{\cos xy}{1+y^2}| \le \frac{1}{1+y^2}$, 而 $\int_0^{+\infty} \frac{1}{1+y^2} \,dy$ 收敛.
+那么由 M-判别法知 $f(x)$ 在 $[0, +\infty)$ 上一致收敛, 又由于 $\frac{\cos xy}{1+y^2}$ 在 $[0, +\infty) \times [0, +\infty)$ 上连续, 结合定理\ref{含参变量反常积分_连续性定理}连续性知 $f(x)$ 在 $[0, +\infty)$ 上连续.
+
+2. 可微性：
+令 $g(x,y) = \frac{\cos xy}{1+y^2}$, $g_x(x,y) = \frac{-y\sin xy}{1+y^2}$. 显然 $g, g_x$ 在 $(0, +\infty) \times [0, +\infty)$ 上连续.
+且 $f(x) = \int_0^{+\infty} g(x,y) \,dy$ 在 $[x_0, +\infty)$ 上一致收敛 ($x_0>0$).
+$$
+\int_0^{+\infty} g_x(x,y) \,dy = \int_0^{+\infty} \frac{-y\sin xy}{1+y^2} \,dy
+$$
+由于$ \left|\int_0^M \sin xy \,dy\right| = \left|\frac{-\cos xy}{x}\right|_0^M \le \frac{2}{x} \le \frac{2}{x_0}$故积分关于 $x$ 一致有界,且 $\frac{y}{1+y^2}$ 在 $y \in [1, +\infty)$ 上关于 $y$ 单调递减且
+$|\frac{y}{1+y^2}| \le |\frac{y}{y^2}| = |\frac{1}{y}| \to 0$, 即 $\frac{y}{1+y^2}$ 关于 $x$ 一致收敛到 $0$. 从而由 Dirichlet-判别法知
+$\int_c^{+\infty} g_x(x,y) \,dy$ 关于 $x \in [x_0, +\infty)$ 一致收敛. 从而由定理 \ref{含参变量反常积分_可微性定理}可微性 知 $f(x)$ 在 $(0, +\infty)$ 上可导.
+再由于 $g_x(x,y)$ 在 $[x_0, +\infty) \times [0, +\infty)$ 上连续以及 $\int_0^{+\infty} g_x(x,y) \,dy$ 的内闭一致收敛结合定理\ref{含参变量反常积分_连续性定理}连续性知 $f'(x)$ 在 $(0, +\infty)$ 上连续.
+$\hfill \blacksquare$
+\end{proof}
+
+\subsubsection{可积性的两个定理}
+两种情形分别为：一个有限区间一个无穷区间情形和两个无穷区间情形.
+
+\begin{theorem}[可积性(一个有限区间)]\label{含参变量反常积分_可积性定理(一个有限区间)}
+设 $f(x, t)$ 在 $[c, +\infty) \times [a, b]$ 上连续, 若 $\varphi(t) = \int_{c}^{+\infty} f(x, t) dx$ 在 $[a, b]$ 上一致收敛, 则 $\varphi(t)$ 在 $[a, b]$ 上可积(连续), 且
+$$ \int_{a}^{b} dt \int_{c}^{+\infty} f(x, t) dx = \int_{a}^{b} \varphi(t) dt = \int_{c}^{+\infty} dx \int_{a}^{b} f(x, t) dt. $$
+\end{theorem}
+
+\begin{note}
+思路: 即证明 $\lim\limits_{M \to +\infty} \int_{a}^{b} dt \int_{c}^{M} f(x, t) dx = \int_{a}^{b} dt \int_{c}^{+\infty} f(x, t) dx$
+
+使用分段法:
+\begin{align*}
+& \left|\int_{a}^{b} dt \int_{c}^{M} f(x,t)dx - \int_{a}^{b} dt \int_{c}^{+\infty} f(x,t)dx\right| \\
+\le & \left|\int_{a}^{b} dt \int_{c}^{M} f(x,t)dx - \int_{a}^{b} dt \int_{c}^{M} f(x,t)dx - \int_{a}^{b} dt \int_{M}^{+\infty} f(x,t)dx\right| \\
+= & \left|\int_{a}^{b} dt \int_{M}^{+\infty} f(x,t)dx\right| \le \int_{a}^{b} \left|\int_{M}^{+\infty} f(x,t)dx\right| dt
+\end{align*}
+（$f$ 在 $[c, +\infty) \times [a, b]$ 上连续, 故有 $\int_{c}^{M} dx \int_{a}^{b} f(x, t) dt = \int_{a}^{b} dt \int_{c}^{M} f(x, t) dx$）
+
+\end{note}
+
+\begin{proof}
+由于$f$ 在 $[c, +\infty) \times [a, b]$ 上连续, 且 $\varphi(t) = \int_{c}^{+\infty} f(x, t) dx$ 在 $[a, b]$ 上一致收敛. 那么 $\varphi(t)$ 在 $[a, b]$ 上连续, 进而 $\varphi(t)$ 在 $[a, b]$ 上可积, 从而 $\int_{a}^{b} dt \int_{c}^{+\infty} f(x, t) dx$ 有意义. 又因 $\varphi(t) = \int_{c}^{+\infty} f(x, t) dx$ 在 $[a, b]$ 上一致收敛, 那么 \textcolor{blue}{$\forall \varepsilon > 0, \exists N > c$, 当 $M > N$ 时,} 有 $|\int_{M}^{+\infty} f(x, t) dx| < \frac{\varepsilon}{b-a}, \forall t \in [a, b]$ 均成立.
+
+从而\textcolor{blue}{有 $|\int_{c}^{M} dx \int_{a}^{b} f(x, t) dt - \int_{a}^{b} dt \int_{c}^{+\infty} f(x, t) dx| < \int_{a}^{b} \frac{\varepsilon}{b-a} dt = \varepsilon$.}
+
+因此 $\lim\limits_{M \to +\infty} \int_{a}^{b} dt \int_{c}^{M} f(x, t) dx = \int_{a}^{b} dt \int_{c}^{+\infty} f(x, t) dx$, 即有
+$$ \int_{a}^{b} dt \int_{c}^{+\infty} f(x, t) dx = \int_{a}^{b} \varphi(t) dt = \int_{c}^{+\infty} dx \int_{a}^{b} f(x, t) dt $$
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{theorem}[可积性(两个无穷区间)]
+设 $f(x, y)$ 在 $[a, +\infty) \times [b, +\infty)$ 上连续, 若
+
+(i) $\int_{b}^{+\infty} f(x, y) dy$ 关于 $x \in [a, +\infty)$ 内闭一致收敛, $\int_{a}^{+\infty} f(x, y) dx$ 关于 $y \in [b, +\infty)$ 内闭一致收敛;
+
+(ii) 积分 $\int_{a}^{+\infty} dx \int_{b}^{+\infty} |f(x, y)| dy$ 与 $\int_{b}^{+\infty} dy \int_{a}^{+\infty} |f(x, y)| dx$ 中有一个收敛.
+则
+$$ \int_{a}^{+\infty} dx \int_{b}^{+\infty} f(x, y) dy = \int_{b}^{+\infty} dy \int_{a}^{+\infty} f(x, y) dx. $$
+\end{theorem}
+
+\begin{note}
+思路: 不妨设 $\int_{a}^{+\infty} dx \int_{b}^{+\infty} |f(x,y)|dy$ 收敛, 则 $\int_{a}^{+\infty} dx \int_{b}^{+\infty} f(x,y)dy$ 收敛.
+
+即需证明
+$$ \lim\limits_{M \to +\infty} \int_{a}^{M} dy \int_{b}^{+\infty} f(x,y)dx = \int_{a}^{+\infty} dx \int_{b}^{+\infty} f(x,y)dy $$
+
+\begin{align*}
+& \left| \int_{b}^{M} dy \int_{a}^{+\infty} f(x,y)dx - \int_{a}^{+\infty} dx \int_{b}^{+\infty} f(x,y)dy \right| \\
+\le & \left| \int_{b}^{M} dy \int_{a}^{+\infty} f(x,y)dx - \int_{a}^{+\infty} dx \int_{b}^{M} f(x,y)dy \right| + \left| \int_{a}^{+\infty} dx \int_{M}^{+\infty} f(x,y)dy \right| \\
+= & \left| \int_{a}^{+\infty} dx \int_{M}^{+\infty} f(x,y)dy \right| \le \left| \int_{a}^{N} dx \int_{M}^{+\infty} f(x,y)dy \right| + \left| \int_{N}^{+\infty} dx \int_{M}^{+\infty} f(x,y)dy \right| \\
+& \qquad \qquad \qquad \qquad \qquad \qquad \qquad \underset{\text{关于 } x \in [a, M] \text{ 一致收敛}}{\underbrace{ \qquad \qquad \qquad \quad}} \quad \underset{\text{条件 (ii) 收敛}}{\underbrace{\qquad \qquad \qquad \qquad \qquad}}
+\end{align*}
+
+第二部分：$\forall \varepsilon > 0, \exists N > a$, 使得 $\int_{N}^{+\infty} dx \int_{M}^{+\infty} |f(x,y)|dy \le \int_{N}^{+\infty} dx \int_{b}^{+\infty} |f(x,y)|dy < \varepsilon$
+
+第一部分：对上述 $N, \forall \varepsilon > 0, \exists M > b$ 使得 $|\int_{M}^{+\infty} f(x,y)dy| < \frac{\varepsilon}{N-a}$
+
+\end{note}
+
+\subsection{函数项级数(函数列)与含参量反常积分的联系}
+
+\textbf{函数项级数与含参量反常积分之间的“归结原理”}
+
+数列极限是函数极限的离散形式, 它们之间的沟通桥梁是归结原理. 本章中, 函数项级数是含参量反常积分的离散形式, 它们之间也存在与归结原理类似的定理.
+
+\begin{proposition}[含参量反常积分的归结原理]
+含参量反常积分$\int_{c}^{+\infty} f(x, t) dx$ 在 $I$ 上一致收敛的充要条件是: 对任意严格单调递增趋于 $+\infty$ 的数列 $\{A_n\}(A_1=c)$, 函数项级数 $\sum_{n=1}^{+\infty} u_n(t)$ 在 $I$ 上一致收敛, 其中 $u_n(t) = \int_{A_n}^{A_{n+1}} f(x, t) dx$.
+\end{proposition}
+
+\begin{proof}
+“$\Rightarrow$” 由 $\int_{c}^{+\infty} f(x, t) dx$ 在 $I$ 上一致收敛, 那么由 Cauchy 准则知, $\forall \varepsilon > 0, \exists A \in > c$, 当 $\forall A'', A' > A$, 使得对 $\forall t \in I$, 均有 $|\int_{A'}^{A''} f(x, t) dx| < \varepsilon$.
+
+对上述的 $A>0$, 由于 $\{A_n\}$ 为严格单调递增趋于 $+\infty$ 的数列, 那么 $\exists N > 0$, 使得 $\forall m > n > N$ 时, 有 $A_{m+1} >  A_m > A_n > A$. 从而有
+$$ |u_{n}(t) + u_{n+1}(t) + \dots + u_{m}(t)| = \left|\int_{A_n}^{A_{m+1}} f(x, t) dx\right| < \varepsilon $$
+那么由函数项级数 Cauchy 收敛原理知, $\sum u_n(t)$ 在 $I$ 上一致收敛.
+
+“$\Leftarrow$” (反证法)
+若 $\int_{c}^{+\infty} f(x, t) dx$ 在 $I$ 上不一致收敛, 则存在 $\varepsilon_0 > 0$, 使得对 $\forall M > c$, 存在在 $A''>A'>M$ 及 $t \in I$ 使得 $|\int_{A'}^{A''} f(x, t) dx| \ge \varepsilon_0$.
+
+现取 $M_1=\max \{1,c\}$, 则 $\exists A_2 > A_1 > M_1$ 及 $t_1 \in I$, 使得 $|\int_{A_1}^{A_2} f(x, t_1) dx| \ge \varepsilon_0$.
+
+再取 $M_2 = \max\{2, A_2\}$, 则 $\exists A_4 > A_3 > M_2$ 及 $t_2 \in I$, 使得 $|\int_{A_3}^{A_4} f(x, t_2) dx| \ge \varepsilon_0$.
+
+以此类推, 取 $M_n = \max\{n, A_{2n-2}\}$, 则 $\exists A_{2n} > A_{2n-1} > M_n$ 及 $t_n \in I$, 使得 $|\int_{A_{2n-1}}^{A_{2n}} f(x, t_n) dx| \ge \varepsilon_0$.
+
+$A_n$ 显然严格单调递增趋于 $+\infty$. 现考虑 $\sum_{n=1}^{\infty} u_n(t) = \sum_{n=1}^{\infty} \int_{A_n}^{A_{n+1}} f(x, t) dx$. 由于 $|u_{2n-1}(t)| \ge \varepsilon_0$ 不趋于 0, 故通项不一致收敛到0. 于是 $\sum_{n=1}^{\infty} u_n(t)$ 在 $I$ 上不一致收敛, 矛盾!
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{remark}
+    注意到这样的取法没有$\int_{A_2}^{A_3}$,所以最后得到的通项是$u_{2n-1}(t)$.
+
+    $M_1 = \max\{1,c\},M_2 = \max\{2,A_2\},M_3 = \max\{3,A_4\}, ...,M_n = \max\{n,A_{2n-2}\}$，其中$1,2,3,...,n$是为了保证$M_n \to +\infty$,而$A_{2n-2}$是为了控制$\{M_n\}$严格单调递增.
+\end{remark}
+
+\begin{remark}
+     该命题中“任意严格单调递增趋于 $+\infty$ 的数列 $\{A_n\}$”条件不能减弱,如果仅仅存在某个单调递增趋于 $+\infty$ 的数列 $\{A_n\}(A_1=c)$ 使得 $\sum_{n=1}^{\infty} u_n(t)$ 在 $I$ 上一致收敛, 并不能得到 $\int_{c}^{+\infty} f(x, t) dx$ 在 $I$ 上一致收敛, 
+     例如取 $A_n = (n-1)\pi$, 则有 $\sum_{n=1}^{\infty} \int_{A_n}^{A_{n+1}} \cos x dx = \sum_{n=0}^{\infty} 0 = 0$ 关于 $t \in I$ 一致收敛, 但 $\int_{0}^{+\infty} \cos x dx$ 发散, 自然关于 $t \in I$ 不一致收敛.
+\end{remark}
+
+\begin{example}
+设 $f(x, t)$ 与 $f_t(x, t)$ 在 $[c, +\infty) \times [a, b]$ 上连续, 且 $\int_{c}^{+\infty} f_t(x, t) dx$ 在区间 $[a, b]$ 上一致收敛, $\int_{c}^{+\infty} f(x, t) dx$ 在某点 $t_0 \in [a, b]$ 处收敛, 证明 $\int_{c}^{+\infty} f(x, t) dx$ 在 $[a, b]$ 上一致收敛.
+\end{example}
+
+\begin{proof}
+对任意严格单增 $\to +\infty$ 的 $\{A_n\} (A_1=c)$, 令 $u_n(t) = \int_{A_n}^{A_{n+1}} f(x,t) dx$.
+那么 $\int_{c}^{+\infty} f(x,t) dx = \sum_{n=1}^{\infty} u_n(t)$.
+由 $\sum_{n=1}^{\infty} u_n(t)$ 在 $t_0 \in [a, b]$ 收敛, 且 $u_n(t)$ 在 $[a, b]$ 存在连续导数 $u_n'(t) = \int_{A_n}^{A_{n+1}} f_t(x,t) dx$, 且由 $\int_{c}^{+\infty} f_t(x,t) dx$ 在 $[a,b]$ 一致收敛, 则 $\sum u_n'(t)$ 在 $[a,b]$ 一致收敛.
+由函数项级数中的定理知 $\sum_{n=1}^{\infty} u_n(t)$ 在 $I$ 一致收敛. 再由归结原理知 $\int_{c}^{+\infty} f(x,t) dx$ 在 $[a,b]$ 上一致收敛.
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{proposition}[狄尼定理]
+设 $f(x, t)$ 在 $[c, +\infty) \times [a, b]$ 上非负连续, 若 $\varphi(t) = \int_{c}^{+\infty} f(x, t) dx$ 在 $[a, b]$ 上收敛, 且 $\varphi(t)$ 在 $[a, b]$ 上连续, 则 $\varphi(t)$ 在 $[a, b]$ 上一致收敛.
+\end{proposition}
+
+\begin{proof}
+$\forall t_0 \in [a, b]$, $|\int_{c}^{d} f(x, t_0) dx - \varphi(t_0)|$ 关于 $d$ 单调递减且趋于零. 那么有 $\forall \varepsilon > 0$, $\exists M = M(t_0, \varepsilon)$, 使得当 $d \ge M$ 时, 有 $|\int_{c}^{d} f(x, t_0) dx - \varphi(t_0)| < \varepsilon$. 特别地, 取 $d=M$, 即 $|\int_{c}^{M} f(x, t_0) dx - \varphi(t_0)| < \varepsilon$.
+
+固定上述的 $M$. 由于 $ \int_{c}^{M} f(x, t) dt - \varphi(t) $ 为关于 $t$ 的连续函数, 那么由保号性知 $\exists \delta = \delta(t_0, M) > 0$, 使得 $\forall t \in U(t_0, \delta) \cap [a, b]$, 有 $|\int_{c}^{M} f(x, t) dt - \varphi(t)| < \varepsilon$.
+
+再结合 $| \int_{c}^{d} f(x, t) dx - \varphi(t) |$ 的单调性可知: 当 $d>M$ 时, 对 $\forall t \in U(t_0, \delta) \cap [a, b]$, 有
+$$ |\int_{c}^{d} f(x, t) dx - \varphi(t)| \le |\int_{c}^{M} f(x, t) dx - \varphi(t)| < \varepsilon $$
+注意到 $H = \{U(t_0, \delta) | t_0 \in [a, b]\}$ 为 $[a, b]$ 的一个开覆盖. 那么由有限覆盖定理知存在有限个点 $t_1, t_2, \dots, t_p \in [a, b]$ 以及对应的 $M_1, \dots, M_p > 0, \delta_1, \delta_2, \dots, \delta_p > 0$ 满足
+
+(i) $[a, b] \subseteq \bigcup_{i=1}^{p} U(t_i, \delta_i)$
+
+(ii) 当 $d \ge M_i$ 时, 对 $\forall t \in U(t_i, \delta_i) \cap [a, b]$, 有 $|\int_{c}^{d} f(x, t) dx - \varphi(t)| < \varepsilon$.
+
+取 $M_0 = \max\{M_1, M_2, \dots, M_p\}$. 则 $\forall d > M_0$ 时, $\forall t \in [a, b]$, $\exists i \in \{1, 2, \dots, p\}$ 使得 $t \in U(t_i, \delta_i) \cap [a, b]$. 此时有 $|\int_{c}^{d} f(x, t) dx - \varphi(t)| < \varepsilon$.
+
+这说明 $\varphi(t) = \int_{c}^{+\infty} f(x, t) dx$ 在 $[a, b]$ 上一致收敛.
+$\hfill \blacksquare$
+\end{proof}
+
+
+\subsection{趋于无穷情况下的极限符号与积分号交换顺序问题}
+
+\begin{proposition}
+设 \textcolor{blue}{$\lim\limits_{x \to +\infty} f(x, t) = \varphi(t)$ 对任意的 $t \in [a, b] \subseteq [0, +\infty)$一致地成立}, 即对任意的 $\varepsilon > 0$, 存在 $M>0$, 使得当 $x>M$ 时, 对任意的 $t \in [a, b]$, 都有 $|f(x, t) - \varphi(t)| < \varepsilon$, 且\textcolor{blue}{ $F(x) = \int_{0}^{+\infty} f(x, t) dt$ 在 $[0, +\infty)$ 上一致收敛}. 证明 $\lim\limits_{x \to +\infty} F(x) = \int_{0}^{+\infty} \varphi(t) dt$, 即
+$$ \lim\limits_{x \to +\infty} \int_{0}^{+\infty} f(x, t) dt = \int_{0}^{+\infty} \lim\limits_{x \to +\infty} f(x, t) dt. $$
+\end{proposition}
+
+\begin{proof}
+需先说明 $\int_{0}^{+\infty} \varphi(t) dt$ 收敛(前面的一些定理中条件本身就有$\int_{0}^{+\infty}\varphi(t) dt$一致收敛,但这个命题中没有这个前提条件)
+
+思路:
+\begin{align*}
+|\int_{A'}^{A''} \varphi(t) dt| &= \left|\int_{A'}^{A''} [\varphi(t) - f(x,t)] dt + \int_{A'}^{A''} f(x,t) dt\right| \\
+&\le \int_{A'}^{A''} |\varphi(t) - f(x,t)| dt + \left|\int_{A'}^{A''} f(x,t) dt\right|
+\end{align*}
+语言: 由 $F(x)$ 在 $[0, +\infty)$ 上一致收敛, 那么 $\forall \varepsilon > 0, \exists A > 0$, 使得当 $A''>A'>A$ 时, 有 $|\int_{A'}^{A''} f(x,t) dt| < \varepsilon$.
+对上述的 $\varepsilon > 0$, 由 $\lim\limits_{x \to \infty} f(x,t) = \varphi(t)$ 对 $\forall t \in [a,b]$ 一致成立, 那么 $\exists M > 0$, 使得当 $x > M$ 时, 对 $\forall t \in [A', A'']$ 都有 $|f(x,t) - \varphi(t)| < \frac{\varepsilon}{A''-A'}$.
+从而有 $\int_{A'}^{A''} |\varphi(t) - f(x,t)| dt \le \frac{\varepsilon}{A''-A'} (A''-A') = \varepsilon$. 
+那么$$|\int_{A'}^{A''} \varphi(t) dt| < \varepsilon + \varepsilon = 2\varepsilon$$
+由 Cauchy 准则知 $\int_{0}^{+\infty} \varphi(t) dt$ 收敛.
+
+
+接下来证明结论：
+
+思路：
+\begin{align*}
+& \left|\int_{0}^{+\infty} f(x,t)dt - \int_{0}^{+\infty} \varphi(t)dt\right| = \left|\int_{0}^{N} f(x,t)dt - \int_{0}^{N} \varphi(t)dt + \int_{N}^{+\infty} f(x,t)dt - \int_{N}^{+\infty} \varphi(t)dt\right| \\
+\le & \int_{0}^{N} |f(x,t) - \varphi(t)|dt + \left|\int_{N}^{+\infty} f(x,t)dt\right| + \left|\int_{N}^{+\infty} \varphi(t)dt\right|
+\end{align*}
+
+语言: 由 $\int_{0}^{+\infty} f(x,t)dt$ 在 $[0, +\infty)$ 上一致收敛, $\int_{0}^{+\infty} \varphi(t)dt$ 收敛, 那么 $\forall \varepsilon > 0$, 存在公共的 $N$, 使得对 $\forall x \in [0, +\infty)$, 有 $$|\int_{N}^{+\infty} f(x,t)dt| < \varepsilon,|\int_{N}^{+\infty} \varphi(t)dt| < \varepsilon$$
+又由于 $\lim\limits_{x \to \infty} f(x,t) = \varphi(t)$ 对 $\forall t \in [0, N]$ 均成立, 对上述 $\varepsilon$, 存在 $M > 0$, 使得当 $x > M$, 对 $\forall t \in [0, N]$, 均有 $|f(x,t)-\varphi(t)| < \frac{\varepsilon}{N}$.
+综上, $$|\int_{0}^{+\infty} f(x,t)dt - \int_{0}^{+\infty} \varphi(t)dt| < \frac{\varepsilon}{N} \cdot N + \varepsilon + \varepsilon = 3\varepsilon$$
+即 $\lim\limits_{x \to \infty} F(x) = \int_{0}^{+\infty} \varphi(t)dt$
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{proposition}
+设函数列 $\{f_n(x)\}$ 在 $[a, +\infty)$ 上收敛且内闭一致收敛于 $f(x)$, 同时 $\int_{a}^{+\infty} f_n(x) dx$ 关于 $n$ 一致收敛, 则 $\int_{a}^{+\infty} f(x) dx$ 收敛, 且
+$$ \lim\limits_{n \to \infty} \int_{a}^{+\infty} f_n(x) dx = \int_{a}^{+\infty} f(x) dx = \int_{a}^{+\infty} \lim\limits_{n \to \infty} f_n(x) dx. $$
+\end{proposition}
+
+\begin{proof}
+为上题的特例证明过程完全类似：
+
+$\int_{a}^{+\infty}f(x)dx$收敛证明：
+\begin{align*}
+\left|\int_{A'}^{A''} f(x) dx\right| &= \left|\int_{A'}^{A''} f(x) - f_n(x) dx + \int_{A'}^{A''} f_n(x) dx\right| \\
+&\le \underset{\substack{\uparrow \\ f_n(x) \rightrightarrows f(x), n \to +\infty}}{\int_{A'}^{A''} |f(x) - f_n(x)| dx} + \underset{\substack{\uparrow \\ \int_{a}^{+\infty} f_n(x) dx \text{一致收敛}}}{\left|\int_{A'}^{A''} f_n(x) dx\right|}
+\end{align*}
+
+
+思路：
+\begin{align*}
+& \left|\int_{a}^{+\infty} f_n(x) dx - \int_{a}^{+\infty} f(x) dx\right| = \left|\int_{a}^{A} [f_n(x) - f(x)] dx + \int_{A}^{+\infty} f_n(x) dx - \int_{A}^{+\infty} f(x) dx\right| \\
+\le & \underset{\substack{\downarrow \\ f_n(x) \rightrightarrows f(x) \\ (n \to +\infty)}}{\int_{a}^{A} |f_n(x) - f(x)| dx} + \underset{\substack{\downarrow \\ \int_{a}^{+\infty} f_n(x) dx \text{一致收敛}}}{\left|\int_{A}^{+\infty} f_n(x) dx\right|} + \underset{\substack{\downarrow \\ \int_{a}^{+\infty} f(x) dx \text{收敛}}}{\left|\int_{A}^{+\infty} f(x) dx\right|}
+\end{align*}
+
+$\hfill \blacksquare$
+
+\end{proof}
+
+
+\begin{example}
+设 $\{u_n(x)\}$ 为 $[a, +\infty)$ 上的连续函数列, $\sum_{n=1}^{\infty} u_n(x)$ 在 $[a, +\infty)$ 上收敛且内闭一致收敛于 $S(x)$, 同时 $\int_{a}^{+\infty} \sum_{k=1}^{n} u_k(x) dx$ 关于 $n$ 一致收敛, 则 $\int_{a}^{+\infty} S(x) dx$ 收敛, 且
+$$ \int_{a}^{+\infty} \sum_{n=1}^{\infty} u_n(x) dx = \int_{a}^{+\infty} S(x) dx = \sum_{n=1}^{\infty} \int_{a}^{+\infty} u_n(x) dx.  $$
+\end{example}
+
+\begin{note}
+
+此题为上题的特例, 证明过程也完全类似,也可直接进行证明：
+\begin{align*}
+\int_{a}^{+\infty} \sum_{n=1}^{\infty} u_n(x) dx &= \lim\limits_{A \to +\infty} \int_{a}^{A} \sum_{n=1}^{\infty} u_n(x) dx \\
+&\xlongequal{\textcircled{1}} \lim\limits_{A \to +\infty} \sum_{n=1}^{\infty} \int_{a}^{A} u_n(x) dx \\
+&\xlongequal{\textcircled{2}} \sum_{n=1}^{\infty} \lim\limits_{A \to +\infty} \int_{a}^{A} u_n(x) dx = \sum_{n=1}^{\infty} \int_{a}^{+\infty} u_n(x) dx
+\end{align*}
+
+① 前提为 $\sum_{n=1}^{\infty} u_n(x)$ 在 $[a, A]$ 上一致收敛.
+
+② 前提为 $\sum_{n=1}^{\infty} \int_{a}^{A} u_n(x) dx$ 在关于 $A \in [a, +\infty)$ 一致收敛.
+
+$\hfill \blacksquare$
+
+\end{note}
+
+\subsection{含参量反常积分的计算与证明}
+主要运用前面证明的可微性定理和可积性定理.
+\begin{theorem*}[可微性]
+设 $f(x, t)$ 与 $f_t(x, t)$ 在 $[c, +\infty) \times I$ 上连续, 若 $\varphi(t) = \int_{c}^{+\infty} f(x, t) \,dx$ 在 $I$ 上收敛, 且 $\int_{c}^{+\infty} f_t(x, t) \,dx$ 在 $I$ 上一致收敛, 则 $\varphi(t)$ 在 $I$ 上可微, 且
+$$
+\varphi'(t) = \int_{c}^{+\infty} f_t(x, t) \,dx.
+$$
+\end{theorem*}
+
+我们需先证明满足定理条件：
+\begin{enumerate}
+    \item $f(x, t)$ 与 $f_t(x, t)$ 在 $[c, +\infty) \times I$ 上连续;
+    \item $\int_{c}^{+\infty} f(x, t) \,dx$ 在 $I$ 上收敛;
+    \item $\int_{c}^{+\infty} f_t(x, t) \,dx$ 在 $I$ 上一致收敛\textcolor{blue}{(内闭一致收敛)}.
+\end{enumerate}
+
+\begin{theorem*}[可积性(一个有限区间)]
+设 $f(x, t)$ 在 $[c, +\infty) \times [a, b]$ 上连续, 若 $\varphi(t) = \int_{c}^{+\infty} f(x, t) dx$ 在 $[a, b]$ 上一致收敛, 则 $\varphi(t)$ 在 $[a, b]$ 上可积(连续), 且
+$$ \int_{a}^{b} dt \int_{c}^{+\infty} f(x, t) dx = \int_{a}^{b} \varphi(t) dt = \int_{c}^{+\infty} dx \int_{a}^{b} f(x, t) dt. $$
+\end{theorem*}
+我们需先证明满足定理条件：
+\begin{enumerate}
+    \item $f(x, t)$ 在 $[c, +\infty) \times [a, b]$ 上连续;
+    \item $\varphi(t) = \int_{c}^{+\infty} f(x, t) dx$ 在 $[a, b]$ 上一致收敛.
+\end{enumerate}
+
+\begin{theorem*}[可积性(两个无穷区间)]
+设 $f(x, y)$ 在 $[a, +\infty) \times [b, +\infty)$ 上连续, 若
+
+(i) $\int_{b}^{+\infty} f(x, y) dy$ 关于 $x \in [a, +\infty)$ 内闭一致收敛, $\int_{a}^{+\infty} f(x, y) dx$ 关于 $y \in [b, +\infty)$ 内闭一致收敛;
+
+(ii) 积分 $\int_{a}^{+\infty} dx \int_{b}^{+\infty} |f(x, y)| dy$ 与 $\int_{b}^{+\infty} dy \int_{a}^{+\infty} |f(x, y)| dx$ 中有一个收敛.
+则
+$$ \int_{a}^{+\infty} dx \int_{b}^{+\infty} f(x, y) dy = \int_{b}^{+\infty} dy \int_{a}^{+\infty} f(x, y) dx. $$
+\end{theorem*}
+
+
+\subsubsection{积分号下积分法与Dirichlet积分}
+主要用到可积性定理(一个有限区间情形)\ref{含参变量反常积分_可积性定理(一个有限区间)}.
+
+\begin{example}[$\bigstar \bigstar \bigstar$]\label{ex13.2.30}
+设 $p>0$, 证明
+\begin{enumerate}
+    \item[(1)] $I = \int_{0}^{+\infty} e^{-px} \frac{\sin bx - \sin ax}{x} dx = \arctan\frac{b}{p} - \arctan\frac{a}{p}$, 并由此计算 $\int_{0}^{+\infty} \frac{\sin ax}{x} dx$;
+    \item[(2)] $J = \int_{0}^{+\infty} e^{-px} \frac{\cos bx - \cos ax}{x} dx = -\frac{1}{2} \ln \frac{b^2 + p^2}{a^2 + p^2}$, 并由此计算 $\int_{0}^{+\infty} \frac{\cos bx - \cos ax}{x} dx$ \textcolor{blue}{$(a,b \neq 0)$.}
+\end{enumerate}
+\end{example}
+
+\begin{proof}
+(1) 将 $p$ 看成定值, 注意到 $\frac{\sin bx - \sin ax}{x} = \int_{a}^{b} \cos xy dy$, 从而
+$$ I = \int_{0}^{+\infty} dx \int_{a}^{b} e^{-px} \cos xy dy. $$
+由于 $|e^{-px} \cos xy| \le e^{-px}$, 且 $\int_{0}^{+\infty} e^{-px} dx$ 收敛, 所以 $\int_{0}^{+\infty} e^{-px} \cos xy dx$ 关于 $y \in [a, b]$ 一致收敛. 再结合 $e^{-px} \cos xy$ 在 $[0, +\infty) \times [a, b]$ 上连续, 所以由可积性定理\ref{含参变量反常积分_可积性定理(一个有限区间)}可知
+\begin{align*}
+I &= \int_{a}^{b} dy \int_{0}^{+\infty} e^{-px} \cos xy dx \\
+&= \int_{a}^{b} \left[\frac{e^{-px}}{p^2 + y^2}(-p \cos y + y \sin xy)\right|_{0}^{+\infty} dy \\
+&= \int_{a}^{b} \frac{p}{p^2 + y^2} dy = \arctan\frac{b}{p} - \arctan\frac{a}{p}.
+\end{align*}
+上式中令 $b=0$, 同时将 $a$ 看成定值, 得
+
+\textcolor{blue}{$$ G(p) = \int_{0}^{+\infty} e^{-px} \frac{\sin ax}{x} dx = \arctan \frac{a}{p}, \quad p>0. $$}
+由于 $\int_{0}^{+\infty} \frac{\sin ax}{x} dx$ 关于 $p \in [0, 1]$ 一致收敛, 且对每个固定的 $p \in [0, 1]$, $e^{-px}$ 关于 $x \in [0, +\infty)$ 单调递减, 同时 $0 < e^{-px} \le 1$, 所以由Abel判别法可知 $G(p)$ 在 $[0, 1]$ 上一致收敛. 结合定理\ref{含参变量反常积分_连续性定理} 可知
+$$ G(0) = \lim\limits_{p \to 0^+} G(p) = \lim\limits_{p \to 0^+} \arctan \frac{a}{p} = \frac{\pi}{2} \operatorname{sgn} a, $$
+即
+$$ \int_{0}^{+\infty} \frac{\sin ax}{x} dx = \frac{\pi}{2} \operatorname{sgn} a. \text{ 特别地, 有 } \int_{0}^{+\infty} \frac{\sin x}{x} dx = \frac{\pi}{2}, \text{ 此即狄利克雷积分.} $$
+$\hfill \blacksquare$
+\end{proof}
+
+(2) 证明一致收敛性过程与(1)类似, 计算过程稍有不同,
+
+\begin{align*}
+    J &= \int_{0}^{+\infty} e^{-px} \frac{\cos bx - \cos ax}{x} dx = - \int_{0}^{+\infty} dx \int_{a}^{b}e^{-px} \sin xy dy \\
+    &= -\int_{a}^{b}dy \int_{0}^{+\infty}e^{-px} \sin xy dx = -\int_{a}^{b}\frac{y}{y^2 + p^2} dy = -\frac{1}{2}\ln \frac{b^2 + p^2 }{a^2+ p^2}
+\end{align*}
+
+对于$J = \int_{0}^{+\infty} e^{-px} \frac{\cos bx - \cos ax}{x} dx$,不能像(1)那样令$b=0$来计算$\int_{0}^{+\infty} e^{-px} \frac{\cos ax}{x} dx$,因为$\int_{0}^{+\infty} \frac{\cos ax}{x} dx$发散.但我们可以整体进行处理,注意到当$x \to 0$时,$\frac{\cos bx - \cos ax}{x}$极限存在,所以$\int_{0}^{+\infty} \frac{\cos bx - \cos ax}{x} dx$在$x=0$处无瑕点,因此对$\int_{0}^{+\infty} \frac{\cos bx - \cos ax}{x} dx$的收敛性判断只取决于无穷处的情况,
+
+那么可考虑$\int_{1}^{+\infty}  \frac{\cos bx-\cos ax}{x}dx$的收敛性,此式判断方法与(1)相同,两项分开再使用Dirichlet判别法可知收敛(前提是$a,b \neq 0$),再结合Abel判别法可知由$\int_{0}^{+\infty} e^{-px} \frac{\cos bx - \cos ax}{x} dx$关于$p \in [0,1]$一致收敛,结合连续性定理\ref{含参变量反常积分_连续性定理},
+此时令$ p \to 0 $即可得$\int_{0}^{+\infty} \frac{\cos bx - \cos ax}{x}dx = - \ln |\frac{b}{a}|$
+$\hfill \blacksquare$
+
+
+\begin{example}
+计算 $\varphi(y)=\int_{0}^{+\infty}e^{-x}\frac{1-\cos xy}{x^2}dx$.
+\end{example}
+
+\begin{proof}
+注意到 $\frac{1-\cos xy}{x^2} = \frac{\cos (x \cdot 0) - \cos xy}{x^2} = \left(\frac{\cos tx}{x^2}\right) \Big|_{t=y}^{t=0} = \int_{0}^{y} \frac{\sin tx}{x} dt $,
+
+那么 $\varphi(y) = \int_{0}^{+\infty} dx \int_{0}^{y} e^{-x} \frac{\sin tx}{x} dt$.
+且显然 $\int_{0}^{+\infty} e^{-x} \frac{\sin tx}{x} dx$ 关于 $t \in [0, y]$ 一致收敛 (Abel判别法) , $e^{-x} \frac{\sin tx}{x}$ 在 $[a, +\infty) \times [0, y]$ 上连续, 所以由可积性定理\ref{含参变量反常积分_可积性定理(一个有限区间)}可知
+\begin{align*}
+\varphi(y) &= \int_{0}^{y} dt \int_{0}^{+\infty} e^{-x} \frac{\sin tx}{x} dx = \int_{0}^{y} \arctan t \, dt = t \arctan t \Big|_{0}^{y} - \int_{0}^{y} \frac{t}{1+t^2} dt \\
+&= y \arctan y - \frac{1}{2} \ln(1+t^2) \Big|_{0}^{y} = y \arctan y - \frac{1}{2} \ln(1+y^2)
+\end{align*}
+其中第二个等号用了例题\ref{ex13.2.30}(1)的结论.
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{example}\label{ex13.2.32}
+设 $p$ 为实数, 且 $0<a<b$, 证明
+\begin{enumerate}
+    \item[(1)] $I = \int_{0}^{+\infty} \frac{e^{-ax}-e^{-bx}}{x} \cos px \, dx = \frac{1}{2} \ln \frac{b^2+p^2}{a^2+p^2}$
+    \item[(2)] $J = \int_{0}^{+\infty} \frac{e^{-ax}-e^{-bx}}{x} \sin px \, dx = \arctan \frac{p}{a} - \arctan \frac{p}{b}$
+\end{enumerate}
+\end{example}
+
+\begin{proof}
+(1)
+$\frac{e^{-ax}-e^{-bx}}{x} = \left(\frac{e^{-xy}}{x}\right)\Big|_{y=b}^{y=a} = \int_a^b e^{-xy} dy$,
+那么$I = \int_{0}^{+\infty} dx \int_a^b e^{-xy} \cos px dy$. 由于 $\int_{0}^{+\infty} e^{-xy} \cos px dx$ 关于 $y \in [a,b]$ 一致收敛, 且 $e^{-xy} \cos px$ 在 $[0, +\infty) \times [a,b]$ 上连续, 故
+$$I = \int_a^b dy \int_0^{+\infty} e^{-xy} \cos px dx = \int_a^b \frac{y}{y^2+p^2} dy = \frac{1}{2} \ln \frac{b^2+p^2}{a^2+p^2}$$. $\hfill \blacksquare$
+
+(2)
+$\frac{e^{-ax}-e^{-bx}}{x} = \left(\frac{e^{-xy}}{x}\right) \Big|_{y=b}^{y=a} = \int_a^b e^{-xy} dy$,
+那么$J = \int_0^{+\infty} dx \int_a^b e^{-xy} \sin px dy$,
+
+由于$\int_{0}^{+\infty} e^{-xy} \sin px dy$ 在 $x \in [a,b]$ 上一致收敛. 且 $e^{-xy} \sin px$ 在 $[0, +\infty) \times [a,b]$ 上连续. 故由定理\ref{含参变量反常积分_可积性定理(一个有限区间)}可知
+$J =  \int_0^{+\infty} dx \int_a^b e^{-xy} \sin px dy =  \int_{a}^{b} dy \int_{0}^{+\infty} e^{-xy} \sin px dx = \int_a^b \frac{p}{p^2+y^2} dy = \arctan\frac{b}{p} - \arctan\frac{a}{p} \quad (p \ne 0)$
+
+当$p=0$时，$J = 0$
+
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{proposition*}
+    $$\int_0^{+\infty} e^{-xy} \cos px dx = \frac{y}{y^2+p^2}, \quad y>0, p \in R$$
+    $$\int_{0}^{+\infty} e^{-xy} \sin px dx = \frac{p}{y^2+p^2}, \quad y>0, p \in R$$
+\end{proposition*}
+
+\begin{remark}
+利用第一道例题中的结论可迅速得到第二个积分的结果:
+$$ J = \int_{0}^{+\infty} e^{-ax}\frac{\sin px}{x}dx - \int_{0}^{+\infty} e^{-bx}\frac{\sin px}{x}dx = \arctan\frac{p}{a} - \arctan\frac{p}{b}. $$
+而根据公式
+$$ \arctan x + \arctan \frac{1}{x} = \begin{cases} \frac{\pi}{2}, & x>0, \\ -\frac{\pi}{2}, & x<0 \end{cases} $$
+可知
+$$ \arctan\frac{p}{a} - \arctan\frac{p}{b} = \begin{cases} \arctan\frac{b}{p} - \arctan\frac{a}{p}, & p \ne 0, \\ 0, & p=0. \end{cases} $$
+
+\end{remark}
+\begin{remark}
+当 $p=0$ 时, 有
+$$ \int_{0}^{+\infty} \frac{e^{-ax}-e^{-bx}}{x}dx = \ln\frac{b}{a}, $$
+此即富如尼积分的特例.
+\end{remark}
+
+\begin{example}
+求积分 $I = \int_{0}^{+\infty} \frac{e^{-x^2} - e^{-2x^2}}{x} dx$.
+\end{example}
+
+\begin{proof}
+令 $t=x^2$, 则 $x=\sqrt{t}$
+$$ I = \int_{0}^{+\infty} \frac{e^{-x^2} - e^{-2x^2}}{x} dx = \frac{1}{2} \int_{0}^{+\infty} \frac{e^{-t} - e^{-2t}}{t} dt = \frac{1}{2} \ln 2 $$
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{example}[$\bigstar \bigstar$]
+设 $p \ne 0, b>0$, 证明
+\begin{enumerate}
+    \item[(1)] $I = \int_{0}^{+\infty} \frac{1-e^{-bx}}{x} \cos px \, dx = \frac{1}{2} \ln \frac{b^2+p^2}{p^2}$;
+    \item[(2)] $J = \int_{0}^{+\infty} \frac{1-e^{-bx}}{x} \sin px \, dx = \arctan \frac{p}{b}$.
+\end{enumerate}
+\end{example}
+
+\begin{proof}
+当 $b=0$ 时显然成立. 只考虑 $b>0$ 的情形.
+
+(2) $J = \int_0^{+\infty} \frac{\sin px}{x} dx - \int_0^{+\infty} e^{-bx} \frac{\sin px}{x} dx = \frac{\pi}{2} \operatorname{sgn} p - \arctan \frac{p}{b} = \arctan \frac{b}{p}$.
+$$ \arctan x + \arctan \frac{1}{x} = \begin{cases} \pi/2, & x>0 \\ -\pi/2, & x<0 \end{cases} $$
+
+(1) 由例题\ref{ex13.2.32}知, $F(a) = \int_{0}^{+\infty} \frac{e^{-ax}-e^{-bx}}{x} \cos px dx = \frac{1}{2} \ln \frac{b^2+p^2}{a^2+p^2}, a \in (0, b)$.\textcolor{blue}{注意$a \ne 0$,所以我们还要说明$F(a)$在$[0,b)$上的连续性,才能在前面的表达式中取极限.}
+
+注意到被积函数在0处有极限, 故 $x=0$ 不是瑕点.
+我们只要说明$F(a)$在$[0,b)$上的一致收敛性再结合被积函数的连续性即可.下进行具体说明：
+
+由于$\int_1^{+\infty} \frac{\cos px}{x} dx$ 收敛 (Dirichlet判别法),则对 $\forall a \in [0,b)$ 一致收敛. 
+另外$\forall x, a<b$, $g(x) = e^{-ax}-e^{-bx}$, $g'(x) = e^{-bx}[b-a e^{(b-a)x}]$. 在$x$充分大时, $g'(x) < 0$.
+从而 $g(x)$ 在$x$充分大后单调递减. 且 $|e^{-ax}-e^{-bx}| \le 2$.
+那么由 Abel判别法知 $F(a)$ 在 $[0,b)$ 上一致收敛. 结合被积函数的连续性(补充 $x=0$ 处的极限).
+从而 $F(a) = \int_{0}^{+\infty} \frac{e^{-ax}-e^{-bx}}{x} \cos px dx$ 在 $[0,b)$ 连续. 
+$$ F(0) = \lim\limits_{a\to 0^+} F(a) = \lim\limits_{a\to 0^+} \frac{1}{2} \ln \frac{b^2+p^2}{a^2+p^2} = \frac{1}{2} \ln \frac{b^2+p^2}{p^2} $$
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{example}[$\bigstar \bigstar$]
+计算 $I(\alpha) = \int_{0}^{+\infty} \frac{\arctan(\alpha x)}{x(1+x^2)} dx \quad (\alpha > 0)$.
+\end{example}
+
+\begin{proof}
+注意到
+\textcolor{blue}{$$ \frac{\arctan(\alpha x)}{x} = \frac{\arctan(xy)}{x}\Bigg|_{y=0}^{y=\alpha} = \int_0^\alpha \frac{1}{1+x^2y^2} dy $$}
+\textcolor{red}{（这种形式写成积分需要积累一下）}
+
+从而
+$$ I(\alpha) = \int_0^{+\infty} \frac{\arctan(\alpha x)}{x(1+x^2)} dx = \int_0^{+\infty} dx \int_0^\alpha \frac{1}{(1+x^2y^2)(1+x^2)} dy $$
+由于 $0 < \frac{1}{(1+x^2y^2)(1+x^2)} \le \frac{1}{1+x^2}, \quad x \in [0, +\infty)$.
+而 $\int_0^{+\infty} \frac{1}{1+x^2} dx$ 收敛, 那么由 M-判别法知 $\int_0^{+\infty} \frac{1}{(1+x^2y^2)(1+x^2)} dx$ 关于 $y \in [0, \alpha]$ 一致收敛.
+又因为 $\frac{1}{(1+x^2y^2)(1+x^2)}$ 在 $[0, +\infty) \times [0, \alpha]$ 上连续, 从而
+\begin{align*}
+I(\alpha) &= \int_0^{+\infty} dx \int_0^\alpha \frac{1}{(1+x^2y^2)(1+x^2)} dy = \int_0^\alpha dy \int_0^{+\infty} \frac{1}{(1+x^2y^2)(1+x^2)} dx \\
+&\textcolor{blue}{= \int_0^\alpha dy \int_0^{+\infty} \frac{1}{y^2-1} \left(\frac{y^2}{1+x^2y^2} - \frac{1}{1+x^2}\right) dx} \\
+&= \int_0^\alpha \frac{1}{y^2-1} \left[ y \arctan(xy) - \arctan x \right]_{x=0}^{x=+\infty} dy \\
+&= \int_0^\alpha \frac{1}{y^2-1} \left[ (y\frac{\pi}{2} - \frac{\pi}{2}) - 0 \right] dy = \int_0^\alpha \frac{\frac{\pi}{2}(y-1)}{y^2-1} dy \\
+&= \int_0^\alpha \frac{\pi/2}{y+1} dy = \frac{\pi}{2} \ln(y+1) \Bigg|_0^\alpha = \frac{\pi}{2} \ln(\alpha+1)
+\end{align*}
+$\hfill \blacksquare$
+\end{proof}
+\begin{note}
+    计算技巧：对于$\frac{1}{(1+x^2y^2)(1+x^2)}$形式,我们可以在分母的较低项中补出另一个较高项,然后再进行拆分,比如$$\frac{1}{(1+x^2y^2)(1+x^2)} = \frac{y^2}{(1+x^2y^2)(y^2+x^2y^2)} = \frac{y^2}{y^2-1} \left(\frac{1}{1+x^2y^2} - \frac{1}{y^2+x^2y^2}\right) = \frac{1}{y^2-1} \left(\frac{y^2}{1+x^2y^2} - \frac{1}{1+x^2}\right)$$
+\end{note}
+
+\begin{example}[$\bigstar$]
+用含参量积分求 $I = \int_{0}^{1} \frac{\arctan x}{x \sqrt{1-x^2}} dx$.
+\end{example}
+
+\begin{proof}
+注意到 $\frac{\arctan x}{x} = \int_0^1 \frac{1}{1+x^2y^2} dy$.
+$$ I = \int_0^1 \frac{\arctan x}{x \sqrt{1-x^2}} dx = \int_0^1 dx \int_0^1 \frac{1}{\sqrt{1-x^2}(1+x^2y^2)} dy $$
+由于 $0 < \frac{1}{\sqrt{1-x^2}(1+x^2y^2)} \le \frac{1}{\sqrt{1-x^2}}$. 而 $\int_0^1 \frac{1}{\sqrt{1-x^2}} dx = \arcsin 1$ 收敛.
+那么 $\int_0^1 \frac{1}{\sqrt{1-x^2}(1+x^2y^2)} dx$ 关于 $x \in [0,1]$ 一致收敛.
+从而有
+\begin{align*}
+I &= \int_0^1 dx \int_0^1 \frac{1}{\sqrt{1-x^2}(1+x^2y^2)} dy = \int_0^1 dy \int_0^1 \frac{1}{\sqrt{1-x^2}(1+x^2y^2)} dx \\
+&\xlongequal{x=\cos t} \int_0^1 dy \int_0^{\pi/2} \frac{\sin t}{\sin t(1+\cos^2 t y^2)} dt = \int_0^1 dy \int_0^{\pi/2} \frac{1}{1+y^2\cos^2 t} dt \\
+&= \int_0^1 dy \int_0^{\pi/2} \frac{\sec^2 t}{1+\tan^2 t + y^2} dt = \int_0^1 dy \int_0^{\pi/2} \frac{1}{1+y^2+\tan^2 t} d(\tan t) \\
+&= \int_0^1 \frac{1}{\sqrt{1+y^2}} \left[ \arctan\left(\frac{\tan t}{\sqrt{1+y^2}}\right) \right]_{t=0}^{t=\pi/2} dy = \frac{\pi}{2} \int_0^1 \frac{1}{\sqrt{1+y^2}} dy \\
+&= \frac{\pi}{2} \left[ \ln(y+\sqrt{1+y^2}) \right]_0^1 = \frac{\pi}{2} \ln(\sqrt{2}+1)
+\end{align*}
+$\hfill \blacksquare$
+\end{proof}
+
+\subsubsection{积分号下微分法与Euler-Poisson积分}
+
+\begin{proposition*}[Euler-Poisson积分]
+    $$\int_{0}^{+\infty} e^{-x^2} dx = \frac{\sqrt{\pi}}{2}$$
+    进而
+ $$\int_{0}^{+\infty} e^{-ax^2} dx = \frac{\sqrt{\pi}}{2\sqrt{a}}, \quad a > 0. $$
+\end{proposition*}
+
+\begin{example}
+证明 $I_{2n} = \int_{0}^{+\infty} x^{2n} e^{-ax^2} dx = \frac{\sqrt{\pi}}{2} \frac{(2n-1)!!}{2^n a^{n+\frac{1}{2}}}$, 其中 $a>0, n \in \mathbb{N}$.
+\end{example}
+
+\begin{proof}
+\begin{align*}
+I_{2n} &= \int_0^{+\infty} x^{2n} e^{-ax^2} dx = \frac{1}{2n+1} \int_0^{+\infty} e^{-ax^2} d(x^{2n+1}) \\
+&= \frac{1}{2n+1} \left( \left[ x^{2n+1} e^{-ax^2} \right]_0^{+\infty} + 2a \int_0^{+\infty} x^{2n+2} e^{-ax^2} dx \right) \\
+&= \frac{2a}{2n+1} \int_0^{+\infty} x^{2n+2} e^{-ax^2} dx = \frac{2a}{2n+1} I_{2n+2}
+\end{align*}
+从而有 $I_{2n+2} = \frac{2n+1}{2a} I_{2n}$. 即 $I_{2n} = \frac{2n-1}{2a} I_{2n-2}$.
+\begin{align*}
+I_{2n} &= \frac{2n-1}{2a} I_{2n-2} = \frac{(2n-1)(2n-3)}{2^2 a^2} I_{2n-4} = \dots = \frac{(2n-1)!!}{2^n a^n} I_0 = \frac{(2n-1)!!}{2^n a^n} \cdot \frac{\sqrt{\pi}}{2\sqrt{a}} = \frac{\sqrt{\pi}}{2} \frac{(2n-1)!!}{2^n a^{n+\frac{1}{2}}}
+\end{align*}
+其中 $a>0, n \in \mathbb{N}$.
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{example}[$\bigstar \bigstar$]
+计算 $\varphi(r) = \int_{0}^{+\infty} e^{-x^2} \cos rx \, dx$.
+\end{example}
+
+\begin{proof}
+令 $f(x,r) = e^{-x^2}\cos rx$, $f_r(x,r) = -x e^{-x^2}\sin rx$. 
+
+注意到 $f(x,r)$ 和 $f_r(x,r)$ 在 $[0, +\infty) \times \mathbb{R}$ 上连续.
+
+$0 < |f(x,r)| = |e^{-x^2}\cos rx| \le e^{-x^2}$, 而 $\int_0^{+\infty} e^{-x^2} dx$ 收敛, 那么由 M-判别法知 $\int_{0}^{+\infty}f(x,r) dx$ 在 $(-\infty, +\infty)$ 上一致收敛.
+
+$0 < |f_r(x,r)| = |-x e^{-x^2} \sin rx| \le x e^{-x^2}$, 而 $\int_0^{+\infty} x e^{-x^2} dx$ 收敛, 由 M-判别法知 $\int_{0}^{+\infty}f_r(x,r) dx$ 在 $(-\infty, +\infty)$ 上一致收敛.
+
+\begin{align*}
+\varphi'(r) &= \int_0^{+\infty} -x e^{-x^2} \sin rx \, dx = -\int_0^{+\infty} x e^{-x^2} \sin rx \, dx = \frac{1}{2} \int_0^{+\infty} \sin rx \, d(e^{-x^2}) \\
+&= \frac{1}{2} \left[ \sin rx e^{-x^2} \right]_0^{+\infty} - \frac{r}{2} \int_0^{+\infty} \cos rx e^{-x^2} dx = -\frac{r}{2}\varphi(r)
+\end{align*}
+有 $\varphi'(r) + \frac{r}{2} \varphi(r) = 0$, 即 $\left( \varphi(r) e^{\frac{r^2}{4}} \right)' = 0$.
+得 $\varphi(r) e^{\frac{r^2}{4}} = C$. 又由 $\varphi(0) = \int_0^{+\infty} e^{-x^2} dx = \frac{\sqrt{\pi}}{2}$.
+从而可计算得$C = \varphi(0) = \frac{\sqrt{\pi}}{2}$, 故 $\varphi(r) = \frac{\sqrt{\pi}}{2} e^{-\frac{r^2}{4}}$.
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{corollary*}
+$$ \int_{-\infty}^{+\infty} e^{-x^2} \cos rx \, dx = \sqrt{\pi} e^{-\frac{r^2}{4}}, \quad \int_{0}^{+\infty} e^{-x^2} \cos 2rx \, dx = \frac{\sqrt{\pi}}{2} e^{-r^2} $$
+\end{corollary*}
+
+\begin{example}[$\bigstar \bigstar$]
+计算 $\varphi(r) = \int_{0}^{+\infty} e^{-x^2} \sin rx \, dx$.
+\end{example}
+
+\begin{proof}
+令 $f(x,r) = e^{-x^2}\sin rx$, $f_r(x,r) = x e^{-x^2}\cos rx$.
+
+$f(x,r), f_r(x,r)$ 在 $[0, +\infty) \times (-\infty, +\infty)$ 上连续.
+
+$0 < |f(x,r)| \le e^{-x^2}$, 而 $\int_0^{+\infty} e^{-x^2} dx$ 收敛, 由 M-判别法知 $\int_0^{+\infty} f(x,r) dx$ 在 $(-\infty, +\infty)$ 上一致收敛.
+
+$0 < |f_r(x,r)| \le x e^{-x^2}$, 而 $\int_0^{+\infty} x e^{-x^2} dx$ 收敛, 由 M-判别法知 $\int_0^{+\infty} f_r(x,r) dx$ 在 $(-\infty, +\infty)$ 上一致收敛.
+\begin{align*}
+\varphi'(r) &= \int_0^{+\infty} x e^{-x^2} \cos rx \, dx = -\frac{1}{2} \int_0^{+\infty} \cos rx \, d(e^{-x^2}) \\
+&= -\frac{1}{2} \left[ \cos rx e^{-x^2} \right]_0^{+\infty} - \frac{r}{2} \int_0^{+\infty} \sin rx e^{-x^2} dx \\
+&= -\frac{1}{2}(-1+r\varphi(r)) = \frac{1}{2} - \frac{r}{2}\varphi(r)
+\end{align*}
+从而 $\varphi'(r) + \frac{r}{2} \varphi(r) = \frac{1}{2}$, 进而 $\left( \varphi(r) e^{\frac{r^2}{4}} \right)'_r = \frac{1}{2} e^{\frac{r^2}{4}}$.
+从而 $\varphi(r) e^{\frac{r^2}{4}} = \varphi(0) e^0 + \int_0^r \frac{1}{2} e^{\frac{x^2}{4}} dx$.
+因 $\varphi(0) = 0$, 那么 $\varphi(r) = \frac{1}{2} e^{-\frac{r^2}{4}} \int_0^r e^{\frac{x^2}{4}} dx$.
+\end{proof}
+
+\begin{corollary*}
+$$ \int_{0}^{+\infty} e^{-x^2} \sin 2rx \, dx = e^{-r^2} \int_0^r e^{x^2} dx. $$
+\end{corollary*}
+
+\begin{example}
+计算 $J = \int_{0}^{+\infty} \frac{e^{-ax^2} - e^{-bx^2}}{x^2} dx$, 其中 $0<a<b$.
+\end{example}
+
+\begin{proof}
+\begin{description}
+    \item[方法1:$\bigstar$] \textcolor{blue}{$J = \int_0^{+\infty} (e^{-ax^2}-e^{-bx^2}) d(-\frac{1}{x}) = 2b\int_0^{+\infty} e^{-bx^2} dx - 2a\int_0^{+\infty} e^{-ax^2} dx = \sqrt{\pi}(\sqrt{b}-\sqrt{a})$.}
+
+    \item[方法2:] 注意到 $(\frac{e^{-ax^2}-e^{-bx^2}}{x^2}) = \left(\frac{e^{-x^2y}}{x^2}\right) \Big|_{y=b}^{y=a} = \int_a^b e^{-x^2y} dy$.
+
+    那么 $J = \int_0^{+\infty} dx \int_a^b e^{-x^2y} dy = \int_a^b dy \int_0^{+\infty} e^{-x^2y} dx = \int_a^b \frac{\sqrt{\pi}}{2\sqrt{y}} dy = \sqrt{\pi}(\sqrt{b}-\sqrt{a})$.
+
+    注: 在 $y \in [a,b]$ 时, $|e^{-x^2y}| \le e^{-ax^2}$, 而 $\int_0^{+\infty} e^{-ax^2} dx$ 收敛, 故 $\int_0^{+\infty} e^{-x^2y} dx$ 关于 $y \in [a,b]$ 一致收敛, 从而积分可换序.
+\end{description}
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{corollary*}
+    设 $0 < a < b$, 则 $\int_{0}^{+\infty} \frac{e^{-a^2x^2} - e^{-b^2x^2}}{x^2} dx = \sqrt{\pi}(b-a)$.
+\end{corollary*}
+
+\begin{example}[$\bigstar \bigstar$]
+计算 $J = \int_{0}^{+\infty} \frac{e^{-ax^2} - \cos bx}{x^2} dx$, 其中 $a > 0$.
+\end{example}
+
+\begin{solution}
+\begin{align*}
+J &= \int_0^{+\infty} \frac{e^{-ax^2} - \cos bx}{x^2} dx = - \int_0^{+\infty} (e^{-ax^2} - \cos bx) d\Big ( \frac{1}{x}\Big) \\
+&= -\Big( \frac{e^{-ax^2} - \cos bx}{x} \Big|_0^{+\infty} - \int_0^{+\infty} \frac{1}{x} (-2ax e^{-ax^2} + b \sin bx) dx \Big) \\
+&= -2a \int_0^{+\infty} e^{-ax^2} dx + b \int_0^{+\infty} \frac{\sin bx}{x} dx \\
+&= -2a \frac{\sqrt{\pi}}{2\sqrt{a}} + b \cdot \frac{\pi}{2} \operatorname{sgn} b = |b|\frac{\pi}{2} - \sqrt{a\pi}
+\end{align*}
+$\hfill \blacksquare$
+\end{solution}
+
+\subsection{既是含参量瑕积分, 又是含参量无穷积分}
+\begin{example}[$\bigstar \bigstar$]
+计算 $\varphi(t) = \int_{1}^{+\infty} \frac{\arctan tx}{x^2\sqrt{x^2-1}} dx$.
+\end{example}
+
+\begin{proof}
+$\varphi(t)$ 为奇函数, 先考虑 $t \ge 0$ 情形.
+
+令 $f(x,t) = \frac{\arctan tx}{x^2\sqrt{x^2-1}}$, $f_t(x,t) = \frac{1}{(1+t^2x^2)x\sqrt{x^2-1}}$.显然 $f(x,t)$ 和 $f_t(x,t)$ 在 $\textcolor{red}{(}1, +\infty) \times \textcolor{red}{[}0, +\infty)$ 上连续.
+
+考虑 $\int_1^{+\infty} f(x,t) dx$,$0< |f(x,t)| \le \frac{\pi}{2} \cdot \frac{1}{x^2\sqrt{x^2-1}}$, 而对于 $\int_1^{+\infty} \frac{1}{x^2\sqrt{x^2-1}} dx$,
+
+注意到 $x \to 1^+$ 时, $\frac{1}{x^2\sqrt{x^2-1}} \sim \frac{1}{\sqrt{2(x-1)}}$, 而 $\int_1^2 \frac{1}{\sqrt{2(x-1)}} dx$ 收敛,
+
+$x \to +\infty$ 时, $\frac{1}{x^2\sqrt{x^2-1}} \sim \frac{1}{x^3}$, 而 $\int_2^{+\infty} \frac{1}{x^3} dx$ 收敛.
+从而 $\int_1^{+\infty} \frac{1}{x^2\sqrt{x^2-1}} dx$ 收敛. 那么由 M-判别法知 $\int_1^{+\infty} f(x,t) dx$ 在 $t \ge 0$ 上一致收敛.
+
+再考虑 $\int_1^{+\infty} f_t(x,t) dx$. $|f_t(x,t)| \le \frac{1}{x\sqrt{x^2-1}}$. 同理由于 $\int_1^{+\infty} \frac{1}{x\sqrt{x^2-1}} dx$ 收敛,
+从而 $\int_1^{+\infty} f_t(x,t) dx$ 在$t \ge 0$ 一致收敛.
+
+综上$\varphi(t)$在$t \ge 0$上可导,从而有
+
+\begin{align*}
+\varphi'(t) &= \int_1^{+\infty} \frac{1}{(1+t^2x^2)x\sqrt{x^2-1}} dx \quad  \\
+& \xlongequal{\text{令 } x=\sec u} \int_0^{\pi/2} \frac{1}{(1+t^2\sec^2 u) \sec u \sqrt{\sec^2 u -1}} \sec u \tan u \, du = \int_0^{\pi/2} \frac{1}{1+t^2\sec^2 u} du \\
+&= \int_0^{\pi/2} \frac{1}{1+t^2(1+\tan^2 u)} du \xlongequal{\text{令 } v=\tan u} \int_0^{+\infty} \frac{1}{(1+t^2)+t^2v^2} \cdot \frac{1}{1+v^2} dv \\
+&= \int_0^{+\infty} \frac{1}{(1+t^2)+t^2v^2} \cdot \frac{t^2+t^2v^2}{t^2+t^2v^2} dv = t^2 \int_0^{+\infty} \left(\frac{1}{t^2v^2+t^2} - \frac{1}{t^2v^2+t^2+1}\right) dv \\
+&= \int_0^{+\infty} \frac{1}{1+v^2} dv - t^2 \int_0^{+\infty} \frac{1}{t^2v^2+t^2+1} dv \\
+&= \frac{\pi}{2}\left(1-\frac{t}{\sqrt{1+t^2}}\right)
+\end{align*}
+那么积分有 $\varphi(t) = \frac{\pi}{2}(t - \sqrt{1+t^2}) + C$.
+
+而 $\varphi(0)=0$, 从而 $\varphi(0) = \frac{\pi}{2}(0-1) + C = 0$, 从而 $C = \frac{\pi}{2}$.
+
+那么
+$$ \varphi(t) = 
+\begin{cases}
+\frac{\pi}{2}(t-\sqrt{1+t^2}) + \frac{\pi}{2}, & t>0 \\
+\frac{\pi}{2}(t+\sqrt{1+t^2}) - \frac{\pi}{2}, & t<0
+\end{cases}
+$$
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{note}
+    即是含参量瑕积分, 又是含参量无穷积分, 只要对于$\int_1^{+\infty} f(x,t) dx$和$\int_1^{+\infty} f_t(x,t) dx$两个积分都能说明一致收敛性, 那么就可以使用积分号下微分法.而且在说明一致收敛性时, 需要分别考虑两个积分的\textcolor{blue}{瑕点}和\textcolor{blue}{无穷远点处}的情形.通常采用\textcolor{red}{分段法和等价法(比较原理)}进行说明.
+\end{note}
+
+\begin{example}
+计算 $F(y) = \int_0^{+\infty} \frac{\sin \sqrt{x}y}{x(1+x)} dx$.
+\end{example}
+\begin{proof}
+记 $f(x,y) = \frac{\sin \sqrt{x}y}{x(1+x)}$, 则 $F(y) = \int_0^{+\infty} f(x,y) dx$. 注意到 $F(y)$ 为奇函数, 故先考虑 $y \ge 0$.
+
+$1^\circ$ $x \in [1, +\infty)$ 时, 由于 $|f(x,y)| \le \frac{1}{x(x+1)}$, 且 $\int_1^{+\infty} \frac{1}{x(x+1)} dx$ 收敛, 那么由 M-判别法知
+$$ \int_1^{+\infty} \frac{\sin \sqrt{x}y}{x(1+x)} dx \text{ 关于 } y \in [0, +\infty) \text{ 一致收敛.} $$
+$x \in (0, 1]$ 时, 考虑 $y \in [0, a], (a>0)$ 且有
+$ |f(x,y)| \le \frac{\sqrt{x}a}{x(1+x)} \le \frac{a}{\sqrt{x}} \quad \text{而 } \int_0^1 \frac{a}{\sqrt{x}} dx \text{ 收敛.} $
+则
+$$ \int_0^1 \frac{\sin \sqrt{x}y}{x(1+x)} dx \text{ 关于 } y \in [0, a] \text{ 一致收敛.} $$
+综上, \textcolor{blue}{$F(y) = \int_0^{+\infty} f(x,y) dx$ 在 $y \in [0, +\infty)$ 上一致收敛}, 结合 \textcolor{blue}{$f(x,y)$ 在 $(0, +\infty) \times [0, +\infty)$ 上连续}, 知 $F(y)$ 在 $[0, +\infty)$ 上连续.
+
+$2^\circ$ 注意到 \textcolor{blue}{$f_y(x,y) = \frac{\cos\sqrt{x}y}{\sqrt{x}(1+x)}$ 在 $[0, +\infty)$ 上连续}.
+$|f_y(x,y)| \le \frac{1}{\sqrt{x}(1+x)}$, 且 $\int_0^{+\infty} \frac{1}{\sqrt{x}(1+x)} dx$ 收敛, 故 \textcolor{blue}{$\int_0^{+\infty} f_y(x,y) dx$ 在 $[0, +\infty)$ 上一致收敛}.
+
+由 $1^\circ, 2^\circ$ 知 $F(y)$ 可导, 且 $F'(y) = \int_0^{+\infty} \frac{\cos\sqrt{x}y}{\sqrt{x}(1+x)} dx, \quad y \in [0, +\infty)$.
+
+$3^\circ$ 由于 $f_{yy}(x,y) = -\frac{\sin\sqrt{x}y}{1+x} = -\frac{\sin\sqrt{x}y}{\sqrt{x}} \frac{\sqrt{x}}{1+x}$ 在 $(0, +\infty) \times [0, +\infty)$ 上连续,
+且注意到 $x=0$ 不是 $\int_0^{+\infty} f_{yy}(x,y) dx$ 的瑕点 (在 $x=0$ 处极限存在).
+还注意到当 $y \in [y_0, +\infty)$ ($y_0>0$), 对 $\forall M > 0$,
+$$\left|\int_0^M \frac{\sin\sqrt{x}y}{\sqrt{x}} dx\right| = \left|2 \int_0^{\sqrt{M}} \sin uy \, du\right| = \left|\frac{2(1-\cos\sqrt{M}y)}{y}\right| \le \frac{4}{y_0}.$$
+且 $\frac{\sqrt{x}}{1+x}$ 在 $(0, +\infty)$ 上关于 $x$ 单调递减, 且当 $x \to +\infty$ 时 $\frac{\sqrt{x}}{1+x}$ 关于 $y \in [y_0, +\infty)$ 一致收敛到 $0$. 由 Dirichlet 判别法知 $\int_0^{+\infty} f_{yy}(x,y) dy$ 在 $[y_0, +\infty)$ 上一致收敛.
+所以 $F'(y)$ 在 $(0, +\infty)$ 上可导, 且
+$$F''(y) = \int_0^{+\infty} f_{yy}(x,y) dx = -\int_0^{+\infty} \frac{\sin\sqrt{x}y}{1+x} dx, \quad y \in (0, +\infty)$$
+于是当 $y > 0$ 时有
+\begin{align*}
+F(y) - F''(y) &= \int_0^{+\infty} \left[\frac{\sin\sqrt{x}y}{x(1+x)} + \frac{\sin\sqrt{x}y}{1+x}\right] dx = \int_0^{+\infty} \frac{\sin\sqrt{x}y}{x} dx = 2\int_0^{+\infty} \frac{\sin uy}{u} du = \pi
+\end{align*}
+
+接下来就是求解微分方程
+
+记 $G(y) = F(y) - F'(y)$, 则有
+$$ G(y) + G'(y) = [F(y) - F'(y)] + [F'(y) - F''(y)] = F(y) - F''(y) = \pi, $$
+即 $[G(y)e^y]' = [G(y) + G'(y)]e^y = \pi e^y$, 从而
+$$ G(y)e^y = \pi e^y + C_1. $$
+特别地, 取 $y=0$, 有
+$$ \pi + C_1 = G(0) = F(0) - F'(0) = 0 - \int_0^{+\infty} \frac{1}{\sqrt{x}(1+x)}dx = -2\arctan\sqrt{x}\Big|_0^{+\infty} = -\pi, $$
+解得 $C_1 = -2\pi$, 即
+$$ G(y) = \pi - 2\pi e^{-y}, \quad y \ge 0. $$
+同时, 又因为
+$$ [F(y)e^{-y}]' = [F'(y) - F(y)]e^{-y} = -G(y)e^{-y} = 2\pi e^{-2y} - \pi e^{-y}, $$
+所以 $F(y)e^{-y} = -\pi e^{-2y} + \pi e^{-y} + C_2$. 特别地, 取 $y=0$, 有
+$$ -\pi + \pi + C_2 = F(0) = 0, $$
+解得 $C_2 = 0$, 即
+$$ F(y) = \pi(1-e^{-y}), \quad y \ge 0. $$
+(4) 由于 $F(y)$ 为奇函数, 所以当 $y < 0$ 时, 有 $-y > 0$, 进而 $F(y)=-F(-y) = -\pi(1-e^y)$, 即
+$$ F(y) = \begin{cases} \pi(1-e^{-y}), & y \ge 0, \\ -\pi(1-e^y), & y < 0. \end{cases} $$
+$\hfill \blacksquare$
+\end{proof}
+
+\subsubsection{含两个参量的反常积分}
+\begin{example}
+计算 $g(\alpha, \beta) = \int_{0}^{+\infty} \frac{\arctan\alpha x \cdot \arctan\beta x}{x^2} dx$.
+\end{example}
+\begin{proof}
+先讨论 $\alpha, \beta \ge 0$ 的情况:
+
+(1) 记 $g(\alpha, \beta) = \int_0^{+\infty} f(x, \alpha, \beta) dx$, 其中
+$$f(x, \alpha, \beta) = \begin{cases} \frac{\arctan\alpha x \cdot \arctan\beta x}{x^2}, & x > 0, \alpha, \beta \ge 0, \\ \alpha\beta, & x=0, \alpha, \beta \ge 0. \end{cases}$$
+显然 $f(x, \alpha, \beta)$ 在 $[0, +\infty) \times [0, +\infty) \times [0, +\infty)$ 上连续 ($x=0$ 不是瑕点), 同时当 $x \ge 1$ 时, $|f(x, \alpha, \beta)| \le \frac{\pi^2}{4x^2}$.
+由 $\int_1^{+\infty} \frac{\pi^2}{4x^2} dx$ 收敛可知 $g(\alpha, \beta)$ 在 $[0, +\infty) \times [0, +\infty)$ 上一致收敛且连续.
+
+(2) 将 $\beta \in [0, +\infty)$ 看成定值, 将 $\alpha \in [0, +\infty)$ 看成变量. 由于
+$$f_\alpha(x, \alpha, \beta) = \begin{cases} \frac{\arctan \beta x}{x(1+\alpha^2x^2)}, & x > 0, \alpha, \beta \ge 0, \\ \beta, & x=0, \alpha, \beta \ge 0. \end{cases}$$
+显然 $f_\alpha(x, \alpha, \beta)$ 在 $[0, +\infty) \times [0, +\infty) \times [0, +\infty)$ 上连续 ($x=0$ 不是瑕点), 并且当 $\alpha \in [\alpha_0, +\infty) (\alpha_0 > 0)$ 时, 有
+$$\left| \frac{\arctan \beta x}{x(1+\alpha^2x^2)} \right| \le \frac{\pi}{2x(1+\alpha_0^2x^2)}, \quad x \ge 1.$$
+显然 $\int_1^{+\infty} \frac{\pi}{2x(1+\alpha_0^2x^2)} dx$ 收敛, 所以 $\int_0^{+\infty} f_\alpha(x, \alpha, \beta) dx$ 关于 $\alpha \in (0, +\infty)$ 内闭一致收敛, 从而 $g(\alpha, \beta)$ 关于 $\alpha \in (0, +\infty)$ 存在连续的偏导数, 即 $g_\alpha(\alpha, \beta)$ 在 $(0, +\infty) \times [0, +\infty)$ 上连续, 且有
+$$ g_\alpha(\alpha, \beta) = \int_0^{+\infty} f_\alpha(x, \alpha, \beta) dx = \int_0^{+\infty} \frac{\arctan\beta x}{x(1+\alpha^2x^2)} dx, \quad \alpha > 0, \beta \ge 0. $$
+
+(3) 将 $\alpha \in (0, +\infty)$ 看成定值, 将 $\beta \in [0, +\infty)$ 看成变量. 由于
+$$ f_{\alpha\beta}(x, \alpha, \beta) = \begin{cases} \frac{1}{(1+\alpha^2x^2)(1+\beta^2x^2)}, & x>0, \alpha>0, \beta \ge 0, \\ 1, & x=0, \alpha>0, \beta \ge 0. \end{cases} $$
+显然 $f_{\alpha\beta}(x, \alpha, \beta)$ 在 $[0, +\infty) \times (0, +\infty) \times [0, +\infty)$ 上连续 ($x=0$ 不是瑕点), 且当 $\beta \in [\beta_0, +\infty) (\beta_0 > 0)$ 时, 有
+$$ \left| \frac{1}{(1+\alpha^2x^2)(1+\beta^2x^2)} \right| \le \frac{1}{1+\alpha^2x^2}, \quad x \ge 1. $$
+因为 $\int_1^{+\infty} \frac{1}{1+\alpha^2x^2} dx$ 收敛, 所以 $\int_0^{+\infty} f_{\alpha\beta}(x, \alpha, \beta) dx$ 关于 $\beta \in (0, +\infty)$ 内闭一致收敛, 从而 $g_\alpha(\alpha, \beta)$ 关于 $\beta \in (0, +\infty)$ 存在连续的偏导数, 即 $g_{\alpha\beta}(\alpha, \beta)$ 在 $(0, +\infty) \times (0, +\infty)$ 上连续, 且当 $\alpha \ne \beta$ 时, 有
+\begin{align*}
+g_{\alpha\beta}(\alpha, \beta) &= \int_0^{+\infty} f_{\alpha\beta}(x, \alpha, \beta) dx = \int_0^{+\infty} \frac{1}{(1+\alpha^2x^2)(1+\beta^2x^2)} dx \\
+&= \frac{1}{\alpha^2 - \beta^2} \int_0^{+\infty} \left( \frac{\alpha^2}{1+\alpha^2x^2} - \frac{\beta^2}{1+\beta^2x^2} \right) dx \\
+&= \frac{1}{\alpha^2 - \beta^2} \left[ \alpha \arctan \alpha x - \beta \arctan \beta x \right]_0^{+\infty} \\
+&= \frac{1}{\alpha^2 - \beta^2} \left( \alpha \frac{\pi}{2} - \beta \frac{\pi}{2} \right) = \frac{\pi}{2(\alpha+\beta)}.
+\end{align*}
+
+由 $g_{\alpha\beta}(\alpha, \beta)$ 的连续性可知上式对 $\alpha = \beta > 0$ 也成立, 即
+$$ g_{\alpha\beta}(\alpha, \beta) = \frac{\pi}{2(\alpha+\beta)}, \quad \alpha > 0, \beta > 0. $$
+
+(4)接下来就是积分，代入初始值求解微分方程:
+
+对 $\beta$ 求积分可得
+$$ g_\alpha(\alpha, \beta) = \frac{\pi}{2} \ln(\alpha+\beta) + C(\alpha), \quad \alpha > 0, \beta > 0. $$
+由于 $g_\alpha(\alpha, \beta)$ 在 $(0, +\infty) \times [0, +\infty)$ 上连续, 所以
+$$ 0 = g_\alpha(\alpha, 0) = \lim\limits_{\beta \to 0^+} g_\alpha(\alpha, \beta) = \lim\limits_{\beta \to 0^+} \left[ \frac{\pi}{2}\ln(\alpha+\beta) + C(\alpha) \right] = \frac{\pi}{2}\ln\alpha + C(\alpha), \quad \alpha > 0, $$
+从而 $C(\alpha) = -\frac{\pi}{2}\ln\alpha$, 即
+$$ g_\alpha(\alpha, \beta) = \frac{\pi}{2}\ln(\alpha+\beta) - \frac{\pi}{2}\ln\alpha, \quad \alpha > 0, \beta \ge 0. $$
+故由公式 $\int \ln x dx = x\ln x - x + C$ 可知
+$$ g(\alpha, \beta) = \frac{\pi}{2}(\alpha+\beta)\ln(\alpha+\beta) - \frac{\pi}{2}\alpha\ln\alpha + C(\beta), \quad \alpha > 0, \beta \ge 0. $$
+由于 $g(\alpha, \beta)$ 在 $[0, +\infty) \times [0, +\infty)$ 上连续, 所以对任意的 $\beta > 0$, 有
+$$ 0 = g(0, \beta) = \lim\limits_{\alpha \to 0^+} g(\alpha, \beta) = \lim\limits_{\alpha \to 0^+} \left[ \frac{\pi}{2}(\alpha+\beta)\ln(\alpha+\beta) - \frac{\pi}{2}\alpha\ln\alpha \right] + C(\beta) = \frac{\pi}{2}\beta\ln\beta + C(\beta), $$
+即 $C(\beta) = -\frac{\pi}{2}\beta\ln\beta$, 因此
+$$ g(\alpha, \beta) = \frac{\pi}{2}(\alpha+\beta)\ln(\alpha+\beta) - \frac{\pi}{2}\alpha\ln\alpha - \frac{\pi}{2}\beta\ln\beta = \frac{\pi}{2}\ln\frac{(\alpha+\beta)^{\alpha+\beta}}{\alpha^\alpha\beta^\beta}, \quad \alpha, \beta > 0. $$
+(5) 由于 $g(\alpha, \beta)$ 关于 $\alpha, \beta$ 均为奇函数, 且 $g(\alpha, 0)=g(0, \beta)=0$, 所以
+$$ g(\alpha, \beta) = \begin{cases} \frac{\pi}{2}(\operatorname{sgn}\alpha)(\operatorname{sgn}\beta) \ln \frac{(|\alpha|+|\beta|)^{|\alpha|+|\beta|}}{|\alpha|^{|\alpha|}|\beta|^{|\beta|}}, & \alpha\beta \ne 0, \\ 0, & \alpha\beta=0. \end{cases} $$
+$\hfill \blacksquare$
+
+\begin{corollary*}
+根据 $g_\alpha(\alpha, \beta)$ 的表达式可得
+$$ \int_0^{+\infty} \frac{\arctan\alpha x}{x(1+x^2)} dx = \frac{\pi}{2}\ln(1+\alpha), \quad \alpha \ge 0. $$
+\end{corollary*}
+
+\end{proof}
+
+\newpage
+\section{Euler积分}
+伽马函数 ($\Gamma$ 函数) 与贝塔函数 ($B$ 函数) 是最重要的两个特殊函数, 它们统称为Euler积分.
+$$ \Gamma(s) = \int_{0}^{+\infty} x^{s-1}e^{-x} dx, \quad s > 0, $$
+$$ B(p, q) = \int_{0}^{1} x^{p-1}(1-x)^{q-1} dx, \quad p > 0, q > 0. $$
+\subsection{重要性质汇总}
+\subsubsection{$\Gamma$ 函数的性质}
+
+\begin{enumerate}
+    \item $\Gamma(s)$ 在 $(0, +\infty)$ 上不一致收敛, 但是内闭一致收敛.
+
+    \item $\Gamma(s)$ 在 $s>0$ 上连续且无穷次可微, 且 $\Gamma^{(n)}(s) = \int_{0}^{+\infty} x^{s-1}e^{-x}(\ln x)^n dx$.
+
+    \item 递推公式: $\Gamma(s+1)=s\Gamma(s), s>0$. 特别地, $\Gamma(n+1) = \int_0^{+\infty} x^n e^{-x} dx = n!$.
+
+    \item 其他形式: 令 $x=t^2$ 可得
+    $$ \Gamma(s) = 2 \int_0^{+\infty} t^{2s-1}e^{-t^2} dt. $$
+    结合欧拉-泊松积分可得 \textcolor{blue}{$\Gamma\left(\frac{1}{2}\right) = 2\int_0^{+\infty} e^{-t^2} dx = \sqrt{\pi}$}.
+
+    \item \textcolor{blue}{余元公式: $\Gamma(s)\Gamma(1-s) = \frac{\pi}{\sin s\pi}, \quad 0 < s < 1$. 由此可推导出 $\Gamma\left(\frac{1}{2}\right) = \sqrt{\pi}$.}
+\end{enumerate}
+
+\begin{property}\textcolor{cyan}{1}
+$\Gamma(s)$ 在 $(0, +\infty)$ 上不一致收敛, 但是内闭一致收敛.
+\end{property}
+
+\begin{proof}
+$x=0$ 可能为瑕点, 分段处理
+$$ I(s) = \int_0^{+\infty} x^{s-1}e^{-x}dx = \int_0^1 x^{s-1}e^{-x}dx + \int_1^{+\infty} x^{s-1}e^{-x}dx $$
+
+$1^{\circ}$ $x \in (0, 1] $时，$ x^{s-1}e^{-x} \sim \frac{1}{x^{1-s}} (x \to 0^+) \implies \int_0^1 x^{s-1}e^{-x}dx$ 在 $1-s<1$ 即 $s>0$ 收敛.
+且 $x^{s-1}e^{-x}$ 在 $(0,1] \times [0, +\infty)$ 连续, 且 $s=0$ 时, $\int_0^1 x^{-1}e^{-x}dx$ 发散.
+由端点法知 $\int_0^1 x^{s-1}e^{-x}dx$ 在 $(0, +\infty)$ 不一致收敛.
+
+若 $s \in [a,b] \subset (0, +\infty)$, 有 $0 < x^{s-1}e^{-x} \le x^{a-1}e^{-x}$ 且 $\int_0^1 x^{a-1}e^{-x}dx$ 收敛,
+则 $\int_0^1 x^{s-1}e^{-x}dx$ 在 $[a,b]$ 一致, 故在 $(0, +\infty)$ 内闭一致收敛.
+
+$2^{\circ}$ $x \in [1, +\infty)$, 若 $s \in [a,b] \subseteq (0, +\infty)$, $0 < x^{s-1}e^{-x} \le x^{b-1}e^{-x}$ 且 $\lim\limits_{x\to+\infty} x^2 \cdot x^{b-1}e^{-x}=0$.
+由比较原则知 $\int_1^{+\infty} x^{s-1}e^{-x}dx$ 在 $[a,b]$ 一致收敛, 在 $(0, +\infty)$ 内闭一致收敛.
+
+综上, $I(s)$ 在 $(0, +\infty)$ 上内闭一致收敛.
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{property}\textcolor{cyan}{2}
+$\Gamma(s)$ 在 $s>0$ 上连续且无穷次可微, 且 $\Gamma^{(n)}(s) = \int_{0}^{+\infty} x^{s-1}e^{-x}(\ln x)^n dx$.
+\end{property}
+\begin{proof}
+   由 $\Gamma(s)$ 的内闭一致收敛性和被积函数可微, 又因乘上 $\ln x$ 不改变一致收敛性和连续性,故 $I(s)$ 可无穷次可微. $\hfill \blacksquare$
+\end{proof}
+
+\begin{property}\textcolor{cyan}{3}
+递推公式: $\Gamma(s+1)=s\Gamma(s), s>0$. 特别地, $\Gamma(n+1) = \int_0^{+\infty} x^n e^{-x} dx = n!$.
+\end{property}
+\begin{proof}
+$\Gamma(1) = \int_0^{+\infty} e^{-x} dx = 1$.
+
+递推公式用分部积分得来
+$$ \Gamma(s+1) = \int_0^{+\infty} x^s e^{-x} dx = -\int_0^{+\infty} x^s d(e^{-x}) = -x^s e^{-x} \Big|_{x=0}^{x=+\infty} + s \int_0^{+\infty} x^{s-1} e^{-x} dx = s\Gamma(s) $$
+由 $\Gamma(1)=1$ 知 $\Gamma(n+1) = n!$.
+$\hfill \blacksquare$
+\end{proof}
+
+\subsubsection{$B$ 函数的性质}
+
+\begin{enumerate}
+    \item $B(p, q)$ 在 $p>0, q>0$ 上不一致收敛, 而对任意的 $p_0, q_0 > 0$, $B(p, q)$ 在 $p \ge p_0, q \ge q_0$ 上一致收敛.
+    \item $B(p, q)$ 函数在 $p>0, q>0$ 内连续, 且关于 $p, q$ 存在任意阶连续的偏导数 (进而可微).
+    \item 对称性: $B(p, q) = B(q, p)$.
+    \item 递推公式: $B(p, q+1) = \frac{q}{p+q} B(p, q), \quad B(p+1, q) = \frac{p}{p+q} B(p, q)$.
+    \item 其他形式: 令 $x=\cos^2\theta$ 或 $x=\frac{y}{1+y}$, 可得
+    \begin{align*}
+    B(p, q) &= 2 \int_0^{\frac{\pi}{2}} \cos^{2p-1}\theta \sin^{2q-1}\theta \, d\theta \\
+    &= \int_0^{+\infty} \frac{y^{p-1}}{(1+y)^{p+q}} dy.
+    \end{align*}
+    \item \textcolor{blue}{余元公式: $B(p, 1-p) = \frac{\pi}{\sin p\pi}, p \in (0, 1)$. 特别地, 有 $B\left(\frac{1}{2}, \frac{1}{2}\right) = \pi$.}
+\end{enumerate}
+
+\begin{property}\textcolor{cyan}{1}
+    $B(p, q)$ 在 $p>0, q>0$ 上不一致收敛, 而对任意的 $p_0, q_0 > 0$, $B(p, q)$ 在 $p \ge p_0, q \ge q_0$ 上一致收敛.
+\end{property}
+
+\begin{proof}
+$B(p,q) = \int_0^1 x^{p-1}(1-x)^{q-1} dx = \int_0^{\frac{1}{2}} x^{p-1}(1-x)^{q-1} dx + \int_{\frac{1}{2}}^1 x^{p-1}(1-x)^{q-1} dx$.
+
+$x \in (0, \frac{1}{2}]$ 时, $x^{p-1}(1-x)^{q-1} \sim \frac{1}{x^{1-p}} \ (x \to 0^+)$. 那么 $\int_0^{\frac{1}{2}} x^{p-1}(1-x)^{q-1} dx$ 在 $1-p<1$ 即 $p>0$ 收敛.
+且 $x^{p-1}(1-x)^{q-1}$ 在 $x \in (0, \frac{1}{2}], p \in [0, +\infty)$ 连续. 但 $p=0$ 时, $\int_0^{\frac{1}{2}} x^{-1}(1-x)^{q-1} dx$ 发散,
+故 $\int_0^{\frac{1}{2}} x^{p-1}(1-x)^{q-1} dx$ 在 $(0, +\infty)$ 上不一致收敛.
+
+若 $p \in [p_0, +\infty), (p_0>0)$, 则 $0 < x^{p-1}(1-x)^{q-1} \le x^{p_0-1}(1-x)^{q-1}$ 且 $\int_0^{\frac{1}{2}} x^{p_0-1}(1-x)^{q-1} dx$ 收敛.
+由 M-判别法知 $\int_0^{\frac{1}{2}} x^{p-1}(1-x)^{q-1} dx$ 关于 $p \in [p_0, +\infty)$ 一致收敛, 从而在 $(0, +\infty)$ 内闭一致收敛.
+
+对于 $\int_{\frac{1}{2}}^1 x^{p-1}(1-x)^{q-1} dx \xlongequal{t=1-x} \int_0^{\frac{1}{2}} (1-t)^{p-1}t^{q-1}dt$. 与 $x \in (0, \frac{1}{2}]$ 类似,
+由此可以发现 $p,q$ 具有对称性.
+综上, $B(p,q)$ 在 $p>0, q>0$ 上不一致收敛, 而对任意的 $p_0, q_0 > 0$, $B(p, q)$ 在 $p \ge p_0, q \ge q_0$ 上一致收敛.
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{property}\textcolor{cyan}{4}
+    递推公式: $B(p, q+1) = \frac{q}{p+q} B(p, q), \quad B(p+1, q) = \frac{p}{p+q} B(p, q)$.
+\end{property}
+
+\begin{proof}
+\begin{align*}
+B(p+1,q) &= \int_0^1 x^p (1-x)^{q-1} dx = \frac{1}{p+1} \int_0^1 (1-x)^{q-1} d(x^{p+1}) \\
+&= \frac{1}{p+1} [ \underbrace{(1-x)^{q-1}x^{p+1}\Big|_{x=0}^{x=1}}_{\text{\textcolor{red}{$q-1$可能为负, 那么$1-x=0$时, 可能无意义}}} + \frac{q-1}{p+1}\int_0^1 (1-x)^{q-2}x^{p+1}dx ]
+\end{align*}
+
+那么换另一种分部积分方式：
+\begin{align*}
+B(p+1,q) &= \int_0^1 x^p(1-x)^{q-1}dx = -\frac{1}{q} \int_0^1 x^p d\left((1-x)^q\right) \\
+&= -\frac{1}{q}x^p(1-x)^q\Big|_{x=0}^{x=1} + \frac{p}{q}\int_0^1 x^{p-1}(1-x)^q dx \\
+&= \frac{p}{q}\int_0^1 \underbrace{x^{p-1}(1-x)^q}_{x^{p-1}(1-x)^{q-1}(1-x)} dx = \frac{p}{q}\int_0^1 x^{p-1}(1-x)^{q-1}dx - \frac{p}{q}\int_0^1 x^p(1-x)^{q-1}dx \\
+&= \frac{p}{q} B(p,q) - \frac{p}{q} B(p+1, q) \implies B(p+1,q) = \frac{p}{p+q}B(p,q)
+\end{align*}
+由对称性可得 $B(p,q+1) = \frac{q}{p+q} B(p,q)$.
+$\hfill \blacksquare$
+\end{proof}
+
+\subsubsection{两类欧拉积分的关系}
+
+\begin{theorem*}
+对任意的 $p>0, q>0$, 有
+$$ B(p, q) = \frac{\Gamma(p)\Gamma(q)}{\Gamma(p+q)}. $$
+特别地, 对正整数 $m, n$, 有 $B(m, n) = \frac{(m-1)!(n-1)!}{(m+n-1)!}$.
+\end{theorem*}
+
+\subsubsection{典型例题}
+\begin{example}
+证明 $\Gamma\left(\frac{2n+1}{2}\right) = \frac{(2n-1)!!}{2^n}\sqrt{\pi}$.
+\end{example}
+
+\begin{proof}
+由 $\Gamma(S+1)=S\Gamma(S)$
+$$ \Gamma(\frac{2n+1}{2}) = \frac{2n-1}{2}\Gamma(\frac{2n-1}{2}) = \cdots = \frac{(2n-1)!!}{2^n}\Gamma(\frac{1}{2}) = \frac{(2n-1)!!}{2^n}\sqrt{\pi} $$
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{example}
+证明 $\int_0^1 \frac{dx}{\sqrt[n]{1-x^n}} = \frac{\pi}{n\sin\frac{\pi}{n}}$, 其中 $n > 0$.
+\end{example}
+
+\begin{proof}
+\textcolor{blue}{令 $t=x^n$}，则 $x=t^{\frac{1}{n}}$. 从而 
+$$
+\int_0^1 \frac{d(t^{\frac{1}{n}})}{\sqrt[n]{1-t}} = \int_0^1 \frac{1}{n}t^{\frac{1}{n}-1}(1-t)^{-\frac{1}{n}}dt = \frac{1}{n}B(\frac{1}{n}, 1-\frac{1}{n})
+$$
+由余元公式知 $n>0$，$B(\frac{1}{n}, 1-\frac{1}{n}) = \frac{\pi}{\sin\frac{\pi}{n}}$.
+从而 $\int_0^1 \frac{dx}{\sqrt[n]{1-x^n}} = \frac{\pi}{n\sin\frac{\pi}{n}}$.
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{example}
+证明 $\int_0^1 x^{p-1}(1-x^m)^{q-1} dx = \frac{1}{m}B\left(\frac{p}{m}, q\right)$, 其中 $p,q,m > 0$.
+\end{example}
+
+\begin{proof}
+\textcolor{blue}{令 $t=x^m$}，则 $x=t^{\frac{1}{m}}$. 从而
+\begin{align*}
+\int_0^1 t^{\frac{p-1}{m}}(1-t)^{q-1}d(t^{\frac{1}{m}}) &= \int_0^1 \frac{1}{m}t^{\frac{p}{m}-1}(1-t)^{q-1}dt \\
+&= \frac{1}{m}B(\frac{p}{m},q), p,q,m>0
+\end{align*}
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{example}
+证明 $\int_0^{+\infty} \frac{x^{p-1}}{1+x} dx = B(p, 1-p) = \frac{\pi}{\sin p\pi}$, 其中 $0 < p < 1$.
+\end{example}
+\begin{remark}
+    由性质知显然.
+\end{remark}
+\begin{example}
+计算下列积分:
+(1) $\int_{0}^{1} \left(\ln \frac{1}{x}\right)^n dx \ (n \in \mathbb{N}^+)$; \quad (2) $\int_{-\infty}^{+\infty} x^2 e^{-x^2} dx$; \quad (3) \textcolor{red}{$\int_0^{\pi/2} \sqrt{\tan x} dx$}; \quad (4) \textcolor{red}{$\int_0^{+\infty} \frac{dx}{1+x^4}$}.
+\end{example}
+
+\begin{proof}
+\begin{enumerate}
+    \item 由 $\ln\frac{1}{x} = t$，从而 $x=e^{-t}$，积分为
+    $$ \int_0^1 (\ln\frac{1}{x})^n dx = \int_0^{+\infty} t^n e^{-t} dt = \Gamma(n+1) = n! \quad  $$
+    \item
+    $$ \int_{-\infty}^{+\infty} x^2 e^{-x^2} dx = 2\int_0^{+\infty} x^2 e^{-x^2} dx = \Gamma(\frac{3}{2}) = \frac{1}{2}\Gamma(\frac{1}{2}) = \frac{\sqrt{\pi}}{2} \quad  $$
+    \item
+    $$ \int_0^{\frac{\pi}{2}} \sqrt{\tan x} dx = \textcolor{blue}{\int_0^{\frac{\pi}{2}} \cos^{-\frac{1}{2}}x \cdot \sin^{\frac{1}{2}}x dx = \frac{1}{2}B(\frac{1}{4}, \frac{3}{4}) }= \frac{1}{2} \frac{\pi}{\sin\frac{\pi}{4}} = \frac{\pi}{\sqrt{2}} \quad  $$
+    \item 令 $t=x^4$，则 $x=t^{\frac{1}{4}}$.
+    $$ \int_0^{+\infty} \frac{t^{-\frac{3}{4}}}{1+t} \cdot \frac{1}{4} dt =\textcolor{blue}{\int_0^{+\infty} \frac{t^{\frac{1}{4} - 1}}{(1+t)^{\frac{1}{4}+\frac{3}{4}}} \cdot \frac{1}{4} dt= \frac{1}{4}B(\frac{1}{4}, \frac{3}{4}) }= \frac{\pi}{2\sqrt{2}} \quad  $$
+\end{enumerate}
+\end{proof}
+
+\begin{example}
+证明 $\int_{0}^{1} \frac{dx}{\sqrt{1-x^4}} \cdot \int_{0}^{1} \frac{x^2 dx}{\sqrt{1-x^4}} = \frac{\pi}{4}$.
+\end{example}
+
+\begin{proof}
+令 $t=x^4$, 则 $x=t^{\frac{1}{4}}$.
+从而 
+$$
+ \int_0^1 \frac{dx}{\sqrt{1-x^4}} = \frac{1}{4}\int_0^1 t^{-\frac{3}{4}}(1-t)^{-\frac{1}{2}}dt = \frac{1}{4}B(\frac{1}{4}, \frac{1}{2})
+$$
+$$
+\int_0^1 \frac{x^2 dx}{\sqrt{1-x^4}} = \frac{1}{4}\int_0^1 t^{\frac{1}{2}}(1-t)^{-\frac{1}{2}}dt = \frac{1}{4}B(\frac{3}{4}, \frac{1}{2})
+$$
+$$
+\text{那么左边}= \frac{1}{16} B(\frac{1}{4}, \frac{1}{2}) \cdot B(\frac{3}{4}, \frac{1}{2}) = \frac{1}{16} \frac{\Gamma(\frac{1}{4})\Gamma(\frac{1}{2})\Gamma(\frac{3}{4})\Gamma(\frac{1}{2})}{\Gamma(\frac{3}{4})\Gamma(\frac{5}{4})} = \frac{1}{16}\frac{\pi}{\frac{1}{4}} = \frac{\pi}{4}
+$$
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{example}
+证明 $\int_{0}^{+\infty} e^{-x^4} dx \int_{0}^{+\infty} x^2 e^{-x^4} dx = \frac{\pi}{8\sqrt{2}}$.
+\end{example}
+
+\begin{proof}
+令 $t=x^4$, 则 $x=t^{\frac{1}{4}}$.
+$$
+\int_0^{+\infty} e^{-x^4}dx = \int_0^{+\infty} e^{-t} \cdot \frac{1}{4}t^{-\frac{3}{4}}dt = \frac{1}{4}\int_0^{+\infty} t^{-\frac{3}{4}}e^{-t}dt = \frac{1}{4}\Gamma(\frac{1}{4})
+$$
+$$
+\int_0^{+\infty} t^{\frac{1}{2}}e^{-t} \cdot \frac{1}{4}t^{-\frac{3}{4}}dt = \frac{1}{4}\int_0^{+\infty} t^{-\frac{1}{4}}e^{-t}dt = \frac{1}{4}\Gamma(\frac{3}{4})
+$$
+从而左边
+$$
+\text{左边}= \frac{1}{16}\Gamma(\frac{1}{4})\Gamma(\frac{3}{4}) = \frac{1}{16}\frac{\pi}{\sin\frac{\pi}{4}} = \frac{\pi}{8\sqrt{2}}
+$$
+$\hfill \blacksquare$
+\end{proof}
+
+\begin{example}[$\bigstar \bigstar$]
+证明 $I = \int_{0}^{1} \ln\Gamma(x) dx = \frac{1}{2}\ln 2\pi$.
+\end{example}
+
+\begin{proof}
+令 $x=1-t$, 从而 $t=1-x$.
+\begin{align*}
+I &= \int_0^1 \ln\Gamma(x)dx = -\int_1^0 \ln\Gamma(1-t)dt = \int_0^1 \ln\Gamma(1-t)dt \\
+&= \frac{1}{2}\int_0^1 [\ln\Gamma(x) + \ln\Gamma(1-x)]dx \\
+&= \frac{1}{2}\int_0^1 \ln[\Gamma(x)\Gamma(1-x)]dx = \frac{1}{2}\int_0^1 \ln\frac{\pi}{\sin\pi x}dx \\
+&= \frac{1}{2}\int_0^1 (\ln\pi - \ln\sin\pi x)dx = \frac{1}{2}\ln\pi - \frac{1}{2\pi}\int_0^{\pi} \ln\sin t dt \\
+&= \frac{1}{2}\ln\pi - \frac{1}{\pi}\int_0^{\frac{\pi}{2}} \ln\sin t dt = \frac{1}{2}\ln\pi - \frac{1}{\pi} \times (-\frac{\pi}{2}\ln 2) = \frac{1}{2}\ln 2\pi
+\end{align*}
+$\hfill \blacksquare$
+\end{proof}
 
 
 \end{document}
